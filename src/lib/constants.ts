@@ -44,3 +44,31 @@ export const NAV: NavItem[] = [
 ];
 
 export const STORAGE_PREFIX = "gwanak-relocation::";
+
+export const COMMITTEE_CHARTER = {
+  preamble:
+    "예배당 이전을 위해 관악교회 당회는 예배당이전검토위원회(이하 '위원회')의 구성 등에 관하여 다음과 같이 결의하다.",
+  composition: {
+    title: "구성",
+    summary: "장로 1명, 제직 3명, 각 전도회별 회장 6명, 청년부 헬퍼 2명 등 총 10명 내외의 위원으로 구성한다.",
+    members: [
+      { role: "장로", count: 1 },
+      { role: "제직", count: 3 },
+      { role: "각 전도회별 회장", count: 6 },
+      { role: "청년부 헬퍼", count: 2 },
+    ],
+    total: "총 10명 내외",
+  },
+  duties: {
+    title: "임무",
+    intro:
+      "위원회는 당회의 자문에 응하여 예배당 이전에 대한 다음 임무를 수행한다.",
+    items: [
+      "예배당 이전에 대한 성도들의 의견 수렴",
+      "예배당 이전 장소의 발견",
+      "이에 대한 의견의 교환",
+      "활동 내역의 제직회에의 설명",
+      "예배당 이전에 관한 당회 결의를 얻기 위한 당회에의 보고",
+    ],
+  },
+} as const;

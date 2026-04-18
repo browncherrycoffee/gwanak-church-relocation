@@ -7,12 +7,14 @@ import {
   ChatCircleText,
   CheckSquare,
   Compass,
+  Gavel,
   NotePencil,
   Target,
+  UsersThree,
 } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SITE_CONFIG } from "@/lib/constants";
+import { COMMITTEE_CHARTER, SITE_CONFIG } from "@/lib/constants";
 import { useDiscussions, useMeetings, useProperties, useRationale } from "@/lib/stores";
 import { formatDate, formatKRW } from "@/lib/utils";
 
@@ -53,6 +55,61 @@ export default function Home() {
         <p className="text-xs text-muted-foreground">
           표어 · {SITE_CONFIG.moto}
         </p>
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-start gap-2">
+            <Gavel size={20} className="mt-0.5 text-primary" />
+            <div className="flex flex-col gap-1">
+              <CardTitle className="text-base">
+                당회 결의 · 위원회 구성
+              </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {COMMITTEE_CHARTER.preamble}
+              </p>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+              <UsersThree size={14} /> {COMMITTEE_CHARTER.composition.title}
+            </div>
+            <p className="text-sm">
+              {COMMITTEE_CHARTER.composition.summary}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {COMMITTEE_CHARTER.composition.members.map((m) => (
+                <Badge key={m.role} variant="secondary" className="font-normal">
+                  {m.role} {m.count}명
+                </Badge>
+              ))}
+              <Badge variant="outline" className="font-normal">
+                {COMMITTEE_CHARTER.composition.total}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-start gap-2">
+            <Target size={20} className="mt-0.5 text-primary" />
+            <div className="flex flex-col gap-1">
+              <CardTitle className="text-base">
+                위원회 {COMMITTEE_CHARTER.duties.title}
+              </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {COMMITTEE_CHARTER.duties.intro}
+              </p>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ol className="list-decimal space-y-1.5 pl-5 text-sm">
+              {COMMITTEE_CHARTER.duties.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
       </section>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
