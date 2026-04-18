@@ -2,12 +2,14 @@
 
 import { useSeededList, useStore } from "./storage";
 import {
+  CHURCH_STATUS_SEED,
   DISCUSSIONS_SEED,
   MEETINGS_SEED,
   PROPERTIES_SEED,
   RATIONALE_SEED,
 } from "./seeds";
 import type {
+  ChurchStatus,
   Discussion,
   Meeting,
   Property,
@@ -140,6 +142,24 @@ export function useDiscussions() {
     setItems((prev) => prev.filter((d) => d.id !== id));
 
   return { items, setItems, get, upsert, remove };
+}
+
+export function useChurchStatus() {
+  const [status, setStatus] = useStore<ChurchStatus>(
+    "church-status",
+    CHURCH_STATUS_SEED,
+  );
+
+  const patch = (p: Partial<ChurchStatus>) =>
+    setStatus((prev) => ({
+      ...prev,
+      ...p,
+      updatedAt: new Date().toISOString(),
+    }));
+
+  const reset = () => setStatus(CHURCH_STATUS_SEED);
+
+  return { status, setStatus, patch, reset };
 }
 
 export { useStore };

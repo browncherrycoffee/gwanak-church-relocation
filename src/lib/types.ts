@@ -84,6 +84,40 @@ export type DiscussionArgument = {
   createdAt: string;
 };
 
+export type ChurchStatus = {
+  asOfDate: string;
+  dataSourceNote: string;
+
+  currentSanctuaryPyeong: number;
+  educationSpacePyeong: number;
+  totalSpacePyeong: number;
+  seatCapacity: number;
+
+  depositKRW: number;
+  monthlyRent: number;
+  monthlyParking: number;
+  monthlyManagement: number;
+  monthlyUtilities: number;
+  monthlyOther: number;
+  otherFixedDescription: string;
+
+  monthlyOfferingAvg: number;
+  offeringPeriodNote: string;
+
+  registeredMembers: number;
+  sundayAttendanceAvg: number;
+  infantsCount: number;
+  elementaryCount: number;
+  middleHighCount: number;
+  youngAdultCount: number;
+
+  attendanceTrend: string;
+  memberGrowthNote: string;
+  spaceConstraintNote: string;
+
+  updatedAt: string;
+};
+
 export type DiscussionStatus = "open" | "converging" | "decided";
 
 export type Discussion = {

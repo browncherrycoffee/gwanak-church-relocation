@@ -1,4 +1,5 @@
 import type {
+  ChurchStatus,
   Discussion,
   Meeting,
   Property,
@@ -6,6 +7,41 @@ import type {
 } from "./types";
 
 const now = () => new Date().toISOString();
+
+export const CHURCH_STATUS_SEED: ChurchStatus = {
+  asOfDate: "2026-04",
+  dataSourceNote: "",
+
+  currentSanctuaryPyeong: 60,
+  educationSpacePyeong: 0,
+  totalSpacePyeong: 0,
+  seatCapacity: 0,
+
+  depositKRW: 0,
+  monthlyRent: 0,
+  monthlyParking: 0,
+  monthlyManagement: 0,
+  monthlyUtilities: 0,
+  monthlyOther: 0,
+  otherFixedDescription: "",
+
+  monthlyOfferingAvg: 0,
+  offeringPeriodNote: "최근 12개월 평균 기준 권장",
+
+  registeredMembers: 0,
+  sundayAttendanceAvg: 0,
+  infantsCount: 0,
+  elementaryCount: 0,
+  middleHighCount: 0,
+  youngAdultCount: 0,
+
+  attendanceTrend: "",
+  memberGrowthNote: "",
+  spaceConstraintNote:
+    "현재 본당 60평이 예배 인원과 다음세대 분반 공간으로는 부족하다는 의견이 지속되어 왔음.",
+
+  updatedAt: new Date("2026-04-18").toISOString(),
+};
 
 export const RATIONALE_SEED: RationaleItem[] = [
   {

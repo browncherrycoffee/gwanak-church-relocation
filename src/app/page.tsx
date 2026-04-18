@@ -6,6 +6,7 @@ import {
   Buildings,
   ChatCircleText,
   CheckSquare,
+  Coin,
   Compass,
   Gavel,
   NotePencil,
@@ -15,7 +16,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { COMMITTEE_CHARTER, SITE_CONFIG } from "@/lib/constants";
-import { useDiscussions, useMeetings, useProperties, useRationale } from "@/lib/stores";
+import {
+  useChurchStatus,
+  useDiscussions,
+  useMeetings,
+  useProperties,
+  useRationale,
+} from "@/lib/stores";
 import { formatDate, formatKRW } from "@/lib/utils";
 
 const empathyLabel: Record<string, { label: string; variant: "default" | "secondary" | "muted" | "destructive" | "outline" }> = {
@@ -30,6 +37,28 @@ export default function Home() {
   const { items: meetings } = useMeetings();
   const { items: properties } = useProperties();
   const { items: discussions } = useDiscussions();
+  const { status } = useChurchStatus();
+
+  const monthlyFixedCost =
+    status.monthlyRent +
+    status.monthlyParking +
+    status.monthlyManagement +
+    status.monthlyUtilities +
+    status.monthlyOther;
+  const offeringRatio =
+    status.monthlyOfferingAvg > 0
+      ? (monthlyFixedCost / status.monthlyOfferingAvg) * 100
+      : 0;
+  const nextGenTotal =
+    status.infantsCount +
+    status.elementaryCount +
+    status.middleHighCount +
+    status.youngAdultCount;
+  const hasStatusData =
+    monthlyFixedCost > 0 ||
+    status.monthlyOfferingAvg > 0 ||
+    status.registeredMembers > 0 ||
+    nextGenTotal > 0;
 
   const activeProperties = properties.filter(
     (p) => p.status === "initial" || p.status === "reviewing",
@@ -138,6 +167,76 @@ export default function Home() {
           hint={recentMeeting ? `최근 ${formatDate(recentMeeting.date)}` : "아직 기록 없음"}
         />
       </section>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Coin size={18} /> 교회 현황 — 객관 수치
+          </CardTitle>
+          <Link
+            href="/status"
+            className="inline-flex items-center gap-1 text-xs font-medium text-primary"
+          >
+            입력·편집 <ArrowRight size={14} />
+          </Link>
+        </CardHeader>
+        <CardContent>
+          {!hasStatusData ? (
+            <div className="flex flex-col gap-2 rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
+              <p>
+                아직 공간·고정비·헌금·인원 수치가 입력되지 않았습니다.
+                객관 데이터가 있어야 이전의 필요성과 감당 가능성을 구체적으로
+                설명할 수 있습니다.
+              </p>
+              <Link
+                href="/status"
+                className="inline-flex w-fit items-center gap-1 text-xs font-medium text-primary"
+              >
+                현황 입력 시작 <ArrowRight size={14} />
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <HomeMetric
+                label="월 고정비"
+                value={monthlyFixedCost > 0 ? `${formatKRW(monthlyFixedCost)}원` : "—"}
+                hint={
+                  status.monthlyOfferingAvg > 0
+                    ? `헌금 대비 ${offeringRatio.toFixed(0)}%`
+                    : ""
+                }
+              />
+              <HomeMetric
+                label="월평균 헌금"
+                value={status.monthlyOfferingAvg > 0 ? `${formatKRW(status.monthlyOfferingAvg)}원` : "—"}
+                hint={status.offeringPeriodNote || ""}
+              />
+              <HomeMetric
+                label="등록 / 출석"
+                value={
+                  status.registeredMembers > 0
+                    ? `${status.sundayAttendanceAvg} / ${status.registeredMembers}`
+                    : "—"
+                }
+                hint={
+                  status.registeredMembers > 0
+                    ? `출석률 ${((status.sundayAttendanceAvg / status.registeredMembers) * 100).toFixed(0)}%`
+                    : ""
+                }
+              />
+              <HomeMetric
+                label="다음세대"
+                value={nextGenTotal > 0 ? `${nextGenTotal}명` : "—"}
+                hint={
+                  nextGenTotal > 0
+                    ? `영유아 ${status.infantsCount} · 유초등 ${status.elementaryCount} · 중고등 ${status.middleHighCount} · 청년 ${status.youngAdultCount}`
+                    : ""
+                }
+              />
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -340,6 +439,28 @@ export default function Home() {
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function HomeMetric({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1 rounded-md border border-border bg-background p-3">
+      <span className="text-[11px] text-muted-foreground">{label}</span>
+      <span className="text-base font-bold sm:text-lg">{value}</span>
+      {hint && (
+        <span className="text-[11px] text-muted-foreground line-clamp-2">
+          {hint}
+        </span>
+      )}
     </div>
   );
 }
