@@ -79,6 +79,7 @@ export function useSeededList<T extends { id: string }>(
   key: string,
   seed: T[],
   seedVersion: string,
+  migrate?: (items: T[]) => T[],
 ): [T[], (next: T[] | ((prev: T[]) => T[])) => void] {
   const [items, setItems] = useStore<T[]>(key, seed);
   const [storedVersion, setStoredVersion] = useStore<string>(
@@ -90,12 +91,13 @@ export function useSeededList<T extends { id: string }>(
     if (storedVersion === seedVersion) return;
     setStoredVersion(seedVersion);
     setItems((prev) => {
-      const prevIds = new Set(prev.map((i) => i.id));
-      const toAdd = seed.filter((s) => !prevIds.has(s.id));
-      if (toAdd.length === 0) return prev;
-      return [...prev, ...toAdd];
+      const migrated = migrate ? migrate(prev) : prev;
+      const migratedIds = new Set(migrated.map((i) => i.id));
+      const toAdd = seed.filter((s) => !migratedIds.has(s.id));
+      if (toAdd.length === 0 && migrated === prev) return prev;
+      return [...migrated, ...toAdd];
     });
-  }, [seedVersion, storedVersion, seed, setItems, setStoredVersion]);
+  }, [seedVersion, storedVersion, seed, setItems, setStoredVersion, migrate]);
 
   return [items, setItems];
 }

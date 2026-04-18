@@ -58,6 +58,8 @@ export default function NewPropertyPage() {
         note: "",
       })),
       visits: [],
+      photos: [],
+      financingNotes: "",
       createdAt: now,
       updatedAt: now,
     });

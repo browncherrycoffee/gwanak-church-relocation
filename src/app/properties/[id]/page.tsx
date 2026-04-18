@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Plus, TrashSimple } from "@phosphor-icons/react";
@@ -275,8 +276,46 @@ export default function PropertyDetailPage() {
               rows={3}
             />
           </Field>
+          <Field label="재정 · 감정평가 · 대출 메모" className="sm:col-span-2">
+            <Textarea
+              value={property.financingNotes ?? ""}
+              onChange={(e) => patch({ financingNotes: e.target.value })}
+              placeholder="금융권 감정평가액, 대출 가능 비율, 이자·상환 조건, 접촉 중 은행 등"
+              rows={6}
+            />
+          </Field>
         </CardContent>
       </Card>
+
+      {(property.photos ?? []).length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>사진</CardTitle>
+            <CardDescription>현장 답사·공유 자료 이미지.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {(property.photos ?? []).map((src, idx) => (
+                <a
+                  key={src}
+                  href={src}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative aspect-video overflow-hidden rounded-md border border-border"
+                >
+                  <Image
+                    src={src}
+                    alt={`${property.name} 사진 ${idx + 1}`}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition group-hover:scale-[1.02]"
+                  />
+                </a>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">

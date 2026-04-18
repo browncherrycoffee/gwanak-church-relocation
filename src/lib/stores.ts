@@ -17,7 +17,7 @@ import type {
 export const SEED_VERSIONS = {
   rationale: "2026-04-18",
   meetings: "2026-04-18",
-  properties: "2026-04-18",
+  properties: "2026-04-18-v2",
   discussions: "2026-04-18",
 } as const;
 
@@ -68,11 +68,37 @@ export function useMeetings() {
   return { items: sorted, raw: items, setItems, get, upsert, remove };
 }
 
+const migrateProperties = (items: Property[]): Property[] => {
+  const chukbokSeed = PROPERTIES_SEED.find((p) => p.id === "property-chukbok");
+  if (!chukbokSeed) return items;
+  return items.map((p) => {
+    if (p.id !== "property-chukbok") return p;
+    const existingDDIds = new Set(p.dueDiligence.map((d) => d.id));
+    const missingDD = chukbokSeed.dueDiligence.filter(
+      (d) => !existingDDIds.has(d.id),
+    );
+    const photos = p.photos && p.photos.length > 0 ? p.photos : chukbokSeed.photos;
+    const financingNotes = p.financingNotes && p.financingNotes.length > 0
+      ? p.financingNotes
+      : chukbokSeed.financingNotes;
+    if (missingDD.length === 0 && photos === p.photos && financingNotes === p.financingNotes) {
+      return p;
+    }
+    return {
+      ...p,
+      photos,
+      financingNotes,
+      dueDiligence: [...p.dueDiligence, ...missingDD],
+    };
+  });
+};
+
 export function useProperties() {
   const [items, setItems] = useSeededList<Property>(
     "properties",
     PROPERTIES_SEED,
     SEED_VERSIONS.properties,
+    migrateProperties,
   );
 
   const get = (id: string) => items.find((p) => p.id === id);

@@ -68,6 +68,8 @@ export type Property = {
   link: string;
   dueDiligence: DueDiligenceItem[];
   visits: { id: string; date: string; attendees: string; findings: string }[];
+  photos?: string[];
+  financingNotes?: string;
   createdAt: string;
   updatedAt: string;
 };
