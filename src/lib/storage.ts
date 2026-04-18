@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { STORAGE_PREFIX } from "./constants";
 
 type Listener = () => void;
@@ -73,4 +73,29 @@ export function useStore<T>(key: string, initial: T): [T, (next: T | ((prev: T) 
     () => initial,
   );
   return [value, store.set];
+}
+
+export function useSeededList<T extends { id: string }>(
+  key: string,
+  seed: T[],
+  seedVersion: string,
+): [T[], (next: T[] | ((prev: T[]) => T[])) => void] {
+  const [items, setItems] = useStore<T[]>(key, seed);
+  const [storedVersion, setStoredVersion] = useStore<string>(
+    `${key}::version`,
+    "v0",
+  );
+
+  useEffect(() => {
+    if (storedVersion === seedVersion) return;
+    setStoredVersion(seedVersion);
+    setItems((prev) => {
+      const prevIds = new Set(prev.map((i) => i.id));
+      const toAdd = seed.filter((s) => !prevIds.has(s.id));
+      if (toAdd.length === 0) return prev;
+      return [...prev, ...toAdd];
+    });
+  }, [seedVersion, storedVersion, seed, setItems, setStoredVersion]);
+
+  return [items, setItems];
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "./storage";
+import { useSeededList, useStore } from "./storage";
 import {
   DISCUSSIONS_SEED,
   MEETINGS_SEED,
@@ -14,8 +14,19 @@ import type {
   RationaleItem,
 } from "./types";
 
+export const SEED_VERSIONS = {
+  rationale: "2026-04-18",
+  meetings: "2026-04-18",
+  properties: "2026-04-18",
+  discussions: "2026-04-18",
+} as const;
+
 export function useRationale() {
-  const [items, setItems] = useStore<RationaleItem[]>("rationale", RATIONALE_SEED);
+  const [items, setItems] = useSeededList<RationaleItem>(
+    "rationale",
+    RATIONALE_SEED,
+    SEED_VERSIONS.rationale,
+  );
 
   const update = (id: string, patch: Partial<RationaleItem>) =>
     setItems((prev) =>
@@ -32,7 +43,11 @@ export function useRationale() {
 }
 
 export function useMeetings() {
-  const [items, setItems] = useStore<Meeting[]>("meetings", MEETINGS_SEED);
+  const [items, setItems] = useSeededList<Meeting>(
+    "meetings",
+    MEETINGS_SEED,
+    SEED_VERSIONS.meetings,
+  );
 
   const sorted = [...items].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -54,7 +69,11 @@ export function useMeetings() {
 }
 
 export function useProperties() {
-  const [items, setItems] = useStore<Property[]>("properties", PROPERTIES_SEED);
+  const [items, setItems] = useSeededList<Property>(
+    "properties",
+    PROPERTIES_SEED,
+    SEED_VERSIONS.properties,
+  );
 
   const get = (id: string) => items.find((p) => p.id === id);
 
@@ -74,7 +93,11 @@ export function useProperties() {
 }
 
 export function useDiscussions() {
-  const [items, setItems] = useStore<Discussion[]>("discussions", DISCUSSIONS_SEED);
+  const [items, setItems] = useSeededList<Discussion>(
+    "discussions",
+    DISCUSSIONS_SEED,
+    SEED_VERSIONS.discussions,
+  );
 
   const get = (id: string) => items.find((d) => d.id === id);
 
@@ -92,3 +115,5 @@ export function useDiscussions() {
 
   return { items, setItems, get, upsert, remove };
 }
+
+export { useStore };

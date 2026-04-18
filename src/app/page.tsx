@@ -5,6 +5,7 @@ import {
   ArrowRight,
   Buildings,
   ChatCircleText,
+  CheckSquare,
   Compass,
   NotePencil,
   Target,
@@ -223,6 +224,49 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
+      </section>
+
+      <section className="rounded-xl border border-border bg-card p-5">
+        <div className="flex items-start gap-3">
+          <CheckSquare size={22} className="mt-0.5 text-primary" />
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-sm font-semibold">
+                이전을 위해 고려해야 할 8가지 요소
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                2026-04-18 첫 준비위원회에서 합의된 매물 평가 기준입니다.
+                모든 매물 검토 시 이 8가지를 점검합니다.
+              </p>
+            </div>
+            <ol className="grid list-decimal grid-cols-1 gap-x-6 gap-y-1.5 pl-5 text-sm text-foreground sm:grid-cols-2">
+              <li>
+                지역 범위 · 교인 이동 동선과 거주 분포
+              </li>
+              <li>
+                층수 · 노약자·유아 접근성 (저층 우선)
+              </li>
+              <li>
+                면적 기준 · 단층 80~90평 이상 확보
+              </li>
+              <li>
+                추가 비용 · 인테리어·리모델링 예산 반영
+              </li>
+              <li>
+                임대인 수용 여부 · 교회 용도 허용 확인
+              </li>
+              <li>
+                주차 · 엘리베이터 · 차량/노약자 배려
+              </li>
+              <li>
+                확장 가능성 · 5~10년 후 성장 여지
+              </li>
+              <li>
+                교통 편의성 · 대중교통·주요 도로 접근
+              </li>
+            </ol>
+          </div>
+        </div>
       </section>
 
       <section className="rounded-xl border border-dashed border-primary/30 bg-secondary/40 p-5">
