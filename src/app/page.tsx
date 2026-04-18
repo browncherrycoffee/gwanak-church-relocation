@@ -54,11 +54,34 @@ export default function Home() {
     status.elementaryCount +
     status.middleHighCount +
     status.youngAdultCount;
+  const ageTotal =
+    status.ageUnder10 +
+    status.ageTeens +
+    status.ageTwenties +
+    status.ageThirties +
+    status.ageForties +
+    status.ageFifties +
+    status.ageSixties +
+    status.ageSeventyPlus +
+    status.ageUnknown;
+  const elderlyRate =
+    ageTotal > 0
+      ? ((status.ageSixties + status.ageSeventyPlus) / ageTotal) * 100
+      : 0;
+  const residentialTotal = status.residentialBreakdown.reduce(
+    (s, a) => s + a.count,
+    0,
+  );
+  const topArea = [...status.residentialBreakdown]
+    .filter((a) => a.count > 0)
+    .sort((a, b) => b.count - a.count)[0];
   const hasStatusData =
     monthlyFixedCost > 0 ||
     status.monthlyOfferingAvg > 0 ||
     status.registeredMembers > 0 ||
-    nextGenTotal > 0;
+    nextGenTotal > 0 ||
+    ageTotal > 0 ||
+    residentialTotal > 0;
 
   const activeProperties = properties.filter(
     (p) => p.status === "initial" || p.status === "reviewing",
@@ -232,6 +255,33 @@ export default function Home() {
                     ? `영유아 ${status.infantsCount} · 유초등 ${status.elementaryCount} · 중고등 ${status.middleHighCount} · 청년 ${status.youngAdultCount}`
                     : ""
                 }
+              />
+              <HomeMetric
+                label="60세 이상 비율"
+                value={ageTotal > 0 ? `${elderlyRate.toFixed(0)}%` : "—"}
+                hint="엘리베이터·저층 필요성 판단"
+              />
+              <HomeMetric
+                label="주 거주 지역"
+                value={
+                  topArea
+                    ? `${topArea.area} ${((topArea.count / residentialTotal) * 100).toFixed(0)}%`
+                    : "—"
+                }
+                hint={
+                  topArea
+                    ? `${topArea.count}명 / 집계 ${residentialTotal}명`
+                    : "지역 분포 입력 시 표시"
+                }
+              />
+              <HomeMetric
+                label="10년 임대 누적"
+                value={
+                  status.monthlyRent > 0
+                    ? `${formatKRW(status.monthlyRent * 120)}원`
+                    : "—"
+                }
+                hint="월세 × 120개월 (매입 비교 기준)"
               />
             </div>
           )}

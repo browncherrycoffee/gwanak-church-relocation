@@ -84,6 +84,12 @@ export type DiscussionArgument = {
   createdAt: string;
 };
 
+export type ResidentialArea = {
+  id: string;
+  area: string;
+  count: number;
+};
+
 export type ChurchStatus = {
   asOfDate: string;
   dataSourceNote: string;
@@ -106,14 +112,32 @@ export type ChurchStatus = {
 
   registeredMembers: number;
   sundayAttendanceAvg: number;
+  activeMembers: number;
+  inactiveMembers: number;
   infantsCount: number;
   elementaryCount: number;
   middleHighCount: number;
   youngAdultCount: number;
 
+  ageUnder10: number;
+  ageTeens: number;
+  ageTwenties: number;
+  ageThirties: number;
+  ageForties: number;
+  ageFifties: number;
+  ageSixties: number;
+  ageSeventyPlus: number;
+  ageUnknown: number;
+
+  householdCount: number;
+  multiMemberHouseholdCount: number;
+
+  residentialBreakdown: ResidentialArea[];
+
   attendanceTrend: string;
   memberGrowthNote: string;
   spaceConstraintNote: string;
+  demographicsNote: string;
 
   updatedAt: string;
 };

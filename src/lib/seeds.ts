@@ -30,15 +30,41 @@ export const CHURCH_STATUS_SEED: ChurchStatus = {
 
   registeredMembers: 0,
   sundayAttendanceAvg: 0,
+  activeMembers: 0,
+  inactiveMembers: 0,
   infantsCount: 0,
   elementaryCount: 0,
   middleHighCount: 0,
   youngAdultCount: 0,
 
+  ageUnder10: 0,
+  ageTeens: 0,
+  ageTwenties: 0,
+  ageThirties: 0,
+  ageForties: 0,
+  ageFifties: 0,
+  ageSixties: 0,
+  ageSeventyPlus: 0,
+  ageUnknown: 0,
+
+  householdCount: 0,
+  multiMemberHouseholdCount: 0,
+
+  residentialBreakdown: [
+    { id: "area-gwanak", area: "관악구", count: 0 },
+    { id: "area-geumcheon", area: "금천구", count: 0 },
+    { id: "area-dongjak", area: "동작구", count: 0 },
+    { id: "area-yeongdeungpo", area: "영등포구", count: 0 },
+    { id: "area-guro", area: "구로구", count: 0 },
+    { id: "area-other-seoul", area: "서울 기타", count: 0 },
+    { id: "area-gyeonggi", area: "경기권", count: 0 },
+  ],
+
   attendanceTrend: "",
   memberGrowthNote: "",
   spaceConstraintNote:
     "현재 본당 60평이 예배 인원과 다음세대 분반 공간으로는 부족하다는 의견이 지속되어 왔음.",
+  demographicsNote: "",
 
   updatedAt: new Date("2026-04-18").toISOString(),
 };
