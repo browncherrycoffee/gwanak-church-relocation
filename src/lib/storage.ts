@@ -160,6 +160,13 @@ export function applyCloudState(data: Record<string, unknown>): void {
       const value = data[key];
       const existing = stores.get(key);
       if (existing) {
+        try {
+          if (JSON.stringify(existing.get()) === JSON.stringify(value)) {
+            continue;
+          }
+        } catch {
+          // fall through to set
+        }
         existing.set(value as never);
       } else if (typeof window !== "undefined") {
         try {

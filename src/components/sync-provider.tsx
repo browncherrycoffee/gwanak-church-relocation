@@ -17,7 +17,17 @@ import {
 type SyncStatus = "idle" | "syncing" | "error";
 
 const POLL_INTERVAL_MS = 5000;
-const PUSH_DEBOUNCE_MS = 600;
+const PUSH_DEBOUNCE_MS = 300;
+
+function isEditingFocus(): boolean {
+  if (typeof document === "undefined") return false;
+  const el = document.activeElement as HTMLElement | null;
+  if (!el) return false;
+  const tag = el.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  if (el.isContentEditable) return true;
+  return false;
+}
 
 export function SyncProvider({ children }: { children: React.ReactNode }) {
   const [status, setStatus] = useState<SyncStatus>("syncing");
@@ -62,6 +72,7 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
 
     async function pull() {
       if (pushing.current || dirty.current) return;
+      if (isEditingFocus()) return;
       try {
         const res = await fetch("/api/state", { cache: "no-store" });
         if (!res.ok) throw new Error(String(res.status));
@@ -71,6 +82,7 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
           data: Record<string, unknown>;
         };
         if (cancelled) return;
+        if (dirty.current || isEditingFocus()) return;
 
         const cloudEmpty =
           state.version === 0 || Object.keys(state.data).length === 0;
@@ -106,7 +118,33 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    function flushPendingPush() {
+      if (pushTimer.current) {
+        clearTimeout(pushTimer.current);
+        pushTimer.current = null;
+      }
+      if (!dirty.current && !pushing.current) return;
+      const data = snapshotCloudState();
+      if (Object.keys(data).length === 0) return;
+      try {
+        fetch("/api/state", {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ data }),
+          cache: "no-store",
+          keepalive: true,
+        });
+        dirty.current = false;
+      } catch (err) {
+        console.error("[sync flushPendingPush]", err);
+      }
+    }
+
     forcePushRef.current = async () => {
+      if (pushTimer.current) {
+        clearTimeout(pushTimer.current);
+        pushTimer.current = null;
+      }
       const localSnap = snapshotCloudState();
       if (Object.keys(localSnap).length === 0) return;
       await pushSnapshot(localSnap);
@@ -118,18 +156,37 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
       setStatus("syncing");
       if (pushTimer.current) clearTimeout(pushTimer.current);
       pushTimer.current = setTimeout(() => {
+        pushTimer.current = null;
         void pushSnapshot(snapshotCloudState());
       }, PUSH_DEBOUNCE_MS);
     });
 
+    function handleVisibilityChange() {
+      if (document.visibilityState === "hidden") {
+        flushPendingPush();
+      } else if (document.visibilityState === "visible") {
+        void pull();
+      }
+    }
+
     void pull();
     const id = setInterval(pull, POLL_INTERVAL_MS);
+
+    window.addEventListener("pagehide", flushPendingPush);
+    window.addEventListener("beforeunload", flushPendingPush);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       cancelled = true;
       clearInterval(id);
       unsub();
-      if (pushTimer.current) clearTimeout(pushTimer.current);
+      if (pushTimer.current) {
+        clearTimeout(pushTimer.current);
+        pushTimer.current = null;
+      }
+      window.removeEventListener("pagehide", flushPendingPush);
+      window.removeEventListener("beforeunload", flushPendingPush);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
