@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { SyncProvider } from "@/components/sync-provider";
+import { AuthGate } from "@/components/auth-gate";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -22,13 +23,15 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full">
       <body className="flex min-h-full flex-col">
-        <SyncProvider>
-          <SiteNav />
-          <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
-            {children}
-          </main>
-          <SiteFooter />
-        </SyncProvider>
+        <AuthGate>
+          <SyncProvider>
+            <SiteNav />
+            <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
+              {children}
+            </main>
+            <SiteFooter />
+          </SyncProvider>
+        </AuthGate>
       </body>
     </html>
   );

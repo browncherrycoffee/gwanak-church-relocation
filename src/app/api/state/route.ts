@@ -1,11 +1,25 @@
 import { put, list, del } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { AUTH_COOKIE_NAME, isAuthedCookieValid } from "@/lib/auth-shared";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const BLOB_KEY = "gwanak-relocation/state.json";
+
+async function isAuthed(): Promise<boolean> {
+  const jar = await cookies();
+  return isAuthedCookieValid(jar.get(AUTH_COOKIE_NAME)?.value);
+}
+
+function unauthorized() {
+  return NextResponse.json(
+    { error: "인증이 필요합니다" },
+    { status: 401, headers: noCacheHeaders() },
+  );
+}
 
 type CloudState = {
   version: number;
@@ -46,6 +60,7 @@ function emptyState(): CloudState {
 }
 
 export async function GET() {
+  if (!(await isAuthed())) return unauthorized();
   try {
     const state = await getBlobState();
     return NextResponse.json(state ?? emptyState(), {
@@ -58,6 +73,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  if (!(await isAuthed())) return unauthorized();
   try {
     const body = (await request.json()) as { data?: Record<string, unknown> };
     const data = body.data ?? {};
