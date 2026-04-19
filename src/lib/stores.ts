@@ -24,7 +24,7 @@ export const SEED_VERSIONS = {
   meetings: "2026-04-19-first-meeting-full-log",
   properties: "2026-04-18-v2",
   discussions: "2026-04-18",
-  pastoralNotes: "2026-04-19",
+  pastoralNotes: "2026-04-19-verbatim",
 } as const;
 
 export function useRationale() {
@@ -168,11 +168,20 @@ export function useDiscussions() {
   return { items, setItems, get, upsert, remove };
 }
 
+const migratePastoralNotes = (items: PastoralNote[]): PastoralNote[] =>
+  items.map((n) => {
+    const seed = PASTORAL_NOTES_SEED.find((s) => s.id === n.id);
+    if (!seed) return n;
+    if (n.content === seed.content) return n;
+    return { ...n, content: seed.content, context: seed.context };
+  });
+
 export function usePastoralNotes() {
   const [items, setItems] = useSeededList<PastoralNote>(
     "pastoral-notes",
     PASTORAL_NOTES_SEED,
     SEED_VERSIONS.pastoralNotes,
+    migratePastoralNotes,
   );
 
   const get = (id: string) => items.find((p) => p.id === id);
