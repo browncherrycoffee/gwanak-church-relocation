@@ -211,7 +211,7 @@ export function usePastoralNotes() {
   return { items: sorted, raw: items, setItems, get, upsert, update, remove };
 }
 
-const CHURCH_STATUS_VERSION = "2026-04-19-residential-granular";
+const CHURCH_STATUS_VERSION = "2026-04-19-residential-db-exact";
 
 export function useChurchStatus() {
   const [status, setStatus] = useStore<ChurchStatus>(
@@ -243,33 +243,7 @@ export function useChurchStatus() {
         }
       }
 
-      const totalRes = prev.residentialBreakdown.reduce(
-        (s, a) => s + a.count,
-        0,
-      );
-      if (totalRes === 0) {
-        next.residentialBreakdown = [...CHURCH_STATUS_SEED.residentialBreakdown];
-      } else {
-        const existingById = new Map(
-          prev.residentialBreakdown.map((a) => [a.id, a]),
-        );
-        const seedIds = new Set(
-          CHURCH_STATUS_SEED.residentialBreakdown.map((a) => a.id),
-        );
-        const merged = CHURCH_STATUS_SEED.residentialBreakdown.map((seedItem) => {
-          const existing = existingById.get(seedItem.id);
-          if (!existing) return seedItem;
-          return {
-            id: seedItem.id,
-            area: seedItem.area,
-            count: existing.count,
-          };
-        });
-        const customEntries = prev.residentialBreakdown.filter(
-          (a) => !seedIds.has(a.id),
-        );
-        next.residentialBreakdown = [...merged, ...customEntries];
-      }
+      next.residentialBreakdown = [...CHURCH_STATUS_SEED.residentialBreakdown];
       return next;
     });
   }, [storedVersion, setStatus, setStoredVersion]);
