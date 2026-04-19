@@ -9,8 +9,8 @@ import type {
 const now = () => new Date().toISOString();
 
 export const CHURCH_STATUS_SEED: ChurchStatus = {
-  asOfDate: "2026-04",
-  dataSourceNote: "",
+  asOfDate: "2026-04-18",
+  dataSourceNote: "교적부 2026-04-18 스냅샷 (memberStatus 제적 55명 제외한 등록 160명 기준)",
 
   currentSanctuaryPyeong: 60,
   educationSpacePyeong: 0,
@@ -28,45 +28,47 @@ export const CHURCH_STATUS_SEED: ChurchStatus = {
   monthlyOfferingAvg: 0,
   offeringPeriodNote: "최근 12개월 평균 기준 권장",
 
-  registeredMembers: 0,
+  registeredMembers: 160,
   sundayAttendanceAvg: 0,
-  activeMembers: 0,
-  inactiveMembers: 0,
+  activeMembers: 136,
+  inactiveMembers: 24,
   infantsCount: 0,
-  elementaryCount: 0,
-  middleHighCount: 0,
-  youngAdultCount: 0,
+  elementaryCount: 14,
+  middleHighCount: 7,
+  youngAdultCount: 47,
 
-  ageUnder10: 0,
-  ageTeens: 0,
-  ageTwenties: 0,
-  ageThirties: 0,
-  ageForties: 0,
-  ageFifties: 0,
-  ageSixties: 0,
-  ageSeventyPlus: 0,
-  ageUnknown: 0,
+  ageUnder10: 4,
+  ageTeens: 12,
+  ageTwenties: 21,
+  ageThirties: 21,
+  ageForties: 12,
+  ageFifties: 16,
+  ageSixties: 9,
+  ageSeventyPlus: 5,
+  ageUnknown: 60,
 
   householdCount: 0,
   multiMemberHouseholdCount: 0,
 
   residentialBreakdown: [
-    { id: "area-gwanak", area: "관악구", count: 0 },
-    { id: "area-geumcheon", area: "금천구", count: 0 },
-    { id: "area-dongjak", area: "동작구", count: 0 },
-    { id: "area-yeongdeungpo", area: "영등포구", count: 0 },
-    { id: "area-guro", area: "구로구", count: 0 },
-    { id: "area-other-seoul", area: "서울 기타", count: 0 },
-    { id: "area-gyeonggi", area: "경기권", count: 0 },
+    { id: "area-gwanak", area: "관악구", count: 46 },
+    { id: "area-dongjak", area: "동작구", count: 8 },
+    { id: "area-geumcheon", area: "금천구", count: 1 },
+    { id: "area-other-seoul", area: "서울 기타", count: 33 },
+    { id: "area-gyeonggi", area: "경기권", count: 33 },
+    { id: "area-other", area: "타 지역 / 미확인", count: 4 },
+    { id: "area-missing", area: "주소 미입력", count: 35 },
   ],
 
   attendanceTrend: "",
-  memberGrowthNote: "",
+  memberGrowthNote:
+    "교적부 기준: 전체 215명 중 제적 55명 · 활동 136명 · 비활동 24명. 주소 미입력 35명·나이 미입력 60명으로 정확도 개선을 위해 교적부 정리 병행 필요.",
   spaceConstraintNote:
     "현재 본당 60평이 예배 인원과 다음세대 분반 공간으로는 부족하다는 의견이 지속되어 왔음.",
-  demographicsNote: "",
+  demographicsNote:
+    "관악구 거주 46명(29%) · 동작구 8명 · 금천구 1명. 경기권 33명(21%) 분산. 나이 '미입력' 60명은 교적부 생년월일 보완 필요. 영유아부 department 미지정으로 0으로 표시됨(실제 자녀 존재 시 유초등부 14에 포함 가능).",
 
-  updatedAt: new Date("2026-04-18").toISOString(),
+  updatedAt: new Date("2026-04-19").toISOString(),
 };
 
 export const RATIONALE_SEED: RationaleItem[] = [

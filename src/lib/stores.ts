@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSeededList, useStore } from "./storage";
 import {
   CHURCH_STATUS_SEED,
@@ -144,11 +145,48 @@ export function useDiscussions() {
   return { items, setItems, get, upsert, remove };
 }
 
+const CHURCH_STATUS_VERSION = "2026-04-18-registry-snapshot";
+
 export function useChurchStatus() {
   const [status, setStatus] = useStore<ChurchStatus>(
     "church-status",
     CHURCH_STATUS_SEED,
   );
+  const [storedVersion, setStoredVersion] = useStore<string>(
+    "church-status::version",
+    "v0",
+  );
+
+  useEffect(() => {
+    if (storedVersion === CHURCH_STATUS_VERSION) return;
+    setStoredVersion(CHURCH_STATUS_VERSION);
+    setStatus((prev) => {
+      const next: ChurchStatus = { ...prev };
+      const seed = CHURCH_STATUS_SEED as unknown as Record<string, unknown>;
+      const prevRec = prev as unknown as Record<string, unknown>;
+      const nextRec = next as unknown as Record<string, unknown>;
+
+      for (const key of Object.keys(seed)) {
+        if (key === "updatedAt" || key === "residentialBreakdown") continue;
+        const seedVal = seed[key];
+        const prevVal = prevRec[key];
+        if (typeof seedVal === "number" && prevVal === 0) {
+          nextRec[key] = seedVal;
+        } else if (typeof seedVal === "string" && !prevVal) {
+          nextRec[key] = seedVal;
+        }
+      }
+
+      const totalRes = prev.residentialBreakdown.reduce(
+        (s, a) => s + a.count,
+        0,
+      );
+      if (totalRes === 0) {
+        next.residentialBreakdown = [...CHURCH_STATUS_SEED.residentialBreakdown];
+      }
+      return next;
+    });
+  }, [storedVersion, setStatus, setStoredVersion]);
 
   const patch = (p: Partial<ChurchStatus>) =>
     setStatus((prev) => ({
