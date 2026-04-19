@@ -21,7 +21,7 @@ import type {
 
 export const SEED_VERSIONS = {
   rationale: "2026-04-18",
-  meetings: "2026-04-19-split-pastoral",
+  meetings: "2026-04-19-first-meeting-full-log",
   properties: "2026-04-18-v2",
   discussions: "2026-04-18",
   pastoralNotes: "2026-04-19",
@@ -48,11 +48,23 @@ export function useRationale() {
   return { items, setItems, update, resetSeed };
 }
 
+const FIRST_MEETING_FULL_LOG_MARKER = "차승회 장로의 예배당 이전 준비위원들을 소집";
+
 const migrateMeetings = (items: Meeting[]): Meeting[] =>
   items.map((m) => {
     if (m.id !== "meeting-2026-04-18-first") return m;
-    if (!m.notes.includes("김재윤 교수님 목회적 권면")) return m;
-    return { ...m, notes: "" };
+    const seed = MEETINGS_SEED.find((x) => x.id === m.id);
+    if (!seed) return m;
+    const next: Meeting = { ...m };
+    if (next.notes.includes("김재윤 교수님 목회적 권면")) {
+      next.notes = "";
+    }
+    if (!next.discussion.includes(FIRST_MEETING_FULL_LOG_MARKER)) {
+      next.discussion = seed.discussion;
+      next.decisions = seed.decisions;
+      next.actions = seed.actions;
+    }
+    return next;
   });
 
 export function useMeetings() {
