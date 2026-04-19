@@ -14,6 +14,31 @@ type Store<T> = {
 
 const stores = new Map<string, Store<unknown>>();
 
+export const CLOUD_KEYS: string[] = [
+  "rationale",
+  "rationale::version",
+  "meetings",
+  "meetings::version",
+  "properties",
+  "properties::version",
+  "discussions",
+  "discussions::version",
+  "pastoral-notes",
+  "pastoral-notes::version",
+  "church-status",
+  "church-status::version",
+];
+
+const localChangeListeners = new Set<Listener>();
+let suppressLocalChange = false;
+
+export function onLocalChange(cb: Listener): () => void {
+  localChangeListeners.add(cb);
+  return () => {
+    localChangeListeners.delete(cb);
+  };
+}
+
 function createStore<T>(key: string, initial: T): Store<T> {
   if (stores.has(key)) return stores.get(key) as Store<T>;
 
@@ -54,10 +79,15 @@ function createStore<T>(key: string, initial: T): Store<T> {
         }
       }
       listeners.forEach((l) => l());
+      if (!suppressLocalChange) {
+        localChangeListeners.forEach((l) => l());
+      }
     },
     subscribe: (l) => {
       listeners.add(l);
-      return () => listeners.delete(l);
+      return () => {
+        listeners.delete(l);
+      };
     },
   };
 
@@ -100,4 +130,49 @@ export function useSeededList<T extends { id: string }>(
   }, [seedVersion, storedVersion, seed, setItems, setStoredVersion, migrate]);
 
   return [items, setItems];
+}
+
+export function snapshotCloudState(): Record<string, unknown> {
+  const snap: Record<string, unknown> = {};
+  for (const key of CLOUD_KEYS) {
+    const store = stores.get(key);
+    if (store) {
+      snap[key] = store.get();
+      continue;
+    }
+    if (typeof window !== "undefined") {
+      try {
+        const raw = window.localStorage.getItem(`${STORAGE_PREFIX}${key}`);
+        if (raw !== null) snap[key] = JSON.parse(raw);
+      } catch {
+        // ignore
+      }
+    }
+  }
+  return snap;
+}
+
+export function applyCloudState(data: Record<string, unknown>): void {
+  suppressLocalChange = true;
+  try {
+    for (const key of CLOUD_KEYS) {
+      if (!(key in data)) continue;
+      const value = data[key];
+      const existing = stores.get(key);
+      if (existing) {
+        existing.set(value as never);
+      } else if (typeof window !== "undefined") {
+        try {
+          window.localStorage.setItem(
+            `${STORAGE_PREFIX}${key}`,
+            JSON.stringify(value),
+          );
+        } catch {
+          // ignore
+        }
+      }
+    }
+  } finally {
+    suppressLocalChange = false;
+  }
 }
