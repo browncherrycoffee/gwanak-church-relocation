@@ -22,7 +22,7 @@ import type {
 export const SEED_VERSIONS = {
   rationale: "2026-04-18",
   meetings: "2026-04-19-first-meeting-full-log",
-  properties: "2026-04-18-v2",
+  properties: "2026-04-19-chukbok-photos",
   discussions: "2026-04-18",
   pastoralNotes: "2026-04-19-verbatim",
 } as const;
@@ -103,13 +103,10 @@ const migrateProperties = (items: Property[]): Property[] => {
     const missingDD = chukbokSeed.dueDiligence.filter(
       (d) => !existingDDIds.has(d.id),
     );
-    const photos = p.photos && p.photos.length > 0 ? p.photos : chukbokSeed.photos;
+    const photos = chukbokSeed.photos;
     const financingNotes = p.financingNotes && p.financingNotes.length > 0
       ? p.financingNotes
       : chukbokSeed.financingNotes;
-    if (missingDD.length === 0 && photos === p.photos && financingNotes === p.financingNotes) {
-      return p;
-    }
     return {
       ...p,
       photos,

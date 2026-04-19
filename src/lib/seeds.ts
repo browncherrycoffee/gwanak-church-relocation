@@ -426,7 +426,27 @@ export const PROPERTIES_SEED: Property[] = [
       },
     ],
     visits: [],
-    photos: ["/properties/chukbok-sanctuary-01.jpeg"],
+    photos: [
+      "/properties/chukbok-01.png",
+      "/properties/chukbok-02.png",
+      "/properties/chukbok-03.jpeg",
+      "/properties/chukbok-04.jpeg",
+      "/properties/chukbok-05.jpeg",
+      "/properties/chukbok-06.jpeg",
+      "/properties/chukbok-07.jpeg",
+      "/properties/chukbok-08.jpeg",
+      "/properties/chukbok-09.jpeg",
+      "/properties/chukbok-10.jpeg",
+      "/properties/chukbok-11.jpeg",
+      "/properties/chukbok-12.jpeg",
+      "/properties/chukbok-13.jpeg",
+      "/properties/chukbok-14.jpeg",
+      "/properties/chukbok-15.jpeg",
+      "/properties/chukbok-16.jpeg",
+      "/properties/chukbok-17.jpeg",
+      "/properties/chukbok-18.jpeg",
+      "/properties/chukbok-19.jpeg",
+    ],
     financingNotes: `## 대출 및 감정평가 (2026-04-18 추가 공유)
 
 - **농협 잠정 감정평가액**: 약 13억 (구두 전달, 교회 재정 자료 제출 후 확정)
