@@ -6,6 +6,7 @@ import {
   CHURCH_STATUS_SEED,
   DISCUSSIONS_SEED,
   MEETINGS_SEED,
+  PASTORAL_NOTES_SEED,
   PROPERTIES_SEED,
   RATIONALE_SEED,
 } from "./seeds";
@@ -13,15 +14,17 @@ import type {
   ChurchStatus,
   Discussion,
   Meeting,
+  PastoralNote,
   Property,
   RationaleItem,
 } from "./types";
 
 export const SEED_VERSIONS = {
   rationale: "2026-04-18",
-  meetings: "2026-04-18",
+  meetings: "2026-04-19-split-pastoral",
   properties: "2026-04-18-v2",
   discussions: "2026-04-18",
+  pastoralNotes: "2026-04-19",
 } as const;
 
 export function useRationale() {
@@ -45,11 +48,19 @@ export function useRationale() {
   return { items, setItems, update, resetSeed };
 }
 
+const migrateMeetings = (items: Meeting[]): Meeting[] =>
+  items.map((m) => {
+    if (m.id !== "meeting-2026-04-18-first") return m;
+    if (!m.notes.includes("김재윤 교수님 목회적 권면")) return m;
+    return { ...m, notes: "" };
+  });
+
 export function useMeetings() {
   const [items, setItems] = useSeededList<Meeting>(
     "meetings",
     MEETINGS_SEED,
     SEED_VERSIONS.meetings,
+    migrateMeetings,
   );
 
   const sorted = [...items].sort((a, b) => b.date.localeCompare(a.date));
@@ -143,6 +154,43 @@ export function useDiscussions() {
     setItems((prev) => prev.filter((d) => d.id !== id));
 
   return { items, setItems, get, upsert, remove };
+}
+
+export function usePastoralNotes() {
+  const [items, setItems] = useSeededList<PastoralNote>(
+    "pastoral-notes",
+    PASTORAL_NOTES_SEED,
+    SEED_VERSIONS.pastoralNotes,
+  );
+
+  const get = (id: string) => items.find((p) => p.id === id);
+
+  const upsert = (note: PastoralNote) =>
+    setItems((prev) => {
+      const idx = prev.findIndex((x) => x.id === note.id);
+      if (idx === -1) return [...prev, note];
+      const next = [...prev];
+      next[idx] = note;
+      return next;
+    });
+
+  const update = (id: string, patch: Partial<PastoralNote>) =>
+    setItems((prev) =>
+      prev.map((n) =>
+        n.id === id
+          ? { ...n, ...patch, updatedAt: new Date().toISOString() }
+          : n,
+      ),
+    );
+
+  const remove = (id: string) =>
+    setItems((prev) => prev.filter((n) => n.id !== id));
+
+  const sorted = [...items].sort((a, b) =>
+    b.receivedAt.localeCompare(a.receivedAt),
+  );
+
+  return { items: sorted, raw: items, setItems, get, upsert, update, remove };
 }
 
 const CHURCH_STATUS_VERSION = "2026-04-18-registry-snapshot";

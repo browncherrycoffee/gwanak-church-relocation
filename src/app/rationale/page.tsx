@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowCounterClockwise, Plus, Target, TrashSimple } from "@phosphor-icons/react";
+import {
+  ArrowCounterClockwise,
+  ChatTeardropText,
+  Plus,
+  Quotes,
+  Target,
+  TrashSimple,
+} from "@phosphor-icons/react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,8 +21,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useRationale } from "@/lib/stores";
-import type { EmpathyLevel, RationaleItem } from "@/lib/types";
+import { usePastoralNotes, useRationale } from "@/lib/stores";
+import type { EmpathyLevel, PastoralNote, RationaleItem } from "@/lib/types";
 import { formatDate, uid } from "@/lib/utils";
 
 const EMPATHY_OPTIONS: { value: EmpathyLevel; label: string }[] = [
@@ -74,7 +81,12 @@ export default function RationalePage() {
         </p>
       </section>
 
+      <PastoralNotesSection />
+
       <section className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <Target size={16} className="text-primary" /> 5대 필요성 근거
+        </div>
         {items.map((item) => {
           const open = expanded === item.id;
           return (
@@ -172,6 +184,179 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={3}
+      />
+    </div>
+  );
+}
+
+function PastoralNotesSection() {
+  const { items, upsert, update, remove } = usePastoralNotes();
+  const [expanded, setExpanded] = useState<string | null>(() =>
+    items[0]?.id ?? null,
+  );
+
+  const addNew = () => {
+    const note: PastoralNote = {
+      id: `pastoral-${uid()}`,
+      title: "새 권면",
+      author: "",
+      role: "",
+      context: "",
+      content: "",
+      receivedAt: new Date().toISOString().slice(0, 7),
+      updatedAt: new Date().toISOString(),
+    };
+    upsert(note);
+    setExpanded(note.id);
+  };
+
+  const deleteNote = (id: string) => {
+    if (!confirm("이 권면을 삭제하시겠습니까?")) return;
+    remove(id);
+  };
+
+  return (
+    <section className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <Quotes size={16} className="text-primary" /> 권면 · 목회적 조언
+        </div>
+        <Button size="sm" variant="outline" onClick={addNew}>
+          <Plus size={14} /> 권면 추가
+        </Button>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        교단·교역자·선배 목사님들이 나누어 주신 목회적 권면을 기록해
+        위원회 · 성도가 기도하며 분별하는 데 참고합니다.
+      </p>
+
+      {items.length === 0 && (
+        <div className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
+          아직 등록된 권면이 없습니다.
+        </div>
+      )}
+
+      <div className="flex flex-col gap-3">
+        {items.map((n) => {
+          const open = expanded === n.id;
+          return (
+            <Card key={n.id} className="border-primary/30 bg-secondary/30">
+              <CardHeader>
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <div className="flex items-center gap-2 text-xs text-primary">
+                      <ChatTeardropText size={14} /> 권면
+                    </div>
+                    <Input
+                      value={n.title}
+                      onChange={(e) => update(n.id, { title: e.target.value })}
+                      className="h-9 border-0 px-0 text-base font-semibold shadow-none focus-visible:ring-0"
+                    />
+                    <CardDescription>
+                      {n.author && <span>{n.author}</span>}
+                      {n.role && <span> · {n.role}</span>}
+                      {n.receivedAt && <span> · {n.receivedAt}</span>}
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => setExpanded(open ? null : n.id)}
+                      aria-label={open ? "접기" : "펼치기"}
+                    >
+                      <span className="text-xs">{open ? "접기" : "펼치기"}</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => deleteNote(n.id)}
+                      aria-label="삭제"
+                    >
+                      <TrashSimple size={14} />
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {open ? (
+                  <>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      <NoteField
+                        label="권면자"
+                        value={n.author}
+                        onChange={(v) => update(n.id, { author: v })}
+                        placeholder="예: 김재윤 교수"
+                      />
+                      <NoteField
+                        label="직분·소속"
+                        value={n.role}
+                        onChange={(v) => update(n.id, { role: v })}
+                        placeholder="예: 고신대학교"
+                      />
+                      <NoteField
+                        label="받은 시점"
+                        value={n.receivedAt}
+                        onChange={(v) => update(n.id, { receivedAt: v })}
+                        placeholder="YYYY-MM"
+                      />
+                    </div>
+                    <NoteField
+                      label="맥락"
+                      value={n.context}
+                      onChange={(v) => update(n.id, { context: v })}
+                      placeholder="어디서/어떻게 전해주셨는지"
+                    />
+                    <div className="flex flex-col gap-2">
+                      <Label className="text-xs text-muted-foreground">본문</Label>
+                      <Textarea
+                        value={n.content}
+                        onChange={(e) => update(n.id, { content: e.target.value })}
+                        rows={12}
+                        className="whitespace-pre-wrap"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="border-l-4 border-primary/40 pl-4">
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+                      {n.content}
+                    </p>
+                    {n.context && (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        {n.context}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function NoteField({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label className="text-xs text-muted-foreground">{label}</Label>
+      <Input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="h-9"
       />
     </div>
   );

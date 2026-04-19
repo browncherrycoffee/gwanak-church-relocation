@@ -1,5 +1,16 @@
 export type EmpathyLevel = "unknown" | "low" | "medium" | "high";
 
+export type PastoralNote = {
+  id: string;
+  title: string;
+  author: string;
+  role: string;
+  context: string;
+  content: string;
+  receivedAt: string;
+  updatedAt: string;
+};
+
 export type RationaleItem = {
   id: string;
   title: string;
