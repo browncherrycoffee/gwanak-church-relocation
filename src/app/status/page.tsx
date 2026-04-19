@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   ArrowCounterClockwise,
   Buildings,
@@ -9,6 +10,7 @@ import {
   TrashSimple,
   Users,
   Warning,
+  X,
 } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -474,6 +476,7 @@ function ResidentialCard() {
   const sorted = [...status.residentialBreakdown].sort((a, b) => b.count - a.count);
   const total = sorted.reduce((s, a) => s + a.count, 0);
   const max = Math.max(...sorted.map((a) => a.count), 1);
+  const [openArea, setOpenArea] = useState<string | null>(null);
 
   const updateArea = (id: string, next: Partial<ResidentialArea>) =>
     patch({
@@ -545,15 +548,15 @@ function ResidentialCard() {
                 placeholder="예: 관악구, 금천구, 경기 과천 등"
                 className="h-9"
               />
-              <Input
-                type="number"
-                value={a.count || ""}
-                onChange={(e) =>
-                  updateArea(a.id, { count: Number(e.target.value) || 0 })
-                }
-                placeholder="0"
-                className="h-9 text-right"
-              />
+              <button
+                type="button"
+                onClick={() => a.count > 0 && a.area && setOpenArea(a.area)}
+                disabled={a.count === 0 || !a.area}
+                className="h-9 rounded-md border border-input bg-background px-3 text-right text-sm transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
+                title={a.count > 0 ? `${a.area} 거주자 보기` : undefined}
+              >
+                {a.count || 0}
+              </button>
               <span className="text-right text-xs text-muted-foreground">
                 {total > 0 ? `${((a.count / total) * 100).toFixed(0)}%` : "—"}
               </span>
@@ -572,18 +575,25 @@ function ResidentialCard() {
           <Label className="text-xs text-muted-foreground">비율 시각화</Label>
           <div className="flex flex-col gap-1.5">
             {sorted.filter((a) => a.count > 0).map((a) => (
-              <div key={a.id} className="flex items-center gap-2">
-                <span className="w-20 truncate text-xs">{a.area || "—"}</span>
+              <button
+                key={a.id}
+                type="button"
+                onClick={() => a.area && setOpenArea(a.area)}
+                className="group flex items-center gap-2 rounded-md px-1 py-0.5 text-left transition hover:bg-secondary/60"
+              >
+                <span className="w-20 truncate text-xs group-hover:text-primary">
+                  {a.area || "—"}
+                </span>
                 <div className="flex-1 h-2 overflow-hidden rounded-full bg-secondary">
                   <div
                     className="h-full bg-primary"
                     style={{ width: `${(a.count / max) * 100}%` }}
                   />
                 </div>
-                <span className="w-12 text-right text-xs text-muted-foreground">
+                <span className="w-12 text-right text-xs text-muted-foreground group-hover:text-primary">
                   {a.count}명
                 </span>
-              </div>
+              </button>
             ))}
             {sorted.every((a) => a.count === 0) && (
               <p className="text-xs text-muted-foreground">
@@ -592,6 +602,12 @@ function ResidentialCard() {
             )}
           </div>
         </div>
+        {openArea && (
+          <AreaMembersDialog
+            area={openArea}
+            onClose={() => setOpenArea(null)}
+          />
+        )}
         <Field label="인구 통계 해석 메모">
           <Textarea
             rows={2}
@@ -644,6 +660,125 @@ function HouseholdCard() {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function AreaMembersDialog({
+  area,
+  onClose,
+}: {
+  area: string;
+  onClose: () => void;
+}) {
+  const [phase, setPhase] = useState<"loading" | "ready" | "error">("loading");
+  const [members, setMembers] = useState<{ name: string; address: string }[]>(
+    [],
+  );
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/members-by-area?area=${encodeURIComponent(area)}`,
+          { cache: "no-store" },
+        );
+        if (!res.ok) throw new Error(String(res.status));
+        const json = (await res.json()) as {
+          members: { name: string; address: string }[];
+        };
+        if (cancelled) return;
+        setMembers(json.members);
+        setPhase("ready");
+      } catch (e) {
+        if (cancelled) return;
+        setErr(String(e));
+        setPhase("error");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [area]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 backdrop-blur-sm sm:items-center"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[85dvh] w-full max-w-lg flex-col gap-3 rounded-t-2xl border border-border bg-card p-5 shadow-xl sm:rounded-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <div className="text-xs text-muted-foreground">거주 지역</div>
+            <h2 className="text-lg font-bold">
+              {area}{" "}
+              {phase === "ready" && (
+                <span className="text-sm font-normal text-muted-foreground">
+                  · {members.length}명
+                </span>
+              )}
+            </h2>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={onClose}
+            aria-label="닫기"
+          >
+            <X size={16} />
+          </Button>
+        </div>
+        <div className="flex-1 overflow-y-auto rounded-md border border-border/70 bg-background/40">
+          {phase === "loading" && (
+            <div className="flex items-center justify-center py-10 text-xs text-muted-foreground">
+              불러오는 중…
+            </div>
+          )}
+          {phase === "error" && (
+            <div className="p-4 text-xs text-destructive">
+              조회 실패: {err}
+            </div>
+          )}
+          {phase === "ready" && members.length === 0 && (
+            <div className="p-4 text-xs text-muted-foreground">
+              해당 지역 교인이 조회되지 않았습니다.
+            </div>
+          )}
+          {phase === "ready" && members.length > 0 && (
+            <ul className="divide-y divide-border">
+              {members.map((m, idx) => (
+                <li
+                  key={`${m.name}-${idx}`}
+                  className="flex flex-col gap-0.5 px-3 py-2"
+                >
+                  <span className="text-sm font-medium">{m.name}</span>
+                  {m.address && (
+                    <span className="text-[11px] text-muted-foreground">
+                      {m.address}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <p className="text-[11px] text-muted-foreground">
+          교적부 DB 실시간 조회 · 제적 제외
+        </p>
+      </div>
+    </div>
   );
 }
 
