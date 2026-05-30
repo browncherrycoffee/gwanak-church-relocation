@@ -367,14 +367,6 @@ export default function StatusPage() {
             onChange={(v) => patch({ inactiveMembers: v })}
             hint="교적부 memberStatus='비활동' 기준"
           />
-          <Field label="출석 추이 메모" className="sm:col-span-2">
-            <Textarea
-              rows={2}
-              value={status.attendanceTrend}
-              onChange={(e) => patch({ attendanceTrend: e.target.value })}
-              placeholder="최근 3년 출석 추이, 계절·분기별 편차 등"
-            />
-          </Field>
           <Field label="등록·출산 성장 메모" className="sm:col-span-2">
             <Textarea
               rows={2}

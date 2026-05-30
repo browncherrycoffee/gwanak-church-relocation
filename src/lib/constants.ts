@@ -18,6 +18,12 @@ export type NavItem = {
 export const NAV: NavItem[] = [
   { href: "/", label: "홈", short: "홈", description: "전체 현황 요약" },
   {
+    href: "/briefing",
+    label: "보고 브리핑",
+    short: "브리핑",
+    description: "핵심 쟁점 · 예상 질문 · 보고 체크리스트",
+  },
+  {
     href: "/status",
     label: "교회 현황",
     short: "현황",
