@@ -164,6 +164,43 @@ export default function Home() {
         </Card>
       </section>
 
+      <section className="rounded-xl border border-border bg-card p-5">
+        <div className="flex items-start gap-3">
+          <CheckSquare size={22} className="mt-0.5 text-primary" />
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-sm font-semibold">추진 현황</h2>
+              <p className="text-xs text-muted-foreground">
+                2026-05-31 위원회 활동 보고 기준
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-1.5 text-sm sm:grid-cols-2">
+              {[
+                { date: "4/4", item: "예배당이전검토위원회 당회 의결", done: true },
+                { date: "4/5", item: "재직회에 위원회 설립 목적 설명 및 위원 선출", done: true },
+                { date: "4/16", item: "위원회 위원들 소집 및 설명회", done: true },
+                { date: "4/17~5/22", item: "활동 종료 및 잠정(안) 도출", done: true },
+                { date: "5/23", item: "위원회 내부 검토 및 당회 보고(안) 마련", done: true },
+                { date: "5/24", item: "성도 대상 설명회 광고", done: true },
+                { date: "5/25", item: "당회 보고 (서면)", done: true },
+                { date: "5/31", item: "위원회 활동 보고 (1차 설명회)", done: true },
+                { date: "~6월 1주", item: "성도 의견 취합", done: false },
+                { date: "6/14", item: "2차 설명회 (의견 반영, 자금상환계획)", done: false },
+                { date: "미정", item: "공동의회 (매입 결정, 연보 취합)", done: false },
+              ].map((t) => (
+                <div key={t.date + t.item} className="flex items-start gap-2">
+                  <span className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${t.done ? "bg-primary" : "bg-muted-foreground/30"}`} />
+                  <span className="text-xs">
+                    <span className="font-medium text-primary">{t.date}</span>{" "}
+                    <span className={t.done ? "" : "text-muted-foreground"}>{t.item}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <MetricCard
           icon={<Target size={18} />}
@@ -442,7 +479,7 @@ export default function Home() {
               </h2>
               <p className="text-xs text-muted-foreground">
                 2026-04-18 첫 준비위원회에서 합의된 매물 평가 기준입니다.
-                모든 매물 검토 시 이 8가지를 점검합니다.
+                이 8가지를 기준으로 검토한 결과, 에벤에셀프라자를 잠정 후보로 선정하였습니다.
               </p>
             </div>
             <ol className="grid list-decimal grid-cols-1 gap-x-6 gap-y-1.5 pl-5 text-sm text-foreground sm:grid-cols-2">
@@ -478,14 +515,21 @@ export default function Home() {
       <section className="rounded-xl border border-dashed border-primary/30 bg-secondary/40 p-5">
         <div className="flex items-start gap-3">
           <Compass size={22} className="mt-0.5 text-primary" />
-          <div className="flex flex-col gap-1">
-            <h2 className="text-sm font-semibold">추천 다음 단계</h2>
-            <ul className="list-disc pl-5 text-sm text-muted-foreground">
-              <li>이전의 필요성 5대 근거를 당회·제직회 의견을 수렴해 문구 고도화</li>
-              <li>금천구 매물의 서류 실사 체크리스트 14개 항목 각각 담당자 지정</li>
-              <li>지역 범위·예산 상한·이전 시점 세 논제 각각 찬반 의견 수집</li>
-              <li>다음 준비위원회 일정과 안건을 회의록으로 사전 등록</li>
-            </ul>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-sm font-semibold">향후 일정 및 계획</h2>
+              <p className="text-xs text-muted-foreground">
+                2026-05-31 위원회 활동 보고 기준
+              </p>
+            </div>
+            <ol className="list-decimal pl-5 text-sm text-muted-foreground space-y-1.5">
+              <li>1차 설명회(5/31) 후 성도 의견 취합 (~6월 1주차)</li>
+              <li>2차 설명회(6/14) — 성도 의견 반영 및 문제점 해결방안, 자금상환계획 보고</li>
+              <li>임시 당회 후 공동의회 일정 광고</li>
+              <li>공동의회(미정) — 예배당 이전/물건 매입 결정, 연보(무기명) 금액 작성/취합</li>
+              <li>가결 시, 예배당이전위원회로 명칭 변경 및 자금조달 계획 실행</li>
+              <li>기타 차입금 및 연보 액수 부족 시, Plan B 보고 후 재추진 여부 논의</li>
+            </ol>
           </div>
         </div>
       </section>
