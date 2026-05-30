@@ -130,6 +130,7 @@ const PRECHECK: { no: number; item: string; state: string; tone: Urgency; next: 
   { no: 4, item: "취득세 면제 가능성", state: "확인 중", tone: "mid", next: "세무사 자문으로 확정. 면제 시 6,440만원 절감 → 자금 압박 크게 완화" },
   { no: 5, item: "현 보증금 반환 시점", state: "미확인", tone: "mid", next: "현 건물주와 퇴거·보증금 반환 일정 조율 필요" },
   { no: 6, item: "축복교회 관리비 월별 상세", state: "요청 중", tone: "mid", next: "이지원 집사님이 요청해 놓은 상태. 2차 설명회 전 확보 필수" },
+  { no: 7, item: "현 예배당 임대 승계처(후속 임차) 확보", state: "미확인", tone: "high", next: "이어받을 교회/단체를 못 찾을 경우 보증금 회수 지연·원상복구 비용·일정 중복(이중 부담) 발생 → Plan B/C에 반영 (이명건 집사 지적)" },
 ];
 
 // ── 5. 의견 수렴 절차 ──────────────────────────────────────────
@@ -152,6 +153,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
       { q: "이자가 오르면? 원금은 언제 갚나요?", a: "5%/6%/7% 시나리오별 월 이자표. 원금 상환 계획(거치 후 분할상환 등)은 2차 설명회에서 상세 보고 예정이라고 안내." },
       { q: "연보는 의무인가요? 얼마씩 내야 하나요?", a: "‘완전 자발적이며, 금액도 각자 형편에 따라 자유롭게.’ 가구당 평균 참고 금액은 제시하되 강제하지 않음을 강조." },
       { q: "선교비/교육비가 줄어드는 건 아닌가요?", a: "구체적 예산 재편안은 2차 설명회에서 보고. ‘교회의 본질적 사역이 위축되지 않도록 하겠다’는 원칙 천명." },
+      { q: "현 예배당은 이어받을 곳이 있나요? 보증금은 언제 돌려받나요?", a: "임대 조건이 좋아 단기 사용 희망 교회·단체가 있을 수 있으나 승계처 확보는 아직 미확인. 못 찾을 경우 보증금 회수 지연·원상복구 비용·이중 부담 가능성이 있어 Plan B/C에 반영. ‘승계가 안 되는 경우까지 대비하고 있다’고 안내." },
     ],
   },
   {
@@ -415,6 +417,19 @@ export default function BriefingPage() {
             </ul>
           </div>
 
+          {/* 임대 승계 리스크 */}
+          <div className="rounded-md border-l-4 border-amber-400 bg-amber-50/40 p-4 text-sm">
+            <p className="mb-1 font-semibold text-amber-700">별도 리스크 · 현 예배당 임대 승계 (이명건 집사 지적)</p>
+            <p className="text-foreground">
+              현 예배당은 임대 조건이 좋아 단기적으로 사용하려는 교회·단체가 있을
+              수 있으나, <strong>저희가 장기 지속이 어렵다고 판단해 떠나는 자리인
+              만큼 이어받을 곳을 못 찾을 가능성도 있습니다.</strong> 승계가 바로
+              이뤄지지 않으면 <span className="text-red-600">보증금 회수 지연 · 원상복구 비용 · 일정
+              중복으로 인한 이중 부담(현·신 예배당 동시 비용)</span>이 발생할 수
+              있어, 이 부분도 Plan B/C 자금·일정 계획에 함께 반영해야 합니다.
+            </p>
+          </div>
+
           {/* 사전 확인 필요 사항 */}
           <div className="flex flex-col gap-2">
             <span className="text-sm font-semibold">자금 조달 관련 사전 확인이 필요한 사항</span>
@@ -454,6 +469,16 @@ export default function BriefingPage() {
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-3 text-sm">
+          <div className="rounded-md border border-dashed border-primary/40 bg-secondary/40 p-3">
+            <p className="font-semibold text-primary">교적부 확인 데이터 (이명건 집사)</p>
+            <p className="mt-1 text-foreground">
+              현재 <strong>관악구에 거주하며 출석하는 교인은 전체 교적의 약 30%</strong>입니다.
+              즉 성도의 약 70%는 이미 관악구 밖에 거주하고 있어, 관할 구역 변경이
+              과반 성도의 생활권을 크게 바꾸지는 않습니다. 다만 ‘관악교회’라는 이름과
+              정체성에 대해 당회가 어떻게 생각하는지 궁금해하실 성도님들이 계실 수 있어,
+              <strong> 의견 취합 시 이 주제도 함께 포함</strong>하는 것이 좋습니다.
+            </p>
+          </div>
           <QaBlock
             q="교회 이름을 바꿔야 하나요?"
             a="바꿀 필요는 없습니다. 교회 이름은 지역명이 아니라 정체성의 표현입니다. 관악구에서 시작된 교회의 역사와 뿌리를 담은 것이며, 이전한다고 반드시 바꿔야 하는 것은 아닙니다. 다만 ‘관악’이라는 이름을 유지할지는 성도들과 함께 논의할 사안 — 이번 보고에서 결론낼 것이 아니라 ‘이런 고민도 함께 하고 있다’고 언급하는 것이 적절합니다."
@@ -513,7 +538,7 @@ export default function BriefingPage() {
         <CardHeader className="flex flex-row items-start gap-2">
           <ChatCircleText size={20} className="mt-0.5 text-primary" />
           <div>
-            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (15개)</CardTitle>
+            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (16개)</CardTitle>
             <CardDescription>
               현장 질의응답에 대비한 답변 톤·핵심 포인트입니다.
             </CardDescription>
