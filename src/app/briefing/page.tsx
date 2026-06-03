@@ -163,6 +163,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
       { q: "어르신들/장애 성도분들 교통은요?", a: "엘리베이터 있음(현재 없음보다 개선). 거리는 멀어지나 셔틀/카풀 등 대책 검토 중." },
       { q: "137평이면 금방 또 좁아지지 않나요?", a: "장의자 39개(약 150~160명 수용), 옆 서재로 확장 가능, 필요시 건물 내 다른 층 임대/매매 검토 가능." },
       { q: "서해아파트는 왜 안 되나요?", a: "1억 저렴하고 면적도 크지만 (1)용도변경 필요 (2)현 헬스장 임차인 퇴거·원상복구 비용 리스크 (3)엘리베이터 없음. 종합적으로 에벤에셀프라자가 안전한 선택." },
+      { q: "집합건물 6층이라 토지 지분·자산가치가 낮다던데요?", a: "사실입니다. 다만 목적이 ‘투자 수익’이 아니라 ‘안정적 예배 공간 확보’입니다. 환금성은 다시 팔아 재이전할 때만 문제가 되는데, 애초 장기 정착이 목표라 빈번한 재매도를 전제하지 않습니다. 그럼에도 매입가·대출 규모는 보수적으로 검증합니다." },
     ],
   },
   {
@@ -174,6 +175,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
       { q: "금천구 가면 ‘관악교회’라는 이름은요?", a: "‘이름은 우리의 시작과 뿌리를 담은 것. 변경 여부는 성도님들과 함께 논의할 사안.’ (정체성 쟁점 참조)" },
       { q: "빚을 지고 건물을 사는 게 맞나요?", a: "‘신앙적으로도 중요한 질문입니다. 다만 현재 월세+주차비로 이미 연 3,500~5,700만원을 쓰고 있고, 이 돈은 돌아오지 않습니다. 매입 시 대출 상환은 결국 우리 자산이 됩니다.’" },
       { q: "너무 급하게 진행되는 것 아닌가요?", a: "‘위원회가 4월에 구성되어 2개월간 조사했고, 앞으로도 최소 1개월 이상의 논의 기간을 둡니다. 다만 매물이 시장에 계속 남아있을 보장이 없어, 적절한 속도로 진행할 필요는 있습니다.’" },
+      { q: "꼭 지금 매입해야 하나요? 관악구 내 재임대가 안전하지 않나요?", a: "이전의 근본 목적은 ‘안정적·항구적 예배 공간 확보로 미래세대까지 교회를 잇는 것’입니다. 현 임대의 불안정(재건축 특약·매매 진행·재계약 불확실)은 임대라는 형태 자체의 한계라, 관악구 내 새 임대도 같은 위험이 반복됩니다. 임대료는 사라지는 비용(10년 4~7억)이지만 매입 상환금은 교회 자산이 됩니다. 임대는 매입이 어려울 때의 차선책(Plan C)으로 둡니다. 단 재정 감당선을 넘으면 무리하지 않습니다." },
     ],
   },
 ];
@@ -189,6 +191,142 @@ const CHECKLIST: { no: number; item: string; level: "필수" | "권장" | "있�
   { no: 7, item: "서면 의견서 양식 준비", level: "권장", action: "현장에서 배부, 1주 내 회수" },
   { no: 8, item: "전도회 소모임 논의 일정 요청 가안", level: "권장", action: "6월 첫째 주 전도회 모임에서 안건 공유 요청" },
   { no: 9, item: "어르신 교통 대책 방향", level: "있으면 좋음", action: "셔틀/카풀 검토 중이라고 언급" },
+];
+
+// ── 수렴된 신중론 (김정권 성도 소견) ──────────────────────────
+const CAUTION_GROUPS: { title: string; points: string[] }[] = [
+  {
+    title: "현 예배당(관악) 관련 리스크",
+    points: [
+      "임차 잔여 기간이 약 2.5년 남아, 기간 중 이전 시 임차보증금 회수에 어려움이 생길 수 있음",
+      "후속 임차인이 교회가 아니면 사용 공간 원상복구 + 집기 철거 부담 발생",
+      "건물 소유주와 자녀들 간 매도 견해차가 있어, 정상 매도 여부와 그에 따른 보증금 회수가 불확실",
+    ],
+  },
+  {
+    title: "축복교회(매입 대상) 자산가치",
+    points: [
+      "집합건물 6층이라 토지 지분이 적고, 부동산 가격 상승 정도가 상대적으로 낮다고 함",
+      "집합건물 공간 사용 시 상당한 관리비가 발생한다고 함",
+      "추후 더 적합한 장소로 재이전하려 할 때 매도(환금)에 어려움 예상",
+    ],
+  },
+  {
+    title: "관악교회 재정 부담",
+    points: [
+      "원금 상환을 차치하더라도, 현 재정 상황에서 추가 대출이자 + 건물 관리비 경상 지출을 감당할 수 있는가",
+      "원리금 상환으로 인해 선교·구제 등 기존 사역이 제한받을 수 있음",
+      "임차보증금을 상당 기간 받지 못할 때 예상되는 재정 운용상의 문제",
+    ],
+  },
+];
+
+const CAUTION_RESPONSES: string[] = [
+  "보증금 회수·원상복구·매도 불확실성 → 이미 Plan B/C와 사전 확인 항목(5·7번)에 반영. 현 건물주 상황과 보증금 반환 시점은 ‘미확인’이므로 정직하게 인정하고 우선 확인 과제로 둠.",
+  "집합건물 자산가치(토지 지분·시세·환금성) 지적은 타당. 다만 이번 매입은 ‘투자’가 아니라 ‘안정적 예배 공간 확보’가 목적임을 분명히 하고, 임대 지속 시의 불안정성과 비교 형량해 설명.",
+  "임대 대안은 Plan C에 이미 포함 — 임대 매물 탐색을 병행 가능. 단, 현 예배당의 구조적 불안정(재건축 특약·매매 진행)이 ‘새 임대’에도 동일하게 따라올 수 있는 리스크임을 함께 안내.",
+  "사역 위축 우려 → 2차 설명회 예산 재편안에서 ‘본질적 사역(선교·구제·교육)을 위축시키지 않는다’는 원칙을 구체안과 함께 천명.",
+  "핵심 메시지: ‘소견 감사드린다. 제기하신 리스크는 위원회도 동일하게 인지하고 있으며, 임대 대안 포함해 무리한 결정은 하지 않겠다. 충분한 검토·의견 수렴 후 공동의회에서 결정하겠다.’",
+];
+
+// ── 의견 제출자별 입장 정리 ────────────────────────────────────
+type Stance = "추진" | "조건부 찬성" | "찬성·보완" | "신중·대안";
+const stanceBadge: Record<Stance, "default" | "secondary" | "outline"> = {
+  "추진": "default",
+  "조건부 찬성": "secondary",
+  "찬성·보완": "secondary",
+  "신중·대안": "outline",
+};
+const POSITIONS: {
+  name: string;
+  role: string;
+  stance: Stance;
+  gist: string;
+  reflect: string;
+}[] = [
+  {
+    name: "차승회 장로",
+    role: "위원회 보고자",
+    stance: "추진",
+    gist: "이전 5대 배경에 공감. 에벤에셀프라자를 잠정 후보로 선정하고 자금조달 계획과 함께 매입 추진을 건의 — 위원회의 공식 보고 입장.",
+    reflect: "보고의 기준 골격(당위성·후보·자금·일정).",
+  },
+  {
+    name: "이지원 집사",
+    role: "위원 · 재정 검토",
+    stance: "조건부 찬성",
+    gist: "이전 자체엔 공감하나 월 고정비 +150~200만, 보증금 2억 즉시 활용 어려움을 우려. 다만 시설비 비율은 일반 교회 범위(20~25%) 내라 감당 가능하다고 분석. 주중 대관 수입 등 보완책 제안.",
+    reflect: "재정 투명성 + 예산 재편안 + 절감·대관·연보로 흡수.",
+  },
+  {
+    name: "이명건 집사",
+    role: "준비위원",
+    stance: "찬성·보완",
+    gist: "추진에 동의하되 ① 현 예배당 임대 승계 실패 리스크 ② 관악구 거주 출석 교인 약 30%(정체성·이름) ③ 비목 조정 구체화를 보완 과제로 제기.",
+    reflect: "Plan B/C·사전확인 항목·정체성 논의에 반영.",
+  },
+  {
+    name: "김정권 성도",
+    role: "성도 서면 의견",
+    stance: "신중·대안",
+    gist: "보증금 회수·원상복구·집합건물 자산가치·재정 부담을 들어, 즉시 매입보다 적합 공간 임대를 의사결정 대안으로 검토하자고 제안.",
+    reflect: "리스크는 계획에 반영. 임대 대안은 차선책으로 검토(아래 쟁점 분석 참조).",
+  },
+];
+
+// ── 쟁점별 총체적 논리 정리 ────────────────────────────────────
+const CONCLUSIONS: {
+  no: number;
+  issue: string;
+  concern: string;
+  analysis: string;
+  conclusion: string;
+}[] = [
+  {
+    no: 1,
+    issue: "매입 vs 임대(재임대) 대안",
+    concern: "지금 매입은 부담스럽다 — 관악구 내 재임대 등 임대로 가는 것이 안전하지 않은가?",
+    analysis:
+      "이전을 검토하게 된 근본 목적은 ‘안정적이고 항구적인 예배 공간을 확보해 미래세대까지 교회를 이어가는 것’입니다. 현 임대의 불안정(재건축 시 즉시 퇴거 특약·건물 매매 진행·2.5년 후 재계약 불확실)은 특정 건물의 문제가 아니라 ‘임대’라는 형태 자체의 구조적 한계입니다. 관악구 안에서 새로 임대해도 동일한 위험(계약 만료·임대료 인상·퇴거)이 반복되며, 근본 목적인 ‘안정성·항구성’을 충족하지 못합니다. 임대료는 매월 사라지는 비용(현재 연 3,500~5,700만원, 10년 4~7억)이지만 매입 상환금은 교회의 자산으로 축적됩니다.",
+    conclusion:
+      "감당 가능한 조건이라면 ‘매입을 통한 항구적 예배 공간 확보’가 이전의 근본 목적에 가장 부합합니다. 임대 대안은 이 목적을 충족하지 못하므로 매입이 어려울 때의 차선책(Plan C)으로만 유효합니다. 단, 재정이 감당선을 넘으면 매입을 미루거나 재검토합니다.",
+  },
+  {
+    no: 2,
+    issue: "집합건물 자산가치·환금성",
+    concern: "집합건물 6층이라 토지 지분이 적고 시세 상승·환금성이 낮다.",
+    analysis:
+      "사실에 부합하는 지적입니다. 다만 이번 매입의 목적은 ‘투자 수익’이 아니라 ‘예배 공간의 안정적 확보’입니다. 환금성은 ‘추후 다시 매도해 재이전’할 때만 문제가 되는데, 애초 목적이 장기 정착이므로 빈번한 재매도를 전제하지 않습니다.",
+    conclusion:
+      "자산가치 우려는 목적(예배 공간 확보)과 층위가 다른 문제입니다. ‘투자 자산’이 아니라 ‘신앙의 터전’으로 접근하되, 만일에 대비해 매입가 적정성과 대출 규모는 보수적으로 검증합니다.",
+  },
+  {
+    no: 3,
+    issue: "재정 감당 가능성",
+    concern: "추가 고정비·대출이자로 선교·구제 등 사역이 위축되지 않는가?",
+    analysis:
+      "월 고정비 +150~200만원 증가는 사실입니다. 그러나 예산 대비 시설비 비율은 16.2% → 22.7%로, 일반 교회 통상 범위(20~25%) 안에 있습니다. 주차비 절감(월 30~60만)·행사/운영비 소폭 조정·공간 대관 수입·자발적 연보로 흡수 가능하며, 본질 사역은 보호 원칙입니다.",
+    conclusion:
+      "감당 불가능한 수준이 아니며, 구체적 예산 재편안(2차 설명회)으로 입증합니다. 단 연보·차입이 목표에 못 미치면 무리하지 않고 Plan B/C로 속도를 조절합니다.",
+  },
+  {
+    no: 4,
+    issue: "보증금 회수·임대 승계·이중 부담",
+    concern: "현 보증금을 제때 못 받고 원상복구·이중 비용이 날 수 있다.",
+    analysis:
+      "실재하는 리스크입니다(임차 잔여 2.5년·건물주와 자녀 간 견해차·후속 임차인 불확실). 그러나 이는 ‘매입을 하지 말아야 할 이유’가 아니라 ‘실행 시 관리해야 할 변수’입니다. 매입 시점과 자금계획에 버퍼를 두고, 보증금 반환 시점 확인과 후속 임차 탐색을 선행하면 통제 가능합니다.",
+    conclusion:
+      "리스크는 회피 대상이 아니라 관리 대상입니다. Plan B/C와 사전 확인 항목으로 통제하며 진행합니다.",
+  },
+  {
+    no: 5,
+    issue: "정체성·접근성 (관악 → 금천)",
+    concern: "관악교회가 금천구로 가도 괜찮은가? 이름과 멀어지는 성도는?",
+    analysis:
+      "출석 교인의 약 70%가 이미 관악구 밖에 거주하고, 자가용 20분 거리로 생활권을 크게 벗어나지 않습니다. 이름은 지역명이 아니라 정체성의 표현이라 유지할 수 있습니다. 접근성이 취약한 성도(어르신·도보 출석)는 셔틀·카풀·택시 지원으로 보완합니다.",
+    conclusion:
+      "정체성은 건물 주소가 아니라 함께 예배하는 공동체에 있습니다. 실질적 영향은 제한적이며, 취약 성도 돌봄을 전제로 ‘한 사람도 소외되지 않는 이전’ 원칙을 견지합니다.",
+  },
 ];
 
 export default function BriefingPage() {
@@ -247,6 +385,45 @@ export default function BriefingPage() {
             “옮겨야 하는 이유”는 분명합니다. 문제는 “어떻게 잘 옮겨갈 것인가”이며,
             이것이 오늘 보고의 본질입니다. 아래 4가지 쟁점이 그 답을 준비하는 데
             필요한 항목들입니다.
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 1-1. 의견 제출자별 입장 정리 */}
+      <Card>
+        <CardHeader className="flex flex-row items-start gap-2">
+          <UsersThree size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">의견 제출자별 입장 정리</CardTitle>
+            <CardDescription>
+              지금까지 제기된 의견을 정리하면, 모두 ‘이전의 필요성’에는 공감하며
+              차이는 ‘방법과 속도’에 있습니다. 각 입장을 존중하되 위원회가 어떻게
+              반영하는지를 함께 정리합니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2">
+          {POSITIONS.map((p) => (
+            <div key={p.name} className="rounded-md border border-border p-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm font-semibold">{p.name}</span>
+                <span className="text-xs text-muted-foreground">{p.role}</span>
+                <Badge variant={stanceBadge[p.stance]} className="ml-auto shrink-0">
+                  {p.stance}
+                </Badge>
+              </div>
+              <p className="mt-1.5 text-sm text-foreground">{p.gist}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                <span className="font-medium text-primary">위원회 반영 · </span>
+                {p.reflect}
+              </p>
+            </div>
+          ))}
+          <Note>
+            네 분의 의견은 대립이 아니라 <strong>하나의 결정을 더 단단하게 만드는
+            보완 관계</strong>입니다. 필요성엔 모두 공감하므로, 남은 과제는 ‘재정을
+            감당 가능하게 설계하고, 리스크를 계획에 반영하며, 모든 성도의 마음을
+            모으는 것’입니다.
           </Note>
         </CardContent>
       </Card>
@@ -533,12 +710,107 @@ export default function BriefingPage() {
         </CardContent>
       </Card>
 
+      {/* 5-1. 수렴된 신중론 — 김정권 소견 */}
+      <Card className="border-amber-300">
+        <CardHeader className="flex flex-row items-start gap-2">
+          <Warning size={20} className="mt-0.5 text-amber-600" />
+          <div>
+            <CardTitle className="text-base">수렴된 신중론 — “지금 매입보다 임대 대안 검토” (김정권 성도 소견)</CardTitle>
+            <CardDescription>
+              1차 설명회 이후 서면으로 제출된 의견입니다. 즉시 매입보다 적합한
+              공간을 임대해 사용하는 방안을 의사결정 대안으로 검토하고, 충분한
+              검토·의견 수렴 후 결정하자는 제안 — 2차 설명회(6/14)에서 반드시
+              다뤄야 할 사안입니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {CAUTION_GROUPS.map((g) => (
+              <div key={g.title} className="flex flex-col gap-2 rounded-md border border-amber-200 bg-amber-50/40 p-3">
+                <span className="text-sm font-semibold text-amber-700">{g.title}</span>
+                <ul className="flex flex-col gap-1.5 text-xs leading-relaxed text-foreground">
+                  {g.points.map((p, i) => (
+                    <li key={i}>· {p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold">위원회 대응 방향 (2차 설명회 준비)</span>
+            {CAUTION_RESPONSES.map((r, i) => (
+              <div key={i} className="rounded-md border border-border p-3 text-sm leading-relaxed">
+                {r}
+              </div>
+            ))}
+          </div>
+
+          <Note>
+            이 소견의 핵심 리스크(보증금 회수·원상복구·이중 부담)는 이명건 집사
+            지적과도 겹치며 <strong>이미 Plan B/C·사전 확인 항목에 반영</strong>되어
+            있습니다. 임대 대안 역시 <strong>Plan C에 포함</strong>된 선택지이므로,
+            “위원회가 이미 같은 고민을 하고 있고 무리하게 매입을 밀어붙이지
+            않는다”는 점을 분명히 전하는 것이 중요합니다.
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 5-2. 쟁점별 총체적 논리 정리 */}
+      <Card className="border-primary/40">
+        <CardHeader className="flex flex-row items-start gap-2">
+          <Target size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">쟁점별 총체적 논리 정리 — 가장 합리적인 결론</CardTitle>
+            <CardDescription>
+              제기된 의견을 쟁점별로 모아, 사실에 근거해 분석하고 가장 합리적인
+              결론을 정리합니다. 위원회가 성도님들의 질문에 일관되고 논리적으로
+              답하기 위한 기준이며, 충분히 해소 가능한 염려는 명확한 근거로
+              안심시켜 드리고 실질 리스크는 계획에 반영하기 위함입니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          {CONCLUSIONS.map((c) => (
+            <div key={c.no} className="rounded-md border border-border p-4">
+              <p className="text-sm font-semibold text-primary">
+                쟁점 {c.no} · {c.issue}
+              </p>
+              <dl className="mt-2 flex flex-col gap-2 text-sm leading-relaxed">
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">제기된 우려</dt>
+                  <dd className="text-foreground">“{c.concern}”</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">사실 분석</dt>
+                  <dd className="text-foreground">{c.analysis}</dd>
+                </div>
+                <div className="rounded-md border-l-4 border-primary/50 bg-secondary/40 p-3">
+                  <dt className="text-xs font-medium text-primary">합리적 결론</dt>
+                  <dd className="text-foreground">{c.conclusion}</dd>
+                </div>
+              </dl>
+            </div>
+          ))}
+          <Note>
+            모든 의견은 교회를 사랑하는 마음에서 나온 것입니다. 위원회의 역할은
+            각 염려를 사실에 근거해 검토하여,
+            <strong> 확인만으로 해소되는 염려는 분명한 근거로 안심시켜 드리고,
+            실질적 리스크는 Plan B/C와 사전 확인 항목으로 계획에 반영</strong>하는
+            것입니다. 핵심은 <strong>“안정적이고 항구적인 예배 공간을 확보해
+            미래세대까지 교회를 이어간다”</strong>는 근본 목적이며, 이 기준에서
+            모든 쟁점을 일관되게 설명합니다.
+          </Note>
+        </CardContent>
+      </Card>
+
       {/* 6. 성도 예상 Q&A */}
       <Card>
         <CardHeader className="flex flex-row items-start gap-2">
           <ChatCircleText size={20} className="mt-0.5 text-primary" />
           <div>
-            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (16개)</CardTitle>
+            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (18개)</CardTitle>
             <CardDescription>
               현장 질의응답에 대비한 답변 톤·핵심 포인트입니다.
             </CardDescription>
