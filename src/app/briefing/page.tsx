@@ -193,7 +193,7 @@ const CHECKLIST: { no: number; item: string; level: "필수" | "권장" | "있�
   { no: 9, item: "어르신 교통 대책 방향", level: "있으면 좋음", action: "셔틀/카풀 검토 중이라고 언급" },
 ];
 
-// ── 수렴된 신중론 (김정권 성도 소견) ──────────────────────────
+// ── 수렴된 의견 (김정권 성도 소견) ────────────────────────────
 const CAUTION_GROUPS: { title: string; points: string[] }[] = [
   {
     title: "현 예배당(관악) 관련 리스크",
@@ -229,47 +229,41 @@ const CAUTION_RESPONSES: string[] = [
   "핵심 메시지: ‘소견 감사드린다. 제기하신 리스크는 위원회도 동일하게 인지하고 있으며, 임대 대안 포함해 무리한 결정은 하지 않겠다. 충분한 검토·의견 수렴 후 공동의회에서 결정하겠다.’",
 ];
 
-// ── 의견 제출자별 입장 정리 ────────────────────────────────────
-type Stance = "추진" | "조건부 찬성" | "찬성·보완" | "신중·대안";
-const stanceBadge: Record<Stance, "default" | "secondary" | "outline"> = {
-  "추진": "default",
-  "조건부 찬성": "secondary",
-  "찬성·보완": "secondary",
-  "신중·대안": "outline",
-};
+// ── 의견 제출자별 검토 관점 정리 ──────────────────────────────
+// (찬반/추진 등 입장 분류는 민감하므로 지양 — 각자가 살핀 '검토 영역'으로만 정리)
 const POSITIONS: {
   name: string;
   role: string;
-  stance: Stance;
+  focus: string;
   gist: string;
   reflect: string;
 }[] = [
   {
     name: "차승회 장로",
     role: "위원회 보고자",
-    stance: "추진",
-    gist: "이전 5대 배경에 공감. 에벤에셀프라자를 잠정 후보로 선정하고 자금조달 계획과 함께 매입 추진을 건의 — 위원회의 공식 보고 입장.",
+    focus: "종합 보고",
+    gist: "이전 5대 배경, 후보지 비교 검토, 잠정 후보(에벤에셀프라자) 선정 사유, 자금조달 계획과 향후 일정을 종합해 위원회 활동으로 보고.",
     reflect: "보고의 기준 골격(당위성·후보·자금·일정).",
   },
   {
     name: "이지원 집사",
     role: "위원 · 재정 검토",
-    stance: "조건부 찬성",
-    gist: "이전 자체엔 공감하나 월 고정비 +150~200만, 보증금 2억 즉시 활용 어려움을 우려. 다만 시설비 비율은 일반 교회 범위(20~25%) 내라 감당 가능하다고 분석. 주중 대관 수입 등 보완책 제안.",
+    focus: "재정 검토",
+    gist: "월 고정비 +150~200만, 보증금 2억 즉시 활용 어려움 등 재정 부담을 짚되, 시설비 비율은 일반 교회 범위(20~25%) 내라 감당 가능하다고 분석. 주중 대관 수입 등 보완책 제안.",
     reflect: "재정 투명성 + 예산 재편안 + 절감·대관·연보로 흡수.",
   },
   {
     name: "이명건 집사",
     role: "준비위원",
-    stance: "찬성·보완",
-    gist: "추진에 동의하되 ① 현 예배당 임대 승계 실패 리스크 ② 관악구 거주 출석 교인 약 30%(정체성·이름) ③ 비목 조정 구체화를 보완 과제로 제기.",
+    focus: "리스크·정체성 검토",
+    gist: "이전 필요성에 공감하며 ① 현 예배당 임대 승계 실패 리스크 ② 관악구 거주 출석 교인 약 30%(정체성·이름) ③ 비목 조정 구체화를 보완 과제로 제기.",
     reflect: "Plan B/C·사전확인 항목·정체성 논의에 반영.",
   },
   {
     name: "김정권 성도",
     role: "성도 서면 의견",
-    stance: "신중·대안",
-    gist: "보증금 회수·원상복구·집합건물 자산가치·재정 부담을 들어, 즉시 매입보다 적합 공간 임대를 의사결정 대안으로 검토하자고 제안.",
+    focus: "대안 검토 제안",
+    gist: "보증금 회수·원상복구·집합건물 자산가치·재정 부담을 들어, 즉시 매입보다 적합 공간 임대를 의사결정 대안으로 함께 검토하자고 제안.",
     reflect: "리스크는 계획에 반영. 임대 대안은 차선책으로 검토(아래 쟁점 분석 참조).",
   },
 ];
@@ -394,11 +388,11 @@ export default function BriefingPage() {
         <CardHeader className="flex flex-row items-start gap-2">
           <UsersThree size={20} className="mt-0.5 text-primary" />
           <div>
-            <CardTitle className="text-base">의견 제출자별 입장 정리</CardTitle>
+            <CardTitle className="text-base">의견 제출자별 검토 관점 정리</CardTitle>
             <CardDescription>
-              지금까지 제기된 의견을 정리하면, 모두 ‘이전의 필요성’에는 공감하며
-              차이는 ‘방법과 속도’에 있습니다. 각 입장을 존중하되 위원회가 어떻게
-              반영하는지를 함께 정리합니다.
+              지금까지 모인 의견은 모두 ‘이전의 필요성’에 공감하며, 각자 서로 다른
+              영역을 깊이 살펴 주신 것입니다. 찬반으로 가르지 않고, 어떤 관점을
+              나눠 주셨고 위원회가 이를 어떻게 반영하는지를 정리합니다.
             </CardDescription>
           </div>
         </CardHeader>
@@ -408,8 +402,8 @@ export default function BriefingPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-semibold">{p.name}</span>
                 <span className="text-xs text-muted-foreground">{p.role}</span>
-                <Badge variant={stanceBadge[p.stance]} className="ml-auto shrink-0">
-                  {p.stance}
+                <Badge variant="outline" className="ml-auto shrink-0 font-normal text-muted-foreground">
+                  {p.focus}
                 </Badge>
               </div>
               <p className="mt-1.5 text-sm text-foreground">{p.gist}</p>
@@ -710,12 +704,12 @@ export default function BriefingPage() {
         </CardContent>
       </Card>
 
-      {/* 5-1. 수렴된 신중론 — 김정권 소견 */}
+      {/* 5-1. 수렴된 의견 — 김정권 소견 */}
       <Card className="border-amber-300">
         <CardHeader className="flex flex-row items-start gap-2">
           <Warning size={20} className="mt-0.5 text-amber-600" />
           <div>
-            <CardTitle className="text-base">수렴된 신중론 — “지금 매입보다 임대 대안 검토” (김정권 성도 소견)</CardTitle>
+            <CardTitle className="text-base">수렴된 의견 — “임대 대안도 함께 검토” (김정권 성도 소견)</CardTitle>
             <CardDescription>
               1차 설명회 이후 서면으로 제출된 의견입니다. 즉시 매입보다 적합한
               공간을 임대해 사용하는 방안을 의사결정 대안으로 검토하고, 충분한
