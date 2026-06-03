@@ -174,7 +174,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
       { q: "부결되면 어떻게 되나요?", a: "현 예배당에서 계속 예배하면서 다른 매물 탐색 계속. 다만 현 건물의 리스크(매매 상태, 퇴거 특약)는 남아있음을 인지." },
       { q: "금천구 가면 ‘관악교회’라는 이름은요?", a: "‘이름은 우리의 시작과 뿌리를 담은 것. 변경 여부는 성도님들과 함께 논의할 사안.’ (정체성 쟁점 참조)" },
       { q: "빚을 지고 건물을 사는 게 맞나요?", a: "‘신앙적으로도 중요한 질문입니다. 다만 현재 월세+주차비로 이미 연 3,500~5,700만원을 쓰고 있고, 이 돈은 돌아오지 않습니다. 매입 시 대출 상환은 결국 우리 자산이 됩니다.’" },
-      { q: "너무 급하게 진행되는 것 아닌가요?", a: "‘위원회가 4월에 구성되어 2개월간 조사했고, 앞으로도 최소 1개월 이상의 논의 기간을 둡니다. 다만 매물이 시장에 계속 남아있을 보장이 없어, 적절한 속도로 진행할 필요는 있습니다.’" },
+      { q: "너무 급하게 진행되는 것 아닌가요?", a: "오히려 반대입니다. 이전 논의는 이미 2년 전부터 있어 왔고, 그동안 주변 임대 물건도 꾸준히 알아봐 왔습니다. 다만 현 임차 기간이 남아 실행하지 못한 채 머물러 있었을 뿐입니다. 위원회는 4월에 정식 구성되어 2개월간 조사했고, 앞으로도 최소 1개월 이상의 논의·의견 수렴 기간을 둡니다. 정보 탐색과 매입 결정은 별개이며, 급하게 밀어붙이는 것이 아닙니다." },
       { q: "꼭 지금 매입해야 하나요? 관악구 내 재임대가 안전하지 않나요?", a: "이전의 근본 목적은 ‘안정적·항구적 예배 공간 확보로 미래세대까지 교회를 잇는 것’입니다. 현 임대의 불안정(재건축 특약·매매 진행·재계약 불확실)은 임대라는 형태 자체의 한계라, 관악구 내 새 임대도 같은 위험이 반복됩니다. 임대료는 사라지는 비용(10년 4~7억)이지만 매입 상환금은 교회 자산이 됩니다. 임대는 매입이 어려울 때의 차선책(Plan C)으로 둡니다. 단 재정 감당선을 넘으면 무리하지 않습니다." },
     ],
   },
@@ -193,40 +193,82 @@ const CHECKLIST: { no: number; item: string; level: "필수" | "권장" | "있�
   { no: 9, item: "어르신 교통 대책 방향", level: "있으면 좋음", action: "셔틀/카풀 검토 중이라고 언급" },
 ];
 
-// ── 수렴된 의견 (김정권 성도 소견) ────────────────────────────
-const CAUTION_GROUPS: { title: string; points: string[] }[] = [
+// ── 수렴된 의견 (김정권 성도 소견) + 사실 검증 분류 ────────────
+// 제기된 항목 대부분이 "~다고 함/~예상됨" 형태의 전언·추정 → 사실로 단정하지 말고
+// ① 확인 대상(자료로 객관 확정 가능) ② 전언·추정(미검증) ③ 정책·판단(가치 결정)으로 분류.
+type CautionKind = "확인 대상" | "전언·추정" | "정책·판단";
+const cautionKindStyle: Record<
+  CautionKind,
+  { variant: "secondary" | "outline"; cls: string }
+> = {
+  "확인 대상": { variant: "secondary", cls: "" },
+  "전언·추정": { variant: "outline", cls: "text-amber-700 border-amber-300" },
+  "정책·판단": { variant: "outline", cls: "text-muted-foreground" },
+};
+const CAUTION_GROUPS: {
+  title: string;
+  items: { claim: string; kind: CautionKind; check: string }[];
+}[] = [
   {
     title: "현 예배당(관악) 관련 리스크",
-    points: [
-      "임차 잔여 기간이 약 2.5년 남아, 기간 중 이전 시 임차보증금 회수에 어려움이 생길 수 있음",
-      "후속 임차인이 교회가 아니면 사용 공간 원상복구 + 집기 철거 부담 발생",
-      "건물 소유주와 자녀들 간 매도 견해차가 있어, 정상 매도 여부와 그에 따른 보증금 회수가 불확실",
+    items: [
+      {
+        claim: "임차 잔여 기간이 약 2.5년 남아, 기간 중 이전 시 임차보증금 회수에 어려움이 생길 수 있음",
+        kind: "확인 대상",
+        check: "잔여 기간·중도 해지·원상복구 조항은 계약서로 즉시 확정 가능. ‘회수 어려움’은 추정 — 일반적으로 보증금은 계약 종료 또는 새 임차인 입주 시 반환되므로 ‘못 받는’ 문제가 아니라 ‘반환 시점’ 문제일 수 있음. 계약서·임대차 전문가 자문으로 확정.",
+      },
+      {
+        claim: "후속 임차인이 교회가 아니면 사용 공간 원상복구 + 집기 철거 부담 발생",
+        kind: "확인 대상",
+        check: "계약서 원상복구 조항으로 확정. 새 임차인이 교회라 해서 우리 원상복구 의무가 자동 면제되는 것은 아니며(시설 승계는 별도 합의), 비용 규모도 견적으로 산출 가능.",
+      },
+      {
+        claim: "건물 소유주와 자녀들 간 매도 견해차가 있어, 정상 매도 여부·보증금 회수가 불확실",
+        kind: "전언·추정",
+        check: "가족 간 견해차는 출처·사실 여부 확인 필요. 또한 건물이 매각돼 소유주가 바뀌어도 임차 보증금 반환 의무는 새 소유주에게 승계되는 것이 원칙(대항력 확보 시) — 법리 확인 시 상당 부분 해소 가능.",
+      },
     ],
   },
   {
     title: "축복교회(매입 대상) 자산가치",
-    points: [
-      "집합건물 6층이라 토지 지분이 적고, 부동산 가격 상승 정도가 상대적으로 낮다고 함",
-      "집합건물 공간 사용 시 상당한 관리비가 발생한다고 함",
-      "추후 더 적합한 장소로 재이전하려 할 때 매도(환금)에 어려움 예상",
+    items: [
+      {
+        claim: "집합건물 6층이라 토지 지분이 적고, 부동산 가격 상승 정도가 상대적으로 낮다고 함",
+        kind: "전언·추정",
+        check: "일반적 경향에 대한 전언. 해당 물건의 실제 시세·지분은 등기부·시세 조사로 확인. 이번 매입은 투자가 아닌 예배 공간 확보가 목적이라 영향이 제한적.",
+      },
+      {
+        claim: "집합건물 공간 사용 시 상당한 관리비가 발생한다고 함",
+        kind: "확인 대상",
+        check: "축복교회 월별 관리비 명세 확보로 확정(이지원 집사 요청 중). 실제 숫자 확인 전 ‘상당하다’ 단정 금물 — 2차 설명회 전 확보 필수.",
+      },
+      {
+        claim: "추후 더 적합한 장소로 재이전하려 할 때 매도(환금)에 어려움 예상",
+        kind: "전언·추정",
+        check: "장기 정착이 목적이므로 빈번한 재매도를 전제하지 않음 — 발생 가능성이 낮은 시나리오에 대한 추정.",
+      },
     ],
   },
   {
     title: "관악교회 재정 부담",
-    points: [
-      "원금 상환을 차치하더라도, 현 재정 상황에서 추가 대출이자 + 건물 관리비 경상 지출을 감당할 수 있는가",
-      "원리금 상환으로 인해 선교·구제 등 기존 사역이 제한받을 수 있음",
-      "임차보증금을 상당 기간 받지 못할 때 예상되는 재정 운용상의 문제",
+    items: [
+      {
+        claim: "추가 대출이자 + 건물 관리비 경상 지출을 현 재정에서 감당할 수 있는가",
+        kind: "확인 대상",
+        check: "대출 조건 확정 + 예산 재편안으로 계량 검증 가능. 1차 근거: 시설비 비율 16.2%→22.7%로 일반 교회 범위(20~25%) 내(이지원 집사 분석).",
+      },
+      {
+        claim: "원리금 상환으로 선교·구제 등 기존 사역이 제한받을 수 있음",
+        kind: "정책·판단",
+        check: "예산 재편 시 ‘본질 사역 보호’를 원칙으로 결정할 사항 — 위원회·당회의 가치 판단 영역.",
+      },
+      {
+        claim: "임차보증금을 상당 기간 받지 못할 때 예상되는 재정 운용상의 문제",
+        kind: "확인 대상",
+        check: "위 보증금 회수 항목(1·3) 검증 결과에 종속. 회수 시점이 확인되면 자금 일정에 버퍼로 반영 — 검증으로 상당 부분 해소 가능.",
+      },
     ],
   },
-];
-
-const CAUTION_RESPONSES: string[] = [
-  "보증금 회수·원상복구·매도 불확실성 → 이미 Plan B/C와 사전 확인 항목(5·7번)에 반영. 현 건물주 상황과 보증금 반환 시점은 ‘미확인’이므로 정직하게 인정하고 우선 확인 과제로 둠.",
-  "집합건물 자산가치(토지 지분·시세·환금성) 지적은 타당. 다만 이번 매입은 ‘투자’가 아니라 ‘안정적 예배 공간 확보’가 목적임을 분명히 하고, 임대 지속 시의 불안정성과 비교 형량해 설명.",
-  "임대 대안은 Plan C에 이미 포함 — 임대 매물 탐색을 병행 가능. 단, 현 예배당의 구조적 불안정(재건축 특약·매매 진행)이 ‘새 임대’에도 동일하게 따라올 수 있는 리스크임을 함께 안내.",
-  "사역 위축 우려 → 2차 설명회 예산 재편안에서 ‘본질적 사역(선교·구제·교육)을 위축시키지 않는다’는 원칙을 구체안과 함께 천명.",
-  "핵심 메시지: ‘소견 감사드린다. 제기하신 리스크는 위원회도 동일하게 인지하고 있으며, 임대 대안 포함해 무리한 결정은 하지 않겠다. 충분한 검토·의견 수렴 후 공동의회에서 결정하겠다.’",
 ];
 
 // ── 의견 제출자별 검토 관점 정리 ──────────────────────────────
@@ -265,6 +307,13 @@ const POSITIONS: {
     focus: "대안 검토 제안",
     gist: "보증금 회수·원상복구·집합건물 자산가치·재정 부담을 들어, 즉시 매입보다 적합 공간 임대를 의사결정 대안으로 함께 검토하자고 제안.",
     reflect: "리스크는 계획에 반영. 임대 대안은 차선책으로 검토(아래 쟁점 분석 참조).",
+  },
+  {
+    name: "김금순 자매",
+    role: "성도 현장 의견",
+    focus: "경험·공감 공유",
+    gist: "이전 논의는 이미 2년 전부터 있었고 그동안 주변 임대 물건도 알아봐 왔으나, 현 임차 기간이 남아 실행하지 못한 채 머물러 있었다는 경험을 공유. 같은 고민·질문을 가진 성도가 많다고 전함.",
+    reflect: "‘오래 검토해온 사안(급하지 않음)’ + ‘임차 기간 제약’이라는 현장 맥락을 보고에 반영. 매물 정보 탐색은 매입 결정과 별개로 계속.",
   },
 ];
 
@@ -719,34 +768,48 @@ export default function BriefingPage() {
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {CAUTION_GROUPS.map((g) => (
-              <div key={g.title} className="flex flex-col gap-2 rounded-md border border-amber-200 bg-amber-50/40 p-3">
-                <span className="text-sm font-semibold text-amber-700">{g.title}</span>
-                <ul className="flex flex-col gap-1.5 text-xs leading-relaxed text-foreground">
-                  {g.points.map((p, i) => (
-                    <li key={i}>· {p}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="rounded-md border border-dashed border-amber-300 bg-amber-50/50 p-3 text-xs leading-relaxed text-foreground">
+            <span className="font-semibold text-amber-700">먼저 — 사실인가, 추정인가?</span>{" "}
+            제기된 항목은 대부분 “~다고 함 / ~예상됨” 형태라 <strong>사실로 단정하기 전에 검증이 필요</strong>합니다.
+            아래 각 항목을 ① <strong>확인 대상</strong>(계약서·명세·시세 등 자료로 객관 확정 가능) ②
+            <strong> 전언·추정</strong>(출처 불명·일반론, 미검증) ③ <strong>정책·판단</strong>(교회의 가치·우선순위 결정 영역)으로
+            분류하고, 확인 방향을 함께 답니다.
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-sm font-semibold">위원회 대응 방향 (2차 설명회 준비)</span>
-            {CAUTION_RESPONSES.map((r, i) => (
-              <div key={i} className="rounded-md border border-border p-3 text-sm leading-relaxed">
-                {r}
+          <div className="flex flex-col gap-4">
+            {CAUTION_GROUPS.map((g) => (
+              <div key={g.title} className="flex flex-col gap-2">
+                <span className="text-sm font-semibold text-amber-700">{g.title}</span>
+                <div className="flex flex-col gap-2">
+                  {g.items.map((it, i) => {
+                    const ks = cautionKindStyle[it.kind];
+                    return (
+                      <div key={i} className="rounded-md border border-border p-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-sm text-foreground">{it.claim}</span>
+                          <Badge variant={ks.variant} className={`shrink-0 font-normal ${ks.cls}`}>
+                            {it.kind}
+                          </Badge>
+                        </div>
+                        <p className="mt-1.5 border-l-2 border-primary/40 pl-3 text-xs leading-relaxed text-muted-foreground">
+                          <span className="font-medium text-primary">검증 · </span>
+                          {it.check}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ))}
           </div>
 
           <Note>
-            이 소견의 핵심 리스크(보증금 회수·원상복구·이중 부담)는 이명건 집사
-            지적과도 겹치며 <strong>이미 Plan B/C·사전 확인 항목에 반영</strong>되어
-            있습니다. 임대 대안 역시 <strong>Plan C에 포함</strong>된 선택지이므로,
-            “위원회가 이미 같은 고민을 하고 있고 무리하게 매입을 밀어붙이지
-            않는다”는 점을 분명히 전하는 것이 중요합니다.
+            정리하면 — 보증금·원상복구·관리비·감당성은 <strong>계약서·명세·대출 조건으로
+            객관 확정 가능한 ‘확인 대상’</strong>이고, 소유주 가족 견해차·집합건물 시세·재이전
+            환금성은 <strong>출처 불명의 ‘전언·추정’</strong>입니다. 즉 상당수는 사실 확인만으로
+            해소될 수 있으며, 실제 리스크로 남는 부분만 Plan B/C와 사전 확인 항목으로
+            관리합니다. <strong>“우려를 무겁게 듣되, 사실은 검증해서 말씀드린다”</strong>가
+            위원회의 태도입니다.
           </Note>
         </CardContent>
       </Card>
