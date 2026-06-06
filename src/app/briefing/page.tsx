@@ -84,11 +84,11 @@ const COST_COMPARE: {
   delta: string;
   deltaTone: "up" | "down" | "neutral";
 }[] = [
-  { item: "임대료 / 대출이자", current: "200만원", after: "350만원 (이자 6%)", delta: "+150만원", deltaTone: "up" },
+  { item: "임대료 / 대출이자", current: "200만원", after: "약 320~335만원 (7억·5.4~5.7%)", delta: "+120~135만원", deltaTone: "up" },
   { item: "타 교회 상환", current: "—", after: "30~50만원", delta: "+30~50만원", deltaTone: "up" },
-  { item: "주차비", current: "50~80만원", after: "약 20만원 (1/4 수준)", delta: "-30~60만원", deltaTone: "down" },
-  { item: "관리비·전기·수도", current: "40~200만원", after: "100만원+ (확인 필요)", delta: "확인 중", deltaTone: "neutral" },
-  { item: "합계", current: "290~480만원", after: "500~530만원+", delta: "+최소 150만원", deltaTone: "up" },
+  { item: "주차비", current: "50~80만원", after: "약 21만원 (정기 4대 12 + 할인권 9)", delta: "-약 30~60만원", deltaTone: "down" },
+  { item: "관리비·공용·전기·수도", current: "40~200만원", after: "약 167만원 (실측 평균)", delta: "실측 반영", deltaTone: "neutral" },
+  { item: "합계", current: "290~480만원", after: "약 540~575만원", delta: "+약 160~190만원", deltaTone: "up" },
 ];
 
 const SAVING_POINTS: { item: string; ratio: string; note: string }[] = [
@@ -99,6 +99,79 @@ const SAVING_POINTS: { item: string; ratio: string; note: string }[] = [
   { item: "기타 운영비", ratio: "5~10%", note: "사무용품·인쇄비·통신비 등 항목별 점검으로 연간 수십만~100만원 절감 가능" },
   { item: "주차비 절감", ratio: "—", note: "이전 자체로 월 30~60만원 절감 (가장 확실한 절감 항목)" },
   { item: "공간 대관 수입(신규)", ratio: "—", note: "주중 미사용 시간 대관 시 월 20~50만원 수입 기대 가능 (이지원 집사님 제안)" },
+];
+
+// ── 축복교회(에벤에셀프라자 6층) 관리비 실측 ──────────────────
+const BOKBOK_FEE: {
+  period: string;
+  rows: { item: string; avg: string; desc: string }[];
+  total: string;
+  note: string;
+} = {
+  period: "2025.1 ~ 2026.4 · 16개월 부과 명세 평균",
+  rows: [
+    { item: "세대관리비", avg: "약 91만원", desc: "관리소 인건비·화재보험·장기수선충당금 등 (매입 시 새로 부담하는 소유자 관리비)" },
+    { item: "세대 전기료", avg: "약 48만원", desc: "6층(예배당)에서 사용한 순수 전기" },
+    { item: "공용관리비 (전기)", avg: "약 25만원", desc: "건물 공용부 전기" },
+    { item: "공용관리비 (수도)", avg: "약 3만원", desc: "건물 공용부 수도 (부정기 부과)" },
+    { item: "정기주차권", avg: "12만원", desc: "대당 3만원·6층 최대 5대 / 축복교회 4대 고정" },
+    { item: "주차할인권", avg: "약 9만원", desc: "6층 방문객 비정기 주차 등록 (변동)" },
+  ],
+  total: "약 188만원 / 월",
+  note: "목사님·안장로 방문 시 안내받은 ‘관리비 140만원’은 세대분(세대관리비 91 + 세대전기 48). 여기에 공용관리비(약 28)·주차비(약 21)가 더해져 월 총 부과액은 평균 약 188만원. 주차비는 현 예배당(50~80만)보다 크게 낮지만, 세대관리비(약 91만)는 매입(소유) 시 새로 생기는 비용.",
+};
+
+// ── 대출 1차 견적 (이지원 집사 확인 중) ───────────────────────
+const LOAN_OPTIONS: {
+  label: string;
+  rate: string;
+  repay: string;
+  monthly: string;
+  note: string;
+}[] = [
+  {
+    label: "안 1 · 이자 부담 ↓ (원금 상환 미룸)",
+    rate: "5.7%~ (소폭 변동)",
+    repay: "만기일시 (거치 — 매월 이자만)",
+    monthly: "7억 기준 월 이자 약 333만원",
+    note: "거치기간 월 부담 최소. 단 만기에 원금 일시 상환 부담이 남음.",
+  },
+  {
+    label: "안 2 · 금리 ↓ (원금 조금씩 상환)",
+    rate: "5.4%~ (소폭 변동)",
+    repay: "원금 일부 균등 (매월 원금 50만원 + 이자)",
+    monthly: "7억 기준 월 약 365만원 (이자 315 + 원금 50)",
+    note: "원금이 매월 줄어 총이자 절감·자산 적립. 단 월 부담 증가.",
+  },
+];
+const LOAN_COMMON =
+  "공통: 대출기간 5~10년 · 금액 6~7억 · 변동주기 3/6개월(택1) · 중도상환수수료 0.73% · 담보=축복교회 상가 · 화재공제 등 부대조건 상담 후 결정. ※ 담보물건만으로 제공된 1차 견적이며 실제 상담 시 변동 가능.";
+const LOAN_DOCS: { group: string; docs: string }[] = [
+  { group: "법인 교회인 경우", docs: "법인 등기사항증명서 · 정관(규약)" },
+  { group: "법인 아닌 교회인 경우", docs: "소속 교단의 소속증명서 · 정관" },
+  { group: "공통", docs: "교회 관련 자료 · 목사님 신용평점" },
+];
+
+// ── 공간 비용 관점 (이지원·이명건 집사 공동 의견) ─────────────
+const SPACE_COST_BENCH: { range: string; meaning: string }[] = [
+  { range: "10~20%", meaning: "건물을 이미 소유했거나 대출이 거의 없는 경우" },
+  { range: "20~30%", meaning: "일반적으로 무리가 없는 수준" },
+];
+
+// ── 현 예배당 매각·임차 정황 (인근 부동산 확인) ───────────────
+const SALE_FACTS: { fact: string; detail: string }[] = [
+  {
+    fact: "현 교회 건물, 100억에 매물로 나와 있음",
+    detail: "인터넷에는 미등록이나 인근 부동산(교회 옆 ‘색다른 부동산’ 02-882-8007) 확인 결과. 90억 계약 희망처가 있으나 건물주와 100억에서 협의 더딘 상황.",
+  },
+  {
+    fact: "공실이 있어도 새 임차를 받지 않는 이유 = 신축 매수자 대기",
+    detail: "이 자리(두 필지, 약 300평)를 매수해 신축하려는 손님들(LH 등)이 붙어 있어, 새로 임차를 받으면 명도가 어려워질 수 있어 임차를 받지 않는 중. 우리 교회 연장 계약에 ‘신축 시 즉시 퇴거’ 조항이 걸린 실제 이유로 보임.",
+  },
+  {
+    fact: "정보가 엇갈림 — 지분·매각 의사 확인 필요",
+    detail: "부동산은 ‘아들들이 내놓았다’고 하나, 목사님이 들으신 바로는 아버지(건물주)는 매각을 부인하며 ‘팔 생각 없고 교회는 계속 있어도 된다’고 안심시킴. 두 필지가 아버지/아들 지분으로 나뉘어 있는지 등기부로 확인 필요.",
+  },
 ];
 
 // ── 3. 자금 조달 시나리오 ──────────────────────────────────────
@@ -112,7 +185,7 @@ const TOTAL_COST: { item: string; amount: string; note: string }[] = [
 const PLAN_A: { source: string; amount: string; cond: string }[] = [
   { source: "자본금 (교회 적립금/보증금)", amount: "2억", cond: "보증금 회수 가정 — 시점 확인 필요" },
   { source: "성도 연보 (특별헌금)", amount: "1억", cond: "자발적 서약제" },
-  { source: "은행 대출 (60%)", amount: "7.2억", cond: "이자 6%, 월 350만원" },
+  { source: "은행 대출", amount: "6~7억", cond: "금리 5.4~5.7% 견적, 월 이자 약 315~333만원" },
   { source: "타 교회 차입", amount: "2억", cond: "현 예배당 세입자 유치 시 차입 축소" },
 ];
 
@@ -126,10 +199,10 @@ const PLAN_C_OPTIONS = [
 const PRECHECK: { no: number; item: string; state: string; tone: Urgency; next: string }[] = [
   { no: 1, item: "자본금 2억의 정확한 출처", state: "미명시", tone: "high", next: "적립금/보증금/기타 구분. 보증금이면 회수 시점 확인" },
   { no: 2, item: "타 교회 차입 비공식 타진 결과", state: "고려 중", tone: "high", next: "1~2곳이라도 의향 확인. 이자/상환 조건 가안" },
-  { no: 3, item: "은행 대출 사전 상담", state: "미착수", tone: "high", next: "종교단체 상가 대출 가능 은행 1~2곳 사전 상담. 예상 금리·한도 확인" },
+  { no: 3, item: "은행 대출 사전 상담", state: "1차 견적 수신", tone: "mid", next: "축복교회 상가 담보 기준 2개 안 수신(만기일시 5.7% / 원금균등 5.4%, 6~7억, 5~10년). 실제 상담 시 변동 가능. 필요 서류·목사님 신용평점 준비" },
   { no: 4, item: "취득세 면제 가능성", state: "확인 중", tone: "mid", next: "세무사 자문으로 확정. 면제 시 6,440만원 절감 → 자금 압박 크게 완화" },
-  { no: 5, item: "현 보증금 반환 시점", state: "미확인", tone: "mid", next: "현 건물주와 퇴거·보증금 반환 일정 조율 필요" },
-  { no: 6, item: "축복교회 관리비 월별 상세", state: "요청 중", tone: "mid", next: "이지원 집사님이 요청해 놓은 상태. 2차 설명회 전 확보 필수" },
+  { no: 5, item: "현 보증금 반환 시점", state: "미확인", tone: "mid", next: "현 건물주와 퇴거·보증금 반환 일정 조율 필요. 현 건물 매각 정황(아래 별도 카드) 함께 고려" },
+  { no: 6, item: "축복교회 관리비 월별 상세", state: "수신 완료", tone: "low", next: "16개월 부과 명세 확보 — 월 평균 약 188만원(세대 140+공용 28+주차 21). 비교표·Plan A에 실측 반영 완료" },
   { no: 7, item: "현 예배당 임대 승계처(후속 임차) 확보", state: "미확인", tone: "high", next: "이어받을 교회/단체를 못 찾을 경우 보증금 회수 지연·원상복구 비용·일정 중복(이중 부담) 발생 → Plan B/C에 반영 (이명건 집사 지적)" },
 ];
 
@@ -150,7 +223,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
     items: [
       { q: "자본금 2억은 어디서 나오는 돈인가요?", a: "출처를 명확히 (적립금/보증금/기타). ‘보증금 회수’라면 회수 시점과 현 건물주 동의 여부도 함께 설명." },
       { q: "타 교회 4억은 확정인가요? 안 되면?", a: "현재 상태 솔직히 공유. Plan B/C 시나리오로 대응. ‘확보 안 되면 무리하게 진행하지 않겠다’는 원칙 천명." },
-      { q: "이자가 오르면? 원금은 언제 갚나요?", a: "5%/6%/7% 시나리오별 월 이자표. 원금 상환 계획(거치 후 분할상환 등)은 2차 설명회에서 상세 보고 예정이라고 안내." },
+      { q: "이자가 오르면? 원금은 언제 갚나요?", a: "1차 견적은 금리 5.4~5.7%(변동). 두 가지 방식 — 금리를 조금 높이는 대신 만기일시(거치, 이자만) / 금리를 낮추는 대신 매월 원금 50만원 상환. 거치기간은 감당 가능하나 원금 상환 단계는 부담이 커, 원금 상환 재원(연보 적립·세입자 확보·장기 계획)을 함께 마련하는 것이 핵심 — 2차 설명회에서 상환 계획을 상세 보고 예정." },
       { q: "연보는 의무인가요? 얼마씩 내야 하나요?", a: "‘완전 자발적이며, 금액도 각자 형편에 따라 자유롭게.’ 가구당 평균 참고 금액은 제시하되 강제하지 않음을 강조." },
       { q: "선교비/교육비가 줄어드는 건 아닌가요?", a: "구체적 예산 재편안은 2차 설명회에서 보고. ‘교회의 본질적 사역이 위축되지 않도록 하겠다’는 원칙 천명." },
       { q: "현 예배당은 이어받을 곳이 있나요? 보증금은 언제 돌려받나요?", a: "임대 조건이 좋아 단기 사용 희망 교회·단체가 있을 수 있으나 승계처 확보는 아직 미확인. 못 찾을 경우 보증금 회수 지연·원상복구 비용·이중 부담 가능성이 있어 Plan B/C에 반영. ‘승계가 안 되는 경우까지 대비하고 있다’고 안내." },
@@ -160,6 +233,7 @@ const QA_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
     group: "B. 물건 / 위치",
     items: [
       { q: "축복교회는 왜 이 건물을 파나요?", a: "매각 사유를 사전 확인. 건물 구조/안전 문제가 아님을 설명할 수 있어야 함." },
+      { q: "건물주는 안 판다는데 왜 굳이 나가야 하나요?", a: "건물주(아버지)는 매각을 부인하시지만, 인근 부동산 확인 결과 현 건물은 100억 매물로 거론되고 신축 목적 매수자(LH 등)가 대기 중이라 새 임차도 받지 않는 상황입니다. ‘신축 시 즉시 퇴거’ 특약도 그 때문으로 보입니다. 지분·매각 의사는 등기부로 확인 중이며, 사실 범위 안에서 신중히 말씀드리되 ‘괜찮겠지’라는 낙관보다 대비가 필요합니다." },
       { q: "어르신들/장애 성도분들 교통은요?", a: "엘리베이터 있음(현재 없음보다 개선). 거리는 멀어지나 셔틀/카풀 등 대책 검토 중." },
       { q: "137평이면 금방 또 좁아지지 않나요?", a: "장의자 39개(약 150~160명 수용), 옆 서재로 확장 가능, 필요시 건물 내 다른 층 임대/매매 검토 가능." },
       { q: "서해아파트는 왜 안 되나요?", a: "1억 저렴하고 면적도 크지만 (1)용도변경 필요 (2)현 헬스장 임차인 퇴거·원상복구 비용 리스크 (3)엘리베이터 없음. 종합적으로 에벤에셀프라자가 안전한 선택." },
@@ -196,11 +270,12 @@ const CHECKLIST: { no: number; item: string; level: "필수" | "권장" | "있�
 // ── 수렴된 의견 (김정권 성도 소견) + 사실 검증 분류 ────────────
 // 제기된 항목 대부분이 "~다고 함/~예상됨" 형태의 전언·추정 → 사실로 단정하지 말고
 // ① 확인 대상(자료로 객관 확정 가능) ② 전언·추정(미검증) ③ 정책·판단(가치 결정)으로 분류.
-type CautionKind = "확인 대상" | "전언·추정" | "정책·판단";
+type CautionKind = "확인 완료" | "확인 대상" | "전언·추정" | "정책·판단";
 const cautionKindStyle: Record<
   CautionKind,
   { variant: "secondary" | "outline"; cls: string }
 > = {
+  "확인 완료": { variant: "outline", cls: "text-emerald-700 border-emerald-300" },
   "확인 대상": { variant: "secondary", cls: "" },
   "전언·추정": { variant: "outline", cls: "text-amber-700 border-amber-300" },
   "정책·판단": { variant: "outline", cls: "text-muted-foreground" },
@@ -224,8 +299,8 @@ const CAUTION_GROUPS: {
       },
       {
         claim: "건물 소유주와 자녀들 간 매도 견해차가 있어, 정상 매도 여부·보증금 회수가 불확실",
-        kind: "전언·추정",
-        check: "가족 간 견해차는 출처·사실 여부 확인 필요. 또한 건물이 매각돼 소유주가 바뀌어도 임차 보증금 반환 의무는 새 소유주에게 승계되는 것이 원칙(대항력 확보 시) — 법리 확인 시 상당 부분 해소 가능.",
+        kind: "확인 대상",
+        check: "인근 부동산 확인으로 상당 부분 사실로 드러남 — 현 건물은 100억 매물, 신축 목적 매수자(LH 등) 대기, 그래서 ‘신축 시 즉시 퇴거’ 특약. 다만 ‘아들들이 내놓았다’(부동산) vs ‘아버지는 매각 부인·교회 계속 거주 가능’(목사님 청취)으로 정보가 엇갈림. 지분이 아버지/아들로 나뉘어 있는지 등기부로 확인 필요(아래 ‘현 예배당 매각 정황’ 카드 참조).",
       },
     ],
   },
@@ -239,8 +314,8 @@ const CAUTION_GROUPS: {
       },
       {
         claim: "집합건물 공간 사용 시 상당한 관리비가 발생한다고 함",
-        kind: "확인 대상",
-        check: "축복교회 월별 관리비 명세 확보로 확정(이지원 집사 요청 중). 실제 숫자 확인 전 ‘상당하다’ 단정 금물 — 2차 설명회 전 확보 필수.",
+        kind: "확인 완료",
+        check: "16개월 부과 명세 확보 — 월 평균 약 188만원(세대관리 91+세대전기 48+공용 28+주차 21). 주차는 현 예배당(50~80만)보다 크게 낮으나, 세대관리비(약 91만)는 매입 시 새로 생기는 비용. 비교표·Plan A에 실측 반영.",
       },
       {
         claim: "추후 더 적합한 장소로 재이전하려 할 때 매도(환금)에 어려움 예상",
@@ -348,9 +423,9 @@ const CONCLUSIONS: {
     issue: "재정 감당 가능성",
     concern: "추가 고정비·대출이자로 선교·구제 등 사역이 위축되지 않는가?",
     analysis:
-      "월 고정비 +150~200만원 증가는 사실입니다. 그러나 예산 대비 시설비 비율은 16.2% → 22.7%로, 일반 교회 통상 범위(20~25%) 안에 있습니다. 주차비 절감(월 30~60만)·행사/운영비 소폭 조정·공간 대관 수입·자발적 연보로 흡수 가능하며, 본질 사역은 보호 원칙입니다.",
+      "실측·실견적 반영 시 이전 후 공간비용은 월 약 540~575만원(대출이자 5.4~5.7% + 관리비 실측 188만 등)으로, 현 예산(약 2.8억) 대비 약 23~25% 수준입니다. 이는 일반 교회의 ‘무리 없는 범위(20~30%)’ 안에 들며, 출석 110명 기준 ‘월 약 580만원이 공간에 쓰이는 것이 보통’이라는 기준과도 부합합니다. 현재 16.2%로 비정상적으로 낮았던 탓에 인식이 보수적이었을 뿐입니다. 다만 장로님 지적대로 거치기간(이자만)은 감당 가능하나 원금 상환 단계는 부담이므로, 원금 상환 재원 계획이 함께 필요합니다.",
     conclusion:
-      "감당 불가능한 수준이 아니며, 구체적 예산 재편안(2차 설명회)으로 입증합니다. 단 연보·차입이 목표에 못 미치면 무리하지 않고 Plan B/C로 속도를 조절합니다.",
+      "공간비용 비율로 보면 무리한 수준이 아니며, 구체적 예산 재편안(2차 설명회)으로 입증합니다. 단 ① 원금 상환 재원(연보·세입자·장기 계획) 마련과 ② 연보·차입이 목표에 못 미칠 때 Plan B/C로 속도 조절 — 이 두 조건을 전제로 진행합니다. 본질 사역(선교·구제·교육)은 보호하되, 예배 공간 확보도 그에 못지않게 중요한 사명임을 함께 설명합니다.",
   },
   {
     no: 4,
@@ -432,6 +507,36 @@ export default function BriefingPage() {
         </CardContent>
       </Card>
 
+      {/* 1-0. 현 예배당 매각·임차 정황 */}
+      <Card className="border-amber-300">
+        <CardHeader className="flex flex-row items-start gap-2">
+          <Warning size={20} className="mt-0.5 text-amber-600" />
+          <div>
+            <CardTitle className="text-base">현 예배당 매각·임차 정황 (인근 부동산 확인)</CardTitle>
+            <CardDescription>
+              ‘건물 매매 상태·퇴거 특약’이 막연한 우려가 아니라 실제 정황으로
+              확인되는 부분입니다. 동시에 정보가 엇갈리는 지점도 있어, 낙관보다
+              대비책을 갖추는 근거가 됩니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2">
+          {SALE_FACTS.map((s, i) => (
+            <div key={i} className="rounded-md border border-amber-200 bg-amber-50/40 p-3">
+              <p className="text-sm font-semibold text-amber-700">{s.fact}</p>
+              <p className="mt-1 text-xs leading-relaxed text-foreground">{s.detail}</p>
+            </div>
+          ))}
+          <Note>
+            ‘앞으로 1~2년, 그 이상 괜찮겠지’라는 낙관보다,{" "}
+            <strong>현 자리가 신축 개발 대상으로 거론되는 현실</strong>을 전제로
+            대비하는 것이 안전합니다. 동시에 ‘이미 100억 매물로 나왔다’ 같은 표현은
+            성도들에게 과한 불안을 줄 수 있으므로, <strong>등기부·매각 의사 확인을
+            거쳐 사실 범위 안에서</strong> 신중히 전달해야 합니다.
+          </Note>
+        </CardContent>
+      </Card>
+
       {/* 1-1. 의견 제출자별 입장 정리 */}
       <Card>
         <CardHeader className="flex flex-row items-start gap-2">
@@ -463,10 +568,10 @@ export default function BriefingPage() {
             </div>
           ))}
           <Note>
-            네 분의 의견은 대립이 아니라 <strong>하나의 결정을 더 단단하게 만드는
-            보완 관계</strong>입니다. 필요성엔 모두 공감하므로, 남은 과제는 ‘재정을
-            감당 가능하게 설계하고, 리스크를 계획에 반영하며, 모든 성도의 마음을
-            모으는 것’입니다.
+            여러분이 나눠 주신 의견은 대립이 아니라 <strong>하나의 결정을 더
+            단단하게 만드는 보완 관계</strong>입니다. 필요성엔 모두 공감하므로,
+            남은 과제는 ‘재정을 감당 가능하게 설계하고, 리스크를 계획에 반영하며,
+            모든 성도의 마음을 모으는 것’입니다.
           </Note>
         </CardContent>
       </Card>
@@ -478,9 +583,10 @@ export default function BriefingPage() {
           <div>
             <CardTitle className="text-base">쟁점 1 · 재정 구조 — 늘어나는 고정비, 어디서 줄일 수 있나</CardTitle>
             <CardDescription>
-              이전 시 월 고정비가 최소 150~200만원 이상 늘어납니다. 이 증가분을
-              어디서 흡수할 수 있는지 사전에 체크하고, 구체적으로 이야기할 수
-              있어야 성도들이 “감당할 수 있겠구나”라는 확신을 가질 수 있습니다.
+              실측 관리비·실견적 금리를 반영하면 이전 시 월 고정비가 약 +160~190만원
+              늘어납니다(관리비는 예상보다 높고, 대출 금리는 다소 낮음). 이 증가분을
+              어디서 흡수할 수 있는지 사전에 체크하고 구체적으로 이야기할 수 있어야
+              성도들이 “감당할 수 있겠구나”라는 확신을 가질 수 있습니다.
             </CardDescription>
           </div>
         </CardHeader>
@@ -524,6 +630,30 @@ export default function BriefingPage() {
             </table>
           </div>
 
+          {/* 축복교회 관리비 실측 */}
+          <div className="rounded-md border border-border p-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <span className="text-sm font-semibold">축복교회 관리비·주차비 실측</span>
+              <span className="text-xs text-muted-foreground">{BOKBOK_FEE.period}</span>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+              {BOKBOK_FEE.rows.map((r) => (
+                <div key={r.item} className="flex items-baseline justify-between gap-2 rounded-md border border-border/60 px-3 py-2">
+                  <div className="flex flex-col">
+                    <span className="text-sm">{r.item}</span>
+                    <span className="text-[11px] leading-snug text-muted-foreground">{r.desc}</span>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold">{r.avg}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 flex items-baseline justify-between rounded-md border border-dashed border-primary/40 bg-secondary/40 px-3 py-2 text-sm font-bold">
+              <span>월 총 부과액 평균</span>
+              <span>{BOKBOK_FEE.total}</span>
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{BOKBOK_FEE.note}</p>
+          </div>
+
           <div className="flex flex-col gap-2">
             <span className="text-sm font-semibold">절감 가능성이 있는 비목 체크 포인트</span>
             {SAVING_POINTS.map((s) => (
@@ -544,14 +674,36 @@ export default function BriefingPage() {
             ))}
           </div>
 
+          {/* 공간 비용 관점 (이지원·이명건 집사 공동 의견) */}
           <div className="rounded-md border border-dashed border-primary/40 bg-secondary/40 p-4 text-sm">
-            <p className="mb-2 font-semibold text-primary">재정 건전성 벤치마크 (이지원 집사 검토)</p>
+            <p className="mb-2 font-semibold text-primary">공간 비용을 보는 관점 — 인식의 재고 (이지원·이명건 집사 공동 의견)</p>
+            <p className="mb-3 text-foreground">
+              예산 대비 공간 비용에는 통상적인 건강선이 있습니다. 성도님들의 귀한
+              헌금이 목회비·구제·선교에 투명하게 잘 쓰이고 있지만,{" "}
+              <strong>성도가 예배당에 와서 예배에 집중할 수 있는 공간을 잘 제공하는
+              것도 그에 못지않게 중요</strong>하다는 점이 함께 재고되면 좋겠습니다.
+            </p>
+            <div className="mb-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+              {SPACE_COST_BENCH.map((b) => (
+                <div key={b.range} className="flex items-baseline gap-2 rounded-md border border-border/60 bg-background px-3 py-2">
+                  <span className="shrink-0 text-sm font-semibold text-primary">{b.range}</span>
+                  <span className="text-xs text-muted-foreground">{b.meaning}</span>
+                </div>
+              ))}
+            </div>
             <ul className="flex flex-col gap-1 text-foreground">
-              <li>· 예산 대비 시설비: <strong>현재 약 16.2% → 이전 후 약 22.7%</strong> (넉넉히 25%)</li>
-              <li>· 일반 교회 예산 비중: 인건비 45~55% · 시설비 20~25% · 선교/교육 10~20%</li>
-              <li>· 관악교회 현 목회비 비중 55~60% — 임차료가 저렴해 시설비가 낮았던 구조</li>
-              <li>· 이전 후에도 시설비 %가 일반 교회 범위를 크게 벗어나지 않음. 다른 부분 소폭 감축 + 연보로 마음을 모으는 방식 병행</li>
+              <li>· 관악교회 기준(출석 약 110명·연 예산 2.8억 가정): <strong>25%면 연 7,000만 / 월 약 580만</strong>이 공간에 쓰이는 것이 보통 수준</li>
+              <li>· 이전 후 예상 공간비용(약 540~575만, 이자 기준)은 <strong>예산의 약 23~25%</strong> — 일반적으로 무리 없는 범위(20~30%)에 해당</li>
+              <li>· 현재는 약 16.2%로 <strong>비정상적으로 낮음</strong> — 워낙 저렴한 조건 덕에 공간 예비비로 남았을 금액이 (좋은 곳이지만) 다른 곳에 쓰여 와, 공간 비용 인식이 보수적으로 굳어진 면이 있음</li>
+              <li>· 일반 교회 예산 비중 참고: 인건비 45~55% · 시설비 20~25% · 선교/교육 10~20% (관악 현 목회비 55~60%)</li>
             </ul>
+            <div className="mt-3 rounded-md border border-border bg-background p-3">
+              <p className="text-xs font-medium text-muted-foreground">예상되는 두 관점 (의견이 갈릴 지점)</p>
+              <ol className="mt-1 list-decimal pl-4 text-xs leading-relaxed text-foreground">
+                <li>예산이 빠듯해 더 높은 지출은 어렵다 — 다른 곳에 쓸 예산을 잠식한다 <span className="text-muted-foreground">(다수 의견 예상)</span></li>
+                <li>성도가 많이 늘어난 만큼, 원활한 예배를 위해 공간 비용도 그에 비례해 늘리는 것이 맞다</li>
+              </ol>
+            </div>
           </div>
 
           <Note>
@@ -603,10 +755,50 @@ export default function BriefingPage() {
                 </div>
               ))}
               <div className="mt-1 flex items-baseline justify-between border-t border-emerald-500/30 pt-1.5 text-sm font-bold">
-                <span>합계 · 월 고정비 약 500만원</span>
+                <span>합계 · 월 고정비 약 540~575만원 (관리비 실측 반영)</span>
                 <span>12.2억</span>
               </div>
             </div>
+          </div>
+
+          {/* 대출 1차 견적 */}
+          <div className="rounded-md border border-border p-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <span className="text-sm font-semibold">은행 대출 1차 견적 (이지원 집사 확인 중)</span>
+              <Badge variant="secondary" className="font-normal">2개 안 · trade-off</Badge>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {LOAN_OPTIONS.map((o) => (
+                <div key={o.label} className="flex flex-col gap-1 rounded-md border border-border/70 p-3">
+                  <span className="text-sm font-semibold text-primary">{o.label}</span>
+                  <span className="text-xs"><span className="text-muted-foreground">금리 </span>{o.rate}</span>
+                  <span className="text-xs"><span className="text-muted-foreground">상환 </span>{o.repay}</span>
+                  <span className="text-xs"><span className="text-muted-foreground">월 부담 </span><strong>{o.monthly}</strong></span>
+                  <span className="text-[11px] leading-snug text-muted-foreground">{o.note}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">{LOAN_COMMON}</p>
+            <div className="mt-2 rounded-md border border-dashed border-border p-3">
+              <p className="text-xs font-medium text-muted-foreground">대출 필요 서류</p>
+              <ul className="mt-1 flex flex-col gap-0.5 text-xs text-foreground">
+                {LOAN_DOCS.map((d) => (
+                  <li key={d.group}>· <span className="font-medium">{d.group}</span> — {d.docs}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* 장로님 의견 — 거치 vs 원리금 */}
+          <div className="rounded-md border-l-4 border-amber-400 bg-amber-50/40 p-4 text-sm">
+            <p className="mb-1 font-semibold text-amber-700">장로님 의견 · 거치는 가능하나 원금 상환은 부담</p>
+            <p className="text-foreground">
+              간단히 계산했을 때 <strong>거치기간(매월 이자만)은 버틸 수 있으나,
+              원리금(원금까지) 상환이 시작되면 현 재정으로는 감당이 어렵다</strong>는
+              현실적 진단입니다. 따라서 만기일시(거치)를 택하더라도{" "}
+              <strong>만기 시 원금 상환 재원(연보 적립·세입자 확보·장기 계획)을
+              반드시 함께 마련</strong>해야 하며, 이것이 자금 조달의 핵심 과제입니다.
+            </p>
           </div>
 
           {/* Plan B */}
@@ -867,7 +1059,7 @@ export default function BriefingPage() {
         <CardHeader className="flex flex-row items-start gap-2">
           <ChatCircleText size={20} className="mt-0.5 text-primary" />
           <div>
-            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (18개)</CardTitle>
+            <CardTitle className="text-base">성도 예상 질문 &amp; 답변 가이드 (20개)</CardTitle>
             <CardDescription>
               현장 질의응답에 대비한 답변 톤·핵심 포인트입니다.
             </CardDescription>
