@@ -174,6 +174,29 @@ const SALE_FACTS: { fact: string; detail: string }[] = [
   },
 ];
 
+// ── 청년부 사전 설문 (정다은 자매 진행) ───────────────────────
+// 개인별 응답(이름↔가/부)은 민감 정보이므로 비공개 — 집계·주요 의견만 익명 반영.
+const YOUTH_SURVEY: {
+  total: number;
+  rows: { label: string; count: number; pct: number; tone: "ok" | "no" | "wait" }[];
+  refusalReason: string;
+  notes: string[];
+} = {
+  total: 46,
+  rows: [
+    { label: "수락 (가)", count: 29, pct: 63, tone: "ok" },
+    { label: "거부 (부)", count: 5, pct: 11, tone: "no" },
+    { label: "응답 대기", count: 12, pct: 26, tone: "wait" },
+  ],
+  refusalReason:
+    "거부 5명 전원의 사유가 ‘거리·교통 접근성’(멀어서 / 대중교통 불편 / 편도 약 1시간 등 출석이 어려울 것 같음). 응답 대기 중에도 같은 사유가 언급됨.",
+  notes: [
+    "최근 대출 금리가 오르는 추세인데, 상환이 교회의 부담이 되지 않을지 우려",
+    "당회가 염두에 둔 이전 시기가 궁금함",
+    "당회의 결정에 따르겠다 / 당회 부름 여부에 따라 출석을 결정하겠다",
+  ],
+};
+
 // ── 3. 자금 조달 시나리오 ──────────────────────────────────────
 const TOTAL_COST: { item: string; amount: string; note: string }[] = [
   { item: "매수가", amount: "12억원", note: "에벤에셀프라자 6층 137평" },
@@ -390,6 +413,13 @@ const POSITIONS: {
     gist: "이전 논의는 이미 2년 전부터 있었고 그동안 주변 임대 물건도 알아봐 왔으나, 현 임차 기간이 남아 실행하지 못한 채 머물러 있었다는 경험을 공유. 같은 고민·질문을 가진 성도가 많다고 전함.",
     reflect: "‘오래 검토해온 사안(급하지 않음)’ + ‘임차 기간 제약’이라는 현장 맥락을 보고에 반영. 매물 정보 탐색은 매입 결정과 별개로 계속.",
   },
+  {
+    name: "정다은 자매",
+    role: "이전검토위원 · 청년부",
+    focus: "청년부 의견 수렴",
+    gist: "청년부를 대상으로 이전 가/부 의사 사전 설문을 진행 중. 과반이 수락이나 거부·대기의 핵심 사유는 ‘거리·교통 접근성’으로 모임.",
+    reflect: "청년부 설문 결과를 별도 카드로 반영(아래). 접근성 대책(셔틀·카풀)의 중요성 근거로 활용.",
+  },
 ];
 
 // ── 쟁점별 총체적 논리 정리 ────────────────────────────────────
@@ -441,9 +471,9 @@ const CONCLUSIONS: {
     issue: "정체성·접근성 (관악 → 금천)",
     concern: "관악교회가 금천구로 가도 괜찮은가? 이름과 멀어지는 성도는?",
     analysis:
-      "출석 교인의 약 70%가 이미 관악구 밖에 거주하고, 자가용 20분 거리로 생활권을 크게 벗어나지 않습니다. 이름은 지역명이 아니라 정체성의 표현이라 유지할 수 있습니다. 접근성이 취약한 성도(어르신·도보 출석)는 셔틀·카풀·택시 지원으로 보완합니다.",
+      "출석 교인의 약 70%가 이미 관악구 밖에 거주하고, 자가용 20분 거리로 생활권을 크게 벗어나지 않습니다. 이름은 지역명이 아니라 정체성의 표현이라 유지할 수 있습니다. 다만 접근성은 가장 실질적인 영향 — 청년부 사전 설문에서도 거부·대기의 핵심 사유가 전부 ‘거리·교통’이었습니다. 취약 성도(어르신·도보 출석)와 대중교통 의존 청년은 셔틀·카풀·택시 지원으로 보완해야 합니다.",
     conclusion:
-      "정체성은 건물 주소가 아니라 함께 예배하는 공동체에 있습니다. 실질적 영향은 제한적이며, 취약 성도 돌봄을 전제로 ‘한 사람도 소외되지 않는 이전’ 원칙을 견지합니다.",
+      "정체성은 건물 주소가 아니라 함께 예배하는 공동체에 있습니다. 다만 ‘접근성’은 가볍게 볼 수 없는 변수이므로(청년부 설문이 이를 뒷받침), 교통 대책을 구체화하는 것을 전제로 ‘한 사람도 소외되지 않는 이전’ 원칙을 견지합니다.",
   },
 ];
 
@@ -1002,6 +1032,64 @@ export default function BriefingPage() {
             해소될 수 있으며, 실제 리스크로 남는 부분만 Plan B/C와 사전 확인 항목으로
             관리합니다. <strong>“우려를 무겁게 듣되, 사실은 검증해서 말씀드린다”</strong>가
             위원회의 태도입니다.
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 5-1b. 청년부 사전 설문 */}
+      <Card>
+        <CardHeader className="flex flex-row items-start gap-2">
+          <UsersThree size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">청년부 사전 설문 — 이전 가/부 의사 (정다은 자매 진행)</CardTitle>
+            <CardDescription>
+              이전검토위원인 청년부 정다은 자매가 청년부를 대상으로 축복교회 이전
+              가·부 의사를 사전 확인 중인 설문입니다. <strong>청년부 한정·비공식·진행
+              중</strong> 자료이며 전체 성도 의견 수렴(전도회·온라인)과는 별개의
+              참고용입니다. 개인별 응답은 비공개로 하고 집계·주요 의견만 정리합니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-muted-foreground">응답 현황 · 총 {YOUTH_SURVEY.total}명</span>
+            {YOUTH_SURVEY.rows.map((r) => (
+              <div key={r.label} className="flex items-center gap-3">
+                <span className="w-20 shrink-0 text-sm">{r.label}</span>
+                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className={`h-full ${
+                      r.tone === "ok" ? "bg-emerald-500" : r.tone === "no" ? "bg-red-400" : "bg-muted-foreground/40"
+                    }`}
+                    style={{ width: `${r.pct}%` }}
+                  />
+                </div>
+                <span className="w-20 shrink-0 text-right text-sm font-semibold">
+                  {r.count}명 <span className="font-normal text-muted-foreground">({r.pct}%)</span>
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-md border border-amber-200 bg-amber-50/40 p-3">
+            <p className="text-sm font-semibold text-amber-700">거부 사유는 전부 ‘접근성’</p>
+            <p className="mt-1 text-xs leading-relaxed text-foreground">{YOUTH_SURVEY.refusalReason}</p>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-semibold">주요 의견·질문 (익명)</span>
+            {YOUTH_SURVEY.notes.map((n, i) => (
+              <p key={i} className="rounded-md border border-border p-2.5 text-xs leading-relaxed text-foreground">
+                · {n}
+              </p>
+            ))}
+          </div>
+
+          <Note>
+            청년부는 과반(63%)이 수락이나, <strong>거부·대기의 핵심이 ‘거리·교통
+            접근성’</strong>입니다 — 셔틀·카풀 등 교통 대책이 청년 출석 유지의
+            관건임을 다시 보여줍니다. 다만 청년부 한정·진행 중 표본이므로 전체 성도
+            의견과 동일시하지 않도록 주의해 전달합니다.
           </Note>
         </CardContent>
       </Card>
