@@ -230,12 +230,12 @@ const LEASE_VS_BUY_EFFECT: { aspect: string; lease: string; buy: string }[] = [
 // ── 현 예배당 임대차계약서 핵심 (계약서 원본 기준) ────────────
 // 사진상 명확히 읽히는 항목만 사실로 기재. 흐릿한 수치는 ‘원본 확인 필요’로 표기.
 const CONTRACT_FACTS: { label: string; value: string; confirmed: boolean }[] = [
-  { label: "계약 종류", value: "부동산 임대차계약서 · 재연장 계약", confirmed: true },
+  { label: "계약 종류·기간", value: "재연장 계약 — 보장된 최초 10년 경과, 현재 약 3년 잔여. 만료 전에도 매각 후 신축 시 즉시 퇴거 대상이며, 3년 뒤 재계약 보장 없음", confirmed: true },
   { label: "소재지", value: "서울 관악구 신림동 247-2, 3층 남쪽 일부 (현 관악교회)", confirmed: true },
   { label: "건물·면적", value: "철근콘크리트 근린생활시설 · 임대 부분 218㎡(약 66평)", confirmed: true },
   { label: "임대인", value: "윤영주 (임대료 계좌: 우체국 1002-033-948512, 예금주 윤영주)", confirmed: true },
   { label: "보증금", value: "₩165,000,000 (약 1.65억) — 기존 ‘2억’ 가정과 차이, 자금계획 재확인 필요", confirmed: true },
-  { label: "월 임대료 / 만료일", value: "원본 글씨 흐림 — 정확 금액·만료일 원본 확인 필요 (월세는 이지원 집사 추정 약 200만)", confirmed: false },
+  { label: "월 임대료 / 정확 만료일", value: "원본 글씨 흐림 — 정확 금액·만료일 원본 확인 필요 (월세는 이지원 집사 추정 약 200만, 잔여 약 3년)", confirmed: false },
 ];
 const CONTRACT_CLAUSES: { title: string; body: string }[] = [
   {
