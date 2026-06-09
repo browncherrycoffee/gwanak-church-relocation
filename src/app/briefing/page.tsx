@@ -205,6 +205,28 @@ const SALE_PREP: string[] = [
   "임대 대안 병행 조사 — 단, 현 임대의 구조적 불안정(특약·매각 정황)이 ‘새 임대’에도 반복됨을 전제로.",
 ];
 
+// ── 관악구 새 임대 vs 축복교회 매매 비교 ──────────────────────
+// 임대 수치는 동급 규모(전용 약 130~140평급) 관악구 상가 시세 ‘가정’ — 실제 조사 필요.
+// 매매 수치는 실견적(대출 5.4~5.7%)·실측(관리비 188만) 기반.
+const LEASE_VS_BUY_COST: { item: string; lease: string; buy: string; emph?: boolean }[] = [
+  { item: "초기 자금", lease: "보증금 약 3억 (가정)", buy: "자기자금 약 3억(자본 2+연보 1) + 대출 7억 + 타교회 2억" },
+  { item: "월 임대료 / 대출이자", lease: "약 450만원 (가정)", buy: "약 320만원 (7억·5.4~5.7%)" },
+  { item: "월 관리비·공과·주차", lease: "약 100~150만원 (가정)", buy: "약 188만원 (실측)" },
+  { item: "타 교회 상환", lease: "—", buy: "30~50만원" },
+  { item: "월 합계", lease: "약 550~600만원 (가정)", buy: "약 540~575만원", emph: true },
+  { item: "10년 누적 (임대료/이자)", lease: "약 6.5~7억 — 전액 소멸", buy: "이자분 약 3.8억 소멸, 원금은 자산화" },
+  { item: "10년 후 남는 것", lease: "보증금 약 3억 회수(무이자)뿐, 건물 0", buy: "건물(12억+) 보유 + 상환 원금만큼 순자산", emph: true },
+];
+const LEASE_VS_BUY_EFFECT: { aspect: string; lease: string; buy: string }[] = [
+  { aspect: "점유 안정성", lease: "계약 만료·임대료 인상·퇴거 위험이 반복", buy: "영구 안정 — 퇴거 위험 없음" },
+  { aspect: "초기 부담", lease: "낮음 (보증금 위주)", buy: "높음 (대출·연보)" },
+  { aspect: "유연성", lease: "이동이 비교적 쉬움", buy: "이동 어려움 (환금성 낮음)" },
+  { aspect: "비용의 귀결", lease: "매월 소멸 (돌아오지 않음)", buy: "상환금 중 원금이 자산으로 축적" },
+  { aspect: "시설 투자", lease: "회수 불가 · 용도 협의 매번 필요", buy: "자유롭게 · 영구 사용" },
+  { aspect: "다음세대", lease: "불안정한 환경을 물려줌", buy: "안정된 예배 터전을 물려줌" },
+  { aspect: "주요 리스크", lease: "임대 시장 변동·재계약 불확실", buy: "대출·금리 부담, 집합건물 환금성" },
+];
+
 // ── 현 예배당 임대차계약서 핵심 (계약서 원본 기준) ────────────
 // 사진상 명확히 읽히는 항목만 사실로 기재. 흐릿한 수치는 ‘원본 확인 필요’로 표기.
 const CONTRACT_FACTS: { label: string; value: string; confirmed: boolean }[] = [
@@ -1153,6 +1175,85 @@ export default function BriefingPage() {
             부족하거나, 타 교회 차입이 안 되는 상황까지 미리 대비하고 있습니다.
             <strong> 무리한 결정은 하지 않겠습니다.</strong> 공동의회에서 자금 조달
             현황이 충분히 갖춰졌을 때 비로소 최종 결정을 요청드리겠습니다.”
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 3-1. 관악구 새 임대 vs 축복교회 매매 비교 */}
+      <Card>
+        <CardHeader className="flex flex-row items-start gap-2">
+          <Coin size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">관악구 새 임대 vs 축복교회 매매 — 비용·효과 비교</CardTitle>
+            <CardDescription>
+              ‘임대로 가면 더 안전하지 않나’라는 물음에 답하기 위해, 축복교회와
+              비슷한 규모(전용 약 130~140평급)를 <strong>관악구에 새로 임대</strong>하는
+              경우와 <strong>축복교회를 매입</strong>하는 경우를 비교합니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="rounded-md border border-dashed border-amber-300 bg-amber-50/40 p-3 text-xs leading-relaxed text-foreground">
+            <span className="font-semibold text-amber-700">전제 · </span>
+            관악구 임대 수치는 <strong>실제 시세 조사가 없어 ‘가정’</strong>입니다(현 66평 임대 기준을 규모에 맞춰 추정). 매매 수치는 <strong>실견적(대출 5.4~5.7%)·실측(관리비 188만)</strong> 기반입니다. 임대 매물·시세를 실제 조사하면 수치를 확정해 다시 비교할 수 있습니다.
+          </div>
+
+          {/* 비용 비교 */}
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[520px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                  <th className="py-2 pr-3 font-medium">항목</th>
+                  <th className="py-2 pr-3 font-medium">관악구 새 임대 (가정)</th>
+                  <th className="py-2 font-medium">축복교회 매매 (실측·견적)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {LEASE_VS_BUY_COST.map((r) => (
+                  <tr key={r.item} className={`border-b border-border/60 ${r.emph ? "font-semibold" : ""}`}>
+                    <td className="py-2 pr-3">{r.item}</td>
+                    <td className="py-2 pr-3 text-muted-foreground">{r.lease}</td>
+                    <td className="py-2">{r.buy}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* 효과 비교 */}
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold">효과(정성) 비교</span>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[520px] border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="py-2 pr-3 font-medium">관점</th>
+                    <th className="py-2 pr-3 font-medium">임대</th>
+                    <th className="py-2 font-medium">매매</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {LEASE_VS_BUY_EFFECT.map((r) => (
+                    <tr key={r.aspect} className="border-b border-border/60">
+                      <td className="py-2 pr-3 font-medium">{r.aspect}</td>
+                      <td className="py-2 pr-3 text-muted-foreground">{r.lease}</td>
+                      <td className="py-2 text-foreground">{r.buy}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <Note>
+            핵심은 — <strong>월 현금 부담은 임대(약 550~600만)와 매매(약 540~575만)가
+            비슷할 수 있다</strong>는 점입니다. 차이는 ‘남는 것’입니다. 임대는 10년에
+            6.5~7억이 <strong>전액 소멸</strong>하고 보증금만 돌아오지만, 매매는 비슷한
+            월 부담으로 <strong>건물 자산과 상환 원금이 남고 점유가 영구히 안정</strong>됩니다.
+            게다가 관악구 새 임대도 <strong>현 임대의 구조적 불안정(재계약·인상·퇴거)이
+            그대로 반복</strong>됩니다. 다만 매매의 리스크(원금 상환 부담·집합건물 환금성)는
+            실재하므로, <strong>관악구 임대 실시세를 조사해 수치를 확정한 뒤 최종
+            비교</strong>하는 것을 권합니다.
           </Note>
         </CardContent>
       </Card>
