@@ -21,12 +21,17 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 // 큰 글씨·쉬운 말로, 위에서 아래로 한 번에 읽는 전 성도용 안내 페이지.
 
+const CORE_FACTS = [
+  "임대차 계약만으로는 ‘계속 머문다’는 장기 안정을 확정할 수 없습니다. 오히려 계약서에는 ‘건물 신축 시 즉시 퇴거’ 조항이 들어 있습니다.",
+  "건물주가 이미 이 건물을 매물(약 100억)로 내놓았고, 실제로 사겠다는 사람(매수 의사자)도 나타났습니다.",
+  "즉 ‘언젠가 나가야 할 상황’이 이미 움직이기 시작했고, 그 시점은 우리가 정할 수 없습니다.",
+];
+
 const NEEDS = [
   { icon: <UsersThree size={26} />, title: "예배 공간이 좁습니다", desc: "성도와 아이들이 늘었는데 실제 예배 공간은 40~45평뿐이라, 예배에 집중하기 어렵습니다." },
   { icon: <Elevator size={26} />, title: "엘리베이터가 없습니다", desc: "3층까지 계단뿐이라 연로하신 분·몸이 불편하신 분이 예배하러 오시기 힘듭니다." },
   { icon: <Buildings size={26} />, title: "건물이 오래되고 주차가 안 됩니다", desc: "노후로 안전이 걱정되고, 주차가 안 돼 매달 주차비를 따로 내며 건물주와 갈등도 있습니다." },
   { icon: <Coin size={26} />, title: "월세는 사라지는 돈입니다", desc: "지금 내는 월세·관리비·주차비는 10년이면 약 5억인데, 모두 남지 않고 사라집니다." },
-  { icon: <Warning size={26} />, title: "지금 건물이 팔릴 수 있습니다", desc: "건물이 매물로 나와 있어, 팔리거나 재건축되면 우리가 나가야 할 수 있습니다." },
 ];
 
 const PASTOR = {
@@ -106,8 +111,30 @@ export default function StoryPage() {
 
       {/* Step 1 — 필요성 */}
       <Step n={1} title="왜 이전을 생각하게 되었나요?" icon={<Heart size={22} />}>
-        <p className="mb-5 text-muted-foreground">
-          다섯 가지 현실이 겹쳤습니다. 하나하나는 견딜 수 있어도, 함께 쌓이니 예배 공동체의 앞날을 걱정하게 되었습니다.
+        {/* 가장 핵심: 계약 안정성 불확실 + 매물·매수자 등장 */}
+        <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/70 p-6">
+          <div className="flex items-center gap-2 text-amber-800">
+            <Warning size={24} weight="fill" className="shrink-0" />
+            <p className="text-lg font-bold sm:text-xl">가장 중요한 사실 — 지금 자리에 ‘계속 머문다’는 보장이 없습니다</p>
+          </div>
+          <div className="mt-4 flex flex-col gap-3">
+            {CORE_FACTS.map((f, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-xl bg-background p-4">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-white">
+                  {i + 1}
+                </span>
+                <p className="font-medium leading-relaxed">{f}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-[15px] font-semibold leading-relaxed text-amber-800 sm:text-base">
+            그래서 핵심 질문은 ‘얼마나 더 버틸 수 있나’가 아니라,
+            <br className="hidden sm:block" /> ‘아직 시간과 선택권이 있을 때 우리가 주도해서 안정된 예배 공간을 마련할 수 있나’입니다.
+          </p>
+        </div>
+
+        <p className="mb-4 mt-7 text-muted-foreground">
+          여기에 더해, 오래 누적된 어려움도 함께 겹쳐 있습니다.
         </p>
         <div className="flex flex-col gap-3">
           {NEEDS.map((n, i) => (
