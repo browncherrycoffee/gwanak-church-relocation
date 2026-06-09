@@ -85,11 +85,11 @@ const COST_COMPARE: {
   delta: string;
   deltaTone: "up" | "down" | "neutral";
 }[] = [
-  { item: "임대료 / 대출이자", current: "200만원", after: "약 320~335만원 (7억·5.4~5.7%)", delta: "+120~135만원", deltaTone: "up" },
+  { item: "임대료 (+태권도장)", current: "230만원 (임대 200+태권도장 30)", after: "대출이자 약 320~335만원 (7억·5.4~5.7%)", delta: "+90~105만원", deltaTone: "up" },
   { item: "타 교회 상환", current: "—", after: "30~50만원", delta: "+30~50만원", deltaTone: "up" },
   { item: "주차비", current: "50~80만원", after: "약 21만원 (정기 4대 12 + 할인권 9)", delta: "-약 30~60만원", deltaTone: "down" },
   { item: "관리비·공용·전기·수도", current: "40~200만원", after: "약 167만원 (실측 평균)", delta: "실측 반영", deltaTone: "neutral" },
-  { item: "합계", current: "290~480만원", after: "약 540~575만원", delta: "+약 160~190만원", deltaTone: "up" },
+  { item: "합계", current: "320~510만원", after: "약 540~575만원", delta: "+약 140~180만원", deltaTone: "up" },
 ];
 
 const SAVING_POINTS: { item: string; ratio: string; note: string }[] = [
@@ -239,8 +239,8 @@ const CONTRACT_FACTS: { label: string; value: string; confirmed: boolean }[] = [
 ];
 const CONTRACT_CLAUSES: { title: string; body: string }[] = [
   {
-    title: "★ 건물 신축 시 (즉시 퇴거) 조건 — 계약 시 강조·설명함",
-    body: "특약에 ‘건물 신축 시 (퇴거)’ 취지가 명시되어 있고 계약 시 이를 강조·설명했다는 기재가 있음. 앞서 부동산이 확인한 ‘신축 매수자 대기·즉시 퇴거’ 정황과 직접 연결되는 조항.",
+    title: "★ 건물 신축 시 ‘어떤 조건도 없이 비워주기로 쌍방 합의’",
+    body: "특약에 ‘건물 신축 시에도 어떠한 조건 없이 집을 비워주기로 쌍방 합의함’이 명시되어 있음. 즉 신축·매각이 결정되면 보상·유예 없이 즉시 퇴거. 부동산이 확인한 ‘신축 매수자 대기’ 정황과 직접 연결되는, 가장 중요한 조항.",
   },
   {
     title: "원상복구·시설비 일체 임대인 불인정",
