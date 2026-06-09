@@ -313,18 +313,18 @@ export default function StoryPage() {
         <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Stat big="약 200만" small="월 임대료" />
           <Stat big="30만" small="태권도장 임대" />
-          <Stat big="50~80만" small="월 주차비" />
+          <Stat big="약 70만" small="월 주차비 (고정)" />
           <Stat big="40~200만" small="관리·전기·수도" />
         </div>
         <div className="mb-3 rounded-2xl border-2 border-amber-400 bg-amber-50/60 p-4">
           <p className="font-semibold text-amber-800">주차비가 특히 큽니다</p>
           <p className="mt-1 text-[15px] text-foreground sm:text-base">
-            건물에 주차가 안 돼 따로 내는 주차비만 <strong>매달 50~80만 원</strong> — 1년이면 <strong>600~960만 원</strong>입니다.
-            축복교회로 가면 주차비가 <strong>월 12만 원 수준(1/4 이하)</strong>으로 크게 줄어듭니다.
+            건물에 주차가 안 돼 따로 내는 주차비만 <strong>매달 약 70만 원(고정)</strong> — 1년이면 <strong>약 840만 원</strong>입니다.
+            축복교회로 가면 주차비가 <strong>월 12만 원 수준(약 1/6)</strong>으로 크게 줄어듭니다.
           </p>
         </div>
         <p className="mb-5 rounded-xl bg-secondary/50 p-3 text-center text-[15px] sm:text-base">
-          지금도 합쳐서 <strong>매달 약 320~510만 원</strong>을 쓰고 있는데, 이 돈은 <strong>모두 사라지는 돈</strong>입니다.
+          지금도 합쳐서 <strong>매달 약 340~500만 원</strong>을 쓰고 있는데, 이 돈은 <strong>모두 사라지는 돈</strong>입니다.
         </p>
 
         <p className="mb-5 text-muted-foreground">
