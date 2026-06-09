@@ -265,9 +265,27 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 5 — 임대 vs 매수 */}
-      <Step n={5} title="‘계속 임대’와 ‘매입’, 무엇이 다를까요?" icon={<Coin size={22} />}>
+      <Step n={5} title="돈 이야기 — 솔직하게 비교합니다" icon={<Coin size={22} />}>
+        {/* 현재 우리가 내는 고정비 */}
+        <p className="mb-3 font-semibold">먼저, 지금 우리가 매달 내고 있는 돈입니다.</p>
+        <div className="mb-3 grid grid-cols-3 gap-2">
+          <Stat big="약 200만" small="월 임대료" />
+          <Stat big="50~80만" small="월 주차비" />
+          <Stat big="40~200만" small="관리·전기·수도" />
+        </div>
+        <div className="mb-3 rounded-2xl border-2 border-amber-400 bg-amber-50/60 p-4">
+          <p className="font-semibold text-amber-800">주차비가 특히 큽니다</p>
+          <p className="mt-1 text-[15px] text-foreground sm:text-base">
+            건물에 주차가 안 돼 따로 내는 주차비만 <strong>매달 50~80만 원</strong> — 1년이면 <strong>600~960만 원</strong>입니다.
+            축복교회로 가면 주차비가 <strong>월 12만 원 수준(1/4 이하)</strong>으로 크게 줄어듭니다.
+          </p>
+        </div>
+        <p className="mb-5 rounded-xl bg-secondary/50 p-3 text-center text-[15px] sm:text-base">
+          지금도 합쳐서 <strong>매달 약 290~480만 원</strong>을 쓰고 있는데, 이 돈은 <strong>모두 사라지는 돈</strong>입니다.
+        </p>
+
         <p className="mb-5 text-muted-foreground">
-          가장 많이 묻는 질문입니다. 놀랍게도 <strong className="text-foreground">매달 나가는 돈은 거의 비슷합니다.</strong> 차이는 ‘남는 것’입니다.
+          그렇다면 ‘계속 임대’와 ‘매입’은 무엇이 다를까요? 놀랍게도 <strong className="text-foreground">매달 나가는 돈은 거의 비슷합니다.</strong> 차이는 ‘남는 것’입니다.
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {/* 임대 */}
@@ -316,6 +334,30 @@ export default function StoryPage() {
         <p className="mt-4 rounded-xl border border-dashed border-border p-3 text-center text-[14px] text-muted-foreground">
           ※ 임대 금액은 동급 규모를 가정한 추정이며, 실제 시세는 조사 후 확정합니다. 매입 금액은 실제 대출 견적·관리비 명세에 따른 것입니다.
         </p>
+
+        {/* 자금 조달 구성 */}
+        <div className="mt-6 rounded-2xl border border-border bg-card p-5">
+          <p className="text-lg font-bold">그 돈은 어떻게 마련하나요? <span className="text-base font-normal text-muted-foreground">(총 약 12.2~12.9억)</span></p>
+          <div className="mt-3 flex flex-col gap-2">
+            {[
+              { src: "교회 자본금", amt: "약 2억", note: "적립금·현 보증금 등" },
+              { src: "성도 연보", amt: "약 1억", note: "완전 자발·익명·형편껏 (강제 없음)" },
+              { src: "은행 대출", amt: "6~7억", note: "금리 5.4~5.7% 견적" },
+              { src: "타 교회 차입", amt: "약 2억", note: "현 예배당 세입자 구해지면 줄어듦" },
+            ].map((f) => (
+              <div key={f.src} className="flex items-baseline justify-between gap-3 rounded-xl border border-border/60 p-3">
+                <div>
+                  <span className="font-semibold">{f.src}</span>
+                  <span className="ml-2 text-[13px] text-muted-foreground sm:text-sm">{f.note}</span>
+                </div>
+                <span className="shrink-0 font-bold text-primary">{f.amt}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 rounded-xl bg-secondary/50 p-3 text-[15px] sm:text-base">
+            연보나 대출이 계획만큼 모이지 않으면 <strong>무리하게 진행하지 않습니다.</strong> 자금이 충분히 갖춰졌을 때, 공동의회에서 함께 최종 결정합니다.
+          </p>
+        </div>
       </Step>
 
       {/* Step 6 — 염려 공감 */}
