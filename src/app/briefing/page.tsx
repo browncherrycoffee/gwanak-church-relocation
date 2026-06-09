@@ -6,6 +6,7 @@ import {
   CheckSquare,
   Coin,
   Compass,
+  Gavel,
   ListChecks,
   Target,
   UsersThree,
@@ -204,6 +205,27 @@ const SALE_PREP: string[] = [
   "임대 대안 병행 조사 — 단, 현 임대의 구조적 불안정(특약·매각 정황)이 ‘새 임대’에도 반복됨을 전제로.",
 ];
 
+// ── 현 예배당 임대차계약서 핵심 (계약서 원본 기준) ────────────
+// 사진상 명확히 읽히는 항목만 사실로 기재. 흐릿한 수치는 ‘원본 확인 필요’로 표기.
+const CONTRACT_FACTS: { label: string; value: string; confirmed: boolean }[] = [
+  { label: "계약 종류", value: "부동산 임대차계약서 · 재연장 계약", confirmed: true },
+  { label: "소재지", value: "서울 관악구 신림동 247-2, 3층 남쪽 일부 (현 관악교회)", confirmed: true },
+  { label: "건물·면적", value: "철근콘크리트 근린생활시설 · 임대 부분 218㎡(약 66평)", confirmed: true },
+  { label: "임대인", value: "윤영주 (임대료 계좌: 우체국 1002-033-948512, 예금주 윤영주)", confirmed: true },
+  { label: "보증금", value: "₩165,000,000 (약 1.65억) — 기존 ‘2억’ 가정과 차이, 자금계획 재확인 필요", confirmed: true },
+  { label: "월 임대료 / 만료일", value: "원본 글씨 흐림 — 정확 금액·만료일 원본 확인 필요 (월세는 이지원 집사 추정 약 200만)", confirmed: false },
+];
+const CONTRACT_CLAUSES: { title: string; body: string }[] = [
+  {
+    title: "★ 건물 신축 시 (즉시 퇴거) 조건 — 계약 시 강조·설명함",
+    body: "특약에 ‘건물 신축 시 (퇴거)’ 취지가 명시되어 있고 계약 시 이를 강조·설명했다는 기재가 있음. 앞서 부동산이 확인한 ‘신축 매수자 대기·즉시 퇴거’ 정황과 직접 연결되는 조항.",
+  },
+  {
+    title: "원상복구·시설비 일체 임대인 불인정",
+    body: "특약상 임대인은 원상복구 비용과 시설비를 일체 인정하지 않음. 즉 퇴거 시 원상복구는 임차인(교회) 부담이며, 그동안 투자한 시설비도 보상받지 못함 — 김정권·이명건 집사가 우려한 ‘원상복구 부담’이 계약서로 확인됨.",
+  },
+];
+
 // ── 성도 우려에 대한 목회적 소통 가이드 ───────────────────────
 const CARE_PRINCIPLES: string[] = [
   "이전은 수단이고 목적은 예배 공동체입니다. 건물보다 한 영혼이 귀합니다 — 이전 때문에 한 사람이 시험에 들거나 교회를 떠난다면, 그 자체로 멈춰 돌아봐야 할 신호입니다.",
@@ -272,7 +294,7 @@ const TOTAL_COST: { item: string; amount: string; note: string }[] = [
 ];
 
 const PLAN_A: { source: string; amount: string; cond: string }[] = [
-  { source: "자본금 (교회 적립금/보증금)", amount: "2억", cond: "보증금 회수 가정 — 시점 확인 필요" },
+  { source: "자본금 (교회 적립금/보증금)", amount: "2억", cond: "계약서상 보증금 1.65억 — 차액 약 0.35억 출처·회수 시점 확인 필요" },
   { source: "성도 연보 (특별헌금)", amount: "1억", cond: "자발적 서약제" },
   { source: "은행 대출", amount: "6~7억", cond: "금리 5.4~5.7% 견적, 월 이자 약 315~333만원" },
   { source: "타 교회 차입", amount: "2억", cond: "현 예배당 세입자 유치 시 차입 축소" },
@@ -290,7 +312,7 @@ const PRECHECK: { no: number; item: string; state: string; tone: Urgency; next: 
   { no: 2, item: "타 교회 차입 비공식 타진 결과", state: "고려 중", tone: "high", next: "1~2곳이라도 의향 확인. 이자/상환 조건 가안" },
   { no: 3, item: "은행 대출 사전 상담", state: "1차 견적 수신", tone: "mid", next: "축복교회 상가 담보 기준 2개 안 수신(만기일시 5.7% / 원금균등 5.4%, 6~7억, 5~10년). 실제 상담 시 변동 가능. 필요 서류·목사님 신용평점 준비" },
   { no: 4, item: "취득세 면제 가능성", state: "확인 중", tone: "mid", next: "세무사 자문으로 확정. 면제 시 6,440만원 절감 → 자금 압박 크게 완화" },
-  { no: 5, item: "현 보증금 반환 시점", state: "미확인", tone: "mid", next: "현 건물주와 퇴거·보증금 반환 일정 조율 필요. 현 건물 매각 정황(아래 별도 카드) 함께 고려" },
+  { no: 5, item: "현 보증금(₩1.65억) 반환 시점·자본금 차액", state: "확인 필요", tone: "high", next: "계약서상 보증금 1.65억 확인 — 자금계획 ‘자본금 2억’과 차이나는 차액(약 0.35억) 출처 및 보증금 반환 시점을 건물주와 조율. 현 건물 매각 정황(별도 카드) 함께 고려" },
   { no: 6, item: "축복교회 관리비 월별 상세", state: "수신 완료", tone: "low", next: "16개월 부과 명세 확보 — 월 평균 약 188만원(세대 140+공용 28+주차 21). 비교표·Plan A에 실측 반영 완료" },
   { no: 7, item: "현 예배당 임대 승계처(후속 임차) 확보", state: "미확인", tone: "high", next: "이어받을 교회/단체를 못 찾을 경우 보증금 회수 지연·원상복구 비용·일정 중복(이중 부담) 발생 → Plan B/C에 반영 (이명건 집사 지적)" },
 ];
@@ -384,8 +406,8 @@ const CAUTION_GROUPS: {
       },
       {
         claim: "후속 임차인이 교회가 아니면 사용 공간 원상복구 + 집기 철거 부담 발생",
-        kind: "확인 대상",
-        check: "계약서 원상복구 조항으로 확정. 새 임차인이 교회라 해서 우리 원상복구 의무가 자동 면제되는 것은 아니며(시설 승계는 별도 합의), 비용 규모도 견적으로 산출 가능.",
+        kind: "확인 완료",
+        check: "계약서 특약으로 확인됨 — ‘원상복구·시설비 일체 임대인 불인정’. 즉 퇴거 시 원상복구는 교회 부담이고 시설 투자비도 보상받지 못함. 비용 규모는 견적으로 산출 필요.",
       },
       {
         claim: "건물 소유주의 매도 의사가 불확실 — 매각 여부·보증금 회수 변수",
@@ -658,6 +680,59 @@ export default function BriefingPage() {
             <strong>“준비된 상태에서의 적기 판단”</strong>. 이 결론들은 <strong>반드시
             부동산 전문 변호사의 확인</strong>을 거치시길 권하며, 대외 전달 시에는 ‘이미
             100억 매물’ 같은 단정보다 사실 범위 안에서 신중히 표현해야 합니다.
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 1-0b. 현 예배당 임대차계약서 핵심 */}
+      <Card>
+        <CardHeader className="flex flex-row items-start gap-2">
+          <Gavel size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">현 예배당 임대차계약서 핵심 (원본 기준)</CardTitle>
+            <CardDescription>
+              계약서 원본에서 확인된 사항입니다. 글씨가 흐려 확정하기 어려운 수치는
+              ‘원본 확인 필요’로 표기했습니다 — 정확성을 위해 추정으로 단정하지
+              않았습니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {CONTRACT_FACTS.map((f) => (
+              <div key={f.label} className="rounded-md border border-border p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">{f.label}</span>
+                  <Badge
+                    variant="outline"
+                    className={`shrink-0 font-normal ${f.confirmed ? "text-emerald-700 border-emerald-300" : "text-amber-700 border-amber-300"}`}
+                  >
+                    {f.confirmed ? "확인" : "원본 확인 필요"}
+                  </Badge>
+                </div>
+                <p className="mt-1 text-sm leading-relaxed text-foreground">{f.value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold">핵심 특약사항</span>
+            {CONTRACT_CLAUSES.map((c, i) => (
+              <div key={i} className="rounded-md border border-amber-200 bg-amber-50/40 p-3">
+                <p className="text-sm font-semibold text-amber-700">{c.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-foreground">{c.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <Note>
+            계약서로 두 가지가 사실 확인됐습니다 — ① <strong>‘신축 시 퇴거’ 조건이
+            특약에 명시</strong>되어, 매각·재건축이 진행되면 통상 임차 보호보다 빠른
+            퇴거 위험이 실재함 ② <strong>원상복구·시설비는 전부 교회 부담</strong>(임대인
+            불인정)이라 퇴거 시 추가 비용·손실이 따름. 한편 <strong>보증금이
+            1.65억으로 확인</strong>돼 자금계획상 ‘자본금 2억(보증금 회수 가정)’과
+            차이가 있으므로, 차액의 출처와 보증금 반환 시점을 함께 점검해야 합니다.
+            (정확한 월세·만료일·특약 문구는 변호사 검토 시 원본으로 재확인 권장)
           </Note>
         </CardContent>
       </Card>
