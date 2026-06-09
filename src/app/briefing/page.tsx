@@ -178,23 +178,66 @@ const SALE_FACTS: { fact: string; detail: string }[] = [
   },
 ];
 
-// ‘괜찮다 / 천천히 해도 된다’는 인식의 논리적 허점
-const SALE_GAPS: string[] = [
-  "건물주 말의 신뢰성 — ‘절대 안 판다’(본인)와 ‘팔아달라 했다’(부동산)가 정면으로 충돌. 변덕스러운 구두 약속은 대비를 미룰 근거가 되지 못함.",
-  "부동산 조언의 이해상충 — ‘급하지 않다’는 매도 중개 이해가 걸린 부동산의 추정·조언일 뿐 보장이 아님. 중립적 판단으로 받아들이기 어려움.",
-  "‘거래가 어렵다’는 가변적 조건 — 이미 90억 실수요가 존재. 가격(100억) 경직·주변 비협조는 언제든 풀릴 수 있고, 그러면 빠르게 진행될 수 있음.",
-  "‘1년 여유’의 함정 — 1년은 매수가 ‘결정된 후’의 기간이며, 그 결정 시점은 우리가 통제·예측할 수 없음. ‘신축 시 즉시 퇴거’ 특약이 있는 한 통상 임차 보호보다 빠른 퇴거 위험이 남음.",
-  "‘그때 가서 구하라’의 허점 — 저층·엘리베이터·주차·면적·교단 용도 허용을 동시에 갖춘 예배 공간은 희소함. 닥쳐서 단기간에 적합지를 못 구할 위험이 크며, 축복교회처럼 즉시 사용 가능한 매물은 드묾.",
+// ‘괜찮다 / 천천히 해도 된다’는 결론의 논리적 허점 (개별 사실은 맞아도 결론이 따라오지 않음)
+const SALE_GAPS: { title: string; body: string }[] = [
+  {
+    title: "허점 1 · ‘절대 안 판다’는 말은 행동과 모순되고, 법적 효력도 없다",
+    body: "본인은 교회엔 ‘안 판다’면서 부동산엔 ‘팔아달라’ 했고, 부동산도 그를 ‘변덕스럽다’고 평했습니다. 말과 행동이 충돌하면 신뢰할 것은 행동입니다. 법적으로도 임대인의 구두 약속(안 팔겠다)은 계약상 의무가 아니어서 교회에 아무 권리를 만들어 주지 않고, 장래의 매수인을 구속하지도 않습니다 — 안심의 근거로 삼을 가치가 거의 없습니다.",
+  },
+  {
+    title: "허점 2 · ‘1년 여유’는 성사되기 어려운 시나리오에 붙은 추정치다",
+    body: "그 ‘최소 1년’은 주변 건물과 합쳐 사는 대형 합필 거래를 전제한 기간입니다. 그런데 같은 부동산이 ‘이웃이 팔 생각이 전혀 없어 거래가 어렵다’고 했습니다. 즉 1년이 걸린다는 그 거래 자체가 성사되기 어려운 경우이고, 실제 가능성이 높은 단일 건물 매각은 계약부터 잔금까지 보통 수개월이면 끝납니다. 위안이 정작 일어나기 힘든 경우에 매달린 자기모순입니다.",
+  },
+  {
+    title: "허점 3 · ‘거래 완결 시점’과 ‘교회가 안전한 시점’은 다르다 (시계가 둘)",
+    body: "설령 매각에 1년이 걸려도 그것이 교회에 1년의 안전을 주지는 않습니다. 새 예배 처소는 물색 → 계약 → 종교시설 용도 허가 → 공사까지 통상 1~2년이 걸립니다. 매각이 1년 안에 끝날 수 있다면 ‘거래가 끝나면 그때 찾자’는 조언은 출발선부터 이미 늦습니다. 종이 위 계약기간이 곧 안정적 점유를 뜻하지도 않습니다(‘신축 시 즉시 퇴거’ 특약).",
+  },
 ];
 
 // 관악교회 입장 — 예배 공동체를 이어가기 위한 보수적 준비
 const SALE_PREP: string[] = [
   "모니터링 — 건물주 구두 약속에 기대지 말고, 등기부·매물 등록 여부를 주기적으로 확인.",
-  "계약·법률 검토 — ‘즉시 퇴거’ 조항, 보증금 반환 조건, 잔여 임차권·대항력을 전문가와 점검.",
+  "법률 검토 — ‘즉시 퇴거’ 조항·보증금 반환·대항력·계약갱신요구권을 부동산 전문 변호사와 점검(위 허점 결론은 반드시 변호사 확인 권장).",
+  "리드타임 역산 — 새 예배 처소는 물색→허가→공사에 통상 1~2년. ‘거래 끝나면 찾자’가 아니라 지금부터 준비해야 시점이 맞음.",
   "사전 준비 태세 — 후보 매물·자금 계획·성도 의견 수렴을 ‘결정 전’에 갖춰, 좋은 매물(기회)과 갑작스런 퇴거(위기) 모두에 대응 가능한 상태 유지.",
   "재정 버퍼 — 보증금 회수 지연·현·신 예배당 이중 비용 가능성에 대비한 여유 확보.",
   "임대 대안 병행 조사 — 단, 현 임대의 구조적 불안정(특약·매각 정황)이 ‘새 임대’에도 반복됨을 전제로.",
-  "적기 판단 — 막연히 미루지도, 졸속으로 서두르지도 않고 ‘준비된 상태에서 적기에 결정’하는 노선 유지.",
+];
+
+// ── 성도 우려에 대한 목회적 소통 가이드 ───────────────────────
+const CARE_PRINCIPLES: string[] = [
+  "이전은 수단이고 목적은 예배 공동체입니다. 건물보다 한 영혼이 귀합니다 — 이전 때문에 한 사람이 시험에 들거나 교회를 떠난다면, 그 자체로 멈춰 돌아봐야 할 신호입니다.",
+  "설득에 앞서 경청입니다. 떠나려는 분, 부담을 느끼는 분께 먼저 안부를 묻고 마음을 듣습니다. 과정에서 상처를 드린 부분이 있다면 솔직히 사과합니다.",
+  "반대 의견도 교회를 사랑하는 마음에서 나옵니다. ‘반대 = 믿음 부족’이라는 프레임은 절대 쓰지 않습니다.",
+  "두 원칙을 다시 확인합니다 — ① 한 사람도 소외되지 않는 이전 ② 재정적 무리로 치닫는 이전은 하지 않는다. 둘 중 하나라도 걸리면 진행하지 않습니다.",
+];
+const CARE_CONCERNS: { label: string; empathize: string; communicate: string }[] = [
+  {
+    label: "대출·빚에 대한 부담 — ‘빚지고 사는 게 신앙적으로 맞나’",
+    empathize: "큰 빚에 대한 두려움, 헌금이 무리하게 쓰일까 하는 거룩한 부담은 지극히 자연스럽고 귀한 마음입니다.",
+    communicate: "무리한 결정은 하지 않습니다(Plan B/C). 공간 비용 20~30%는 일반적으로 무리 없는 수준이지만, 감당이 어렵다고 판단되면 멈춥니다. ‘빚 = 죄’가 아니라 청지기적 분별의 문제로, 함께 기도하며 판단할 사안입니다.",
+  },
+  {
+    label: "연보 부담 — ‘꼭 해야 하나, 얼마나 내야 하나’",
+    empathize: "형편이 어려운 분께 연보 목표는 무거운 짐이 될 수 있습니다. 그 부담을 결코 가볍게 여기지 않습니다.",
+    communicate: "연보는 완전히 자발적·익명이며 형편껏입니다. 정해진 액수도, 못 했을 때의 정죄도 없습니다. 연보가 모이지 않으면 그 자체를 ‘무리하게 진행하지 말라’는 신호로 받아들입니다.",
+  },
+  {
+    label: "접근성 — ‘멀어서 출석 못 할 것 같다 / 안 나가겠다’",
+    empathize: "신앙생활의 터전이 흔들리는, 가장 현실적이고 아픈 우려입니다. 청년부 설문에서도 거부의 핵심 사유였습니다.",
+    communicate: "주일 셔틀·카풀·택시 지원을 적극 검토합니다. ‘한 사람도 소외되지 않는 이전’이 원칙이며, 접근성 때문에 공동체가 깨진다면 그분들을 위해서라도 이전 자체를 재고합니다.",
+  },
+  {
+    label: "‘급하게 밀어붙인다’ — 소문·상처·시험",
+    empathize: "충분히 듣지 못했다는 느낌, 과정에서 받은 상처와 마음의 시험을 무겁게 받아들입니다.",
+    communicate: "공청회는 결정이 아니라 의견 수렴 단계였습니다. 더 폭넓게 듣기 위해 확대당회로 모이며, 위원회 활동 지속 여부까지 열어 놓고 논의합니다. 상처드린 부분은 사과하며, 속도와 방식은 얼마든지 재조정할 수 있습니다.",
+  },
+];
+const CARE_AVOID: string[] = [
+  "‘반대하면 믿음이 없다’ 식의 영적 압박",
+  "떠나려는 분을 ‘붙잡기 위한 설득’부터 — 먼저 안부와 돌봄",
+  "숫자·논리로 몰아붙이기 — 감정과 관계가 먼저",
+  "확정되지 않은 것을 확정된 것처럼 말하기 (오늘 강제되는 것은 아무것도 없음)",
 ];
 
 // ── 청년부 사전 설문 (정다은 자매 진행) ───────────────────────
@@ -258,8 +301,9 @@ const PROCESS: { period: string; activity: string; how: string; can: string }[] 
   { period: "6/1~6/7", activity: "전도회별 소모임 논의", how: "각 전도회 회장(위원)이 모임에서 안건 공유 → 질문/염려/찬반 의견 수렴 → 위원회에 전달", can: "요청 필요" },
   { period: "6/1~6/10", activity: "익명 온라인 의견 수렴", how: "구글 폼 등으로 ‘찬성/반대/보류’ + 자유 의견. 발언이 어려운 성도도 참여 가능", can: "쉽게 가능" },
   { period: "6/7~6/10", activity: "개별 소통 (어르신/핵심 성도)", how: "목사님·장로님이 전화·방문으로 마음 챙기기. 불안한 분들 경청", can: "시간 투자" },
-  { period: "6/14", activity: "2차 설명회", how: "1차 의견 반영, 자금상환계획 상세 보고, 추가 질의응답", can: "확정" },
-  { period: "6/14~", activity: "임시 당회 → 공동의회 일정 공고", how: "최소 2주 전 공고. 공동의회는 7월 초 권장 (졸속 인상 방지)", can: "당회 결정" },
+  { period: "6/14", activity: "제직회 → 확대당회", how: "1차 공청회 후 성도 우려·이탈이 커져, 당회원 외 제직의 지혜를 모아 의견 수렴·위원회 활동 지속 여부까지 폭넓게 논의", can: "소집 확정" },
+  { period: "추후", activity: "2차 설명회", how: "수렴 의견 반영, 자금상환계획 상세 보고, 추가 질의응답 (확대당회 논의 결과에 따라 일정 조정)", can: "조정 가능" },
+  { period: "추후", activity: "임시 당회 → 공동의회 일정 공고", how: "최소 2주 전 공고. 졸속 인상 방지 — 충분한 논의 후 진행", can: "당회 결정" },
 ];
 
 // ── 6. 성도 예상 Q&A ──────────────────────────────────────────
@@ -584,11 +628,14 @@ export default function BriefingPage() {
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             <div className="rounded-md border border-border p-3">
               <p className="text-sm font-semibold">‘괜찮다 / 천천히 해도 된다’ 논리의 허점</p>
-              <ul className="mt-2 flex flex-col gap-1.5 text-xs leading-relaxed text-foreground">
+              <div className="mt-2 flex flex-col gap-2">
                 {SALE_GAPS.map((g, i) => (
-                  <li key={i}>· {g}</li>
+                  <div key={i}>
+                    <p className="text-xs font-semibold text-foreground">{g.title}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{g.body}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
             <div className="rounded-md border border-primary/40 bg-secondary/30 p-3">
               <p className="text-sm font-semibold text-primary">관악교회의 보수적 준비 (예배 공동체 지속을 위해)</p>
@@ -601,14 +648,16 @@ export default function BriefingPage() {
           </div>
 
           <Note>
-            핵심은 — 건물주·부동산의 ‘안 판다 / 급하지 않다’는 말은{" "}
-            <strong>안심의 근거가 아니라 언제든 바뀔 수 있는 정보</strong>라는
-            점입니다. 관악교회는 예배 공동체를 이어가야 하므로, 낙관에 기대 손을
-            놓기보다 위 항목을 <strong>보수적으로 미리 준비</strong>해 두는 것이
-            안전합니다. 이는 ‘당장 무리한 매입’과도, ‘무대책 현상유지’와도 다른
-            <strong> “준비된 상태에서의 적기 판단”</strong> 노선입니다. 다만 대외
-            전달 시에는 ‘이미 100억 매물’ 같은 단정보다 <strong>등기부·매각 의사
-            확인을 거쳐 사실 범위 안에서</strong> 신중히 표현해야 합니다.
+            <strong>요약</strong> — 개별 사실(가격차·땅 모양·대형 거래 소요 기간)은
+            사실일 수 있으나, <strong>‘그러니 지금 움직일 필요 없다’는 결론은 그
+            사실들로부터 도출되지 않습니다.</strong> 진짜 허점은 안심을 주는 그 추론
+            자체이며, 법(대항력·계약갱신요구권·신축 특약)과 현실(이전 준비에 1~2년)이라는
+            두 축에서 드러납니다. 관악교회는 예배 공동체를 이어가야 하므로 낙관에 기대
+            손을 놓기보다 위 항목을 <strong>보수적으로 미리 준비</strong>해 두는 것이
+            안전합니다 — ‘당장 무리한 매입’과도, ‘무대책 현상유지’와도 다른{" "}
+            <strong>“준비된 상태에서의 적기 판단”</strong>. 이 결론들은 <strong>반드시
+            부동산 전문 변호사의 확인</strong>을 거치시길 권하며, 대외 전달 시에는 ‘이미
+            100억 매물’ 같은 단정보다 사실 범위 안에서 신중히 표현해야 합니다.
           </Note>
         </CardContent>
       </Card>
@@ -648,6 +697,80 @@ export default function BriefingPage() {
             단단하게 만드는 보완 관계</strong>입니다. 필요성엔 모두 공감하므로,
             남은 과제는 ‘재정을 감당 가능하게 설계하고, 리스크를 계획에 반영하며,
             모든 성도의 마음을 모으는 것’입니다.
+          </Note>
+        </CardContent>
+      </Card>
+
+      {/* 1-2. 성도 우려에 대한 목회적 소통 가이드 */}
+      <Card className="border-primary/40">
+        <CardHeader className="flex flex-row items-start gap-2">
+          <ChatCircleText size={20} className="mt-0.5 text-primary" />
+          <div>
+            <CardTitle className="text-base">이전을 둘러싼 우려 — 목회적 소통 가이드</CardTitle>
+            <CardDescription>
+              1차 공청회 이후 일부 성도님들이 대출·연보 부담, 접근성, 과정에 대한
+              상처로 우려하거나 교회를 떠나려 하시는 상황입니다. 이 자리는 ‘설득해
+              밀어붙이기’가 아니라 <strong>먼저 듣고 돌보며, 정직하고 합리적으로
+              소통하기</strong> 위한 가이드입니다.
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-5">
+          {/* 현 상황 정직한 인정 */}
+          <div className="rounded-md border-l-4 border-primary/50 bg-secondary/40 p-4 text-sm leading-relaxed">
+            <p className="font-semibold text-primary">먼저 — 지금 상황을 정직하게</p>
+            <p className="mt-1 text-foreground">
+              1차 공청회 이후 10명 이상이 교회를 떠나려는 뜻을 비치고, 우려·상처·시험의
+              소문이 들려옵니다. 위원회는 이를 <strong>‘추진의 걸림돌’이 아니라 ‘멈춰
+              돌아보라는 신호’</strong>로 받아들입니다. 그래서 당회·제직이 확대당회로
+              모여 다양한 의견 수렴과 <strong>위원회 활동 지속 여부까지 열어 놓고</strong>
+              논의합니다. 멈춤이나 연기도 실패가 아니라 분별의 결과일 수 있습니다.
+              <strong> 공동체의 일치가 이전보다 우선입니다.</strong>
+            </p>
+          </div>
+
+          {/* 소통의 대전제 */}
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold">소통의 대전제 (먼저 마음가짐)</span>
+            {CARE_PRINCIPLES.map((p, i) => (
+              <div key={i} className="rounded-md border border-border p-3 text-sm leading-relaxed text-foreground">
+                {p}
+              </div>
+            ))}
+          </div>
+
+          {/* 우려 유형별 — 이해 + 합리적 설명 */}
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-semibold">우려 유형별 — 마음을 이해하고, 합리적으로 설명하기</span>
+            {CARE_CONCERNS.map((c, i) => (
+              <div key={i} className="rounded-md border border-border p-3">
+                <p className="text-sm font-semibold">{c.label}</p>
+                <p className="mt-1.5 rounded-md bg-secondary/40 p-2 text-xs leading-relaxed text-foreground">
+                  <span className="font-medium text-primary">먼저 그 마음 · </span>{c.empathize}
+                </p>
+                <p className="mt-1.5 border-l-2 border-primary/40 pl-3 text-xs leading-relaxed text-muted-foreground">
+                  <span className="font-medium text-primary">함께 나눌 설명 · </span>{c.communicate}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* 피해야 할 소통 */}
+          <div className="rounded-md border border-amber-200 bg-amber-50/40 p-3">
+            <p className="text-sm font-semibold text-amber-700">이렇게는 소통하지 않습니다</p>
+            <ul className="mt-1.5 flex flex-col gap-1 text-xs leading-relaxed text-foreground">
+              {CARE_AVOID.map((a, i) => (
+                <li key={i}>· {a}</li>
+              ))}
+            </ul>
+          </div>
+
+          <Note>
+            동시에, 가만히 있어도 사라지지 않는 현실(현 예배당의 매각 정황·‘즉시 퇴거’
+            특약)은 정직하게 공유합니다. 그래서 <strong>‘준비’는 필요하지만 ‘준비’와
+            ‘강행’은 다릅니다.</strong> 오늘 확정된 것은 아무것도 없으며, 공동의회
+            가결 전에는 어떤 것도 강제되지 않습니다. 우리가 끝까지 붙들 것은
+            <strong> 한 사람도 잃지 않으려는 마음</strong>입니다.
           </Note>
         </CardContent>
       </Card>
