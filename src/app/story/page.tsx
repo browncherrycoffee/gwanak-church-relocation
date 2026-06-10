@@ -163,7 +163,7 @@ const PROMISES = [
 
 export default function StoryPage() {
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-12 text-[17px] leading-relaxed sm:text-lg">
+    <div className="mx-auto flex max-w-3xl flex-col gap-16 text-[17px] leading-relaxed sm:gap-20 sm:text-lg">
       {/* Hero */}
       <section className="flex flex-col items-center gap-4 text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
