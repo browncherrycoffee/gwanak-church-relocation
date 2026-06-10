@@ -252,7 +252,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 2 — 김재윤 교수 메시지 */}
-      <Step n={2} title="한 분의 간곡한 권면" icon={<Quotes size={22} />}>
+      <Step
+        n={2}
+        title="한 분의 간곡한 권면"
+        icon={<Quotes size={22} />}
+        bridge="이 어려움은 우리만의 일이 아닙니다 — 서울의 여러 교회가 이미 같은 일을 겪었고, 그것을 가까이서 지켜본 한 분이 우리에게 간곡한 글을 보내주셨습니다."
+      >
         <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-6">
           <p className="text-lg font-semibold leading-relaxed">“{PASTOR.lead}”</p>
           <div className="mt-4 flex flex-col gap-3 text-[16px] text-foreground sm:text-[17px]">
@@ -268,7 +273,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 3 — 계약서 증거 */}
-      <Step n={3} title="지금 우리 예배당의 ‘진짜’ 상황" icon={<WarningCircle size={22} />}>
+      <Step
+        n={3}
+        title="지금 우리 예배당의 ‘진짜’ 상황"
+        icon={<WarningCircle size={22} />}
+        bridge="권면이 경고한 위험은 우리에게 ‘남의 이야기’가 아닙니다 — 우리 계약서에 이미 그대로 적혀 있습니다."
+      >
         <p className="mb-5 text-muted-foreground">
           막연한 걱정이 아니라, <strong className="text-foreground">계약서와 부동산 확인으로 드러난 사실</strong>입니다.
         </p>
@@ -325,18 +335,19 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 4 — 후보: 축복교회 */}
-      <Step n={4} title="찾은 곳 — 금천구 축복교회 예배당" icon={<MapPin size={22} />}>
-        <div className="mb-4 rounded-xl border-l-4 border-primary bg-secondary/40 p-3 text-[15px] leading-relaxed sm:text-base">
-          <strong>여기까지의 흐름</strong> — ① 공간은 이미 포화이고 ② 지금 자리는 매각·퇴거 위험으로 계속 머문다는 보장이 없습니다.
-          그렇다면 답은 ‘버티기’가 아니라, <strong>시간과 선택권이 있는 지금 안정된 예배 공간을 주도적으로 확보</strong>하는 것입니다. 그래서 찾은 곳이 —
-        </div>
+      <Step
+        n={4}
+        title="찾은 곳 — 금천구 축복교회 예배당"
+        icon={<MapPin size={22} />}
+        bridge="공간은 이미 가득 찼고(1), 지금 자리는 계속 머문다는 보장이 없습니다(3). 그렇다면 답은 ‘버티기’가 아니라, 시간과 선택권이 있는 지금 안정된 예배 공간을 우리가 먼저 찾는 것입니다. 그래서 찾았습니다 —"
+      >
         <p className="mb-4 text-muted-foreground">
           여러 매물을 살핀 끝에 잠정 후보로 정한 곳입니다. 자가용 약 20분 거리입니다.
         </p>
         <div className="grid grid-cols-2 gap-3">
           <Stat big="12억" small="매입가 · 137평" />
           <Stat big="있음" small="엘리베이터" tone="good" />
-          <Stat big="1/4" small="주차비 (현재 대비)" tone="good" />
+          <Stat big="약 1/6" small="주차비 (월 70만 → 12만)" tone="good" />
           <Stat big="바로" small="예배당·교육관·식당 사용 가능" tone="good" />
         </div>
         <p className="mt-4 text-[15px] text-muted-foreground sm:text-base">
@@ -345,7 +356,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 5 — 임대 vs 매수 */}
-      <Step n={5} title="돈 이야기 — 솔직하게 비교합니다" icon={<Coin size={22} />}>
+      <Step
+        n={5}
+        title="돈 이야기 — 솔직하게 비교합니다"
+        icon={<Coin size={22} />}
+        bridge="좋은 공간을 찾았다면, 가장 솔직해져야 할 질문이 남습니다 — ‘우리가 감당할 수 있는가?’ 숨기지 않고 숫자 그대로 보여드립니다."
+      >
         {/* 현재 우리가 내는 고정비 */}
         <p className="mb-3 font-semibold">먼저, 지금 우리가 매달 내고 있는 돈입니다.</p>
         <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -442,7 +458,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 6 — 염려 공감 */}
-      <Step n={6} title="이런 걱정, 충분히 이해합니다" icon={<HandHeart size={22} />}>
+      <Step
+        n={6}
+        title="이런 걱정, 충분히 이해합니다"
+        icon={<HandHeart size={22} />}
+        bridge="그러나 숫자가 모든 답이 되지는 않습니다. 마음의 걱정들이 남습니다 — 하나도 빠뜨리지 않고 듣고, 걱정마다 준비한 대안으로 답하며, 부족한 부분은 함께 논의해 채워가겠습니다."
+      >
         <p className="mb-5 text-muted-foreground">
           반대나 염려도 모두 교회를 사랑하는 마음에서 나옵니다. 먼저 그 마음을 듣고,
           <strong className="text-foreground"> 구체적인 대안과 근거로 함께 답</strong>을 찾겠습니다.
@@ -482,7 +503,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 7 — 약속 */}
-      <Step n={7} title="위원회의 약속" icon={<ShieldCheck size={22} />}>
+      <Step
+        n={7}
+        title="위원회의 약속"
+        icon={<ShieldCheck size={22} />}
+        bridge="이 모든 대안과 논의의 바탕에는, 어떤 경우에도 바뀌지 않는 약속이 있습니다."
+      >
         <div className="flex flex-col gap-3">
           {PROMISES.map((p, i) => (
             <div key={i} className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4">
@@ -494,7 +520,12 @@ export default function StoryPage() {
       </Step>
 
       {/* Step 8 — 참여 */}
-      <Step n={8} title="함께 해주세요" icon={<UsersThree size={22} />}>
+      <Step
+        n={8}
+        title="함께 해주세요"
+        icon={<UsersThree size={22} />}
+        bridge="이제 남은 것은 위원회의 계획이 아니라, 우리 모두의 마음입니다."
+      >
         <div className="flex flex-col gap-3">
           <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4">
             <Calendar size={24} className="mt-0.5 shrink-0 text-primary" />
@@ -521,14 +552,22 @@ export default function StoryPage() {
       </Step>
 
       {/* 마무리 */}
-      <section className="rounded-2xl bg-primary/5 p-8 text-center">
+      <section className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 text-center">
         <Quotes size={28} className="mx-auto text-primary" />
-        <p className="mt-3 text-xl font-bold leading-relaxed">
-          모여서 함께 예배,<br />흩어져 삶의 예배
+        <p className="mt-4 text-[16px] leading-relaxed text-foreground sm:text-lg">
+          지금 자리는 머문다는 보장이 없고, 공간은 이미 가득 찼습니다.<br className="hidden sm:block" />
+          {" "}매입은 비슷한 돈으로 <strong>영원한 예배의 터전</strong>을 남기는 길입니다.<br className="hidden sm:block" />
+          {" "}걱정 하나하나에 대안을 준비했고, 부족한 것은 <strong>함께 논의하며 채워가겠습니다</strong>.
         </p>
-        <p className="mt-3 text-muted-foreground">
+        <p className="mt-6 text-2xl font-bold leading-relaxed text-primary">
+          한마음을 모아,<br />관악교회를 지켜가고<br />다음 세대로 이어갑시다
+        </p>
+        <p className="mt-5 text-muted-foreground">
           예배당은 수단이고, 목적은 함께 예배하는 우리 공동체입니다.<br />
           끝까지 붙들 것은 <strong className="text-foreground">한 사람도 잃지 않으려는 마음</strong>입니다.
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {SITE_CONFIG.moto}
         </p>
       </section>
     </div>
@@ -539,15 +578,23 @@ function Step({
   n,
   title,
   icon,
+  bridge,
   children,
 }: {
   n: number;
   title: string;
   icon: React.ReactNode;
+  bridge?: string;
   children: React.ReactNode;
 }) {
   return (
     <section className="flex flex-col gap-4">
+      {bridge && (
+        <div className="flex items-center gap-3 text-[15px] italic text-muted-foreground sm:pl-14 sm:text-base">
+          <ArrowDown size={18} className="shrink-0 text-primary/60" />
+          <p>{bridge}</p>
+        </div>
+      )}
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
           {n}
