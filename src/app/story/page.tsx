@@ -590,12 +590,12 @@ function Step({
   return (
     <section className="flex flex-col gap-4">
       {bridge && (
-        <div className="flex items-center gap-3 text-[15px] italic text-muted-foreground sm:pl-14 sm:text-base">
+        <div className="step-bridge flex items-center gap-3 text-[15px] italic text-muted-foreground sm:pl-14 sm:text-base">
           <ArrowDown size={18} className="shrink-0 text-primary/60" />
           <p>{bridge}</p>
         </div>
       )}
-      <div className="flex items-center gap-3">
+      <div className="step-header flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
           {n}
         </div>
