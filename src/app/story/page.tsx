@@ -182,6 +182,33 @@ export default function StoryPage() {
         <ArrowDown size={24} className="mt-2 animate-bounce text-primary" />
       </section>
 
+      {/* 두괄식 핵심 3줄 요약 */}
+      <section className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-6">
+        <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-sm font-bold text-primary-foreground">
+          30초 핵심 요약
+        </p>
+        <ol className="flex flex-col gap-4">
+          {[
+            { k: "왜?", v: "지금 예배당은 이미 포화 상태이고, 건물이 매물로 나와(100억, 90억 매수 희망자 등장) ‘계속 머문다’는 보장이 없습니다. 계약서에도 ‘신축 시 즉시 비워준다’는 합의가 있습니다." },
+            { k: "무엇을?", v: "금천구 축복교회 예배당(137평·엘리베이터·즉시 사용 가능) 매입을 검토합니다. 매달 드는 돈은 임대와 비슷하지만, 임대료는 사라지고 매입금은 우리 ‘터전’과 자산으로 남습니다." },
+            { k: "약속은?", v: "재정에 무리가 되거나 한 사람이라도 크게 소외된다면 진행하지 않습니다. 오늘 정해진 것은 없으며, 충분히 듣고 공동의회에서 함께 결정합니다." },
+          ].map((s, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                {i + 1}
+              </span>
+              <p className="text-[16px] leading-relaxed sm:text-lg">
+                <strong className="text-primary">{s.k}</strong>{" "}
+                {s.v}
+              </p>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          아래에서 하나씩 자세히, 쉽게 풀어 설명드립니다.
+        </p>
+      </section>
+
       {/* Step 1 — 필요성 */}
       <Step n={1} title="왜 이전을 생각하게 되었나요?" icon={<Heart size={22} />}>
         {/* 가장 핵심: 계약 안정성 불확실 + 매물·매수자 등장 */}
