@@ -319,7 +319,7 @@ const PLAN_A: { source: string; amount: string; cond: string }[] = [
   { source: "자본금 (교회 적립금/보증금)", amount: "2억", cond: "계약서상 보증금 1.65억 — 차액 약 0.35억 출처·회수 시점 확인 필요" },
   { source: "성도 연보 (특별헌금)", amount: "1억", cond: "자발적 서약제" },
   { source: "은행 대출", amount: "6~7억", cond: "금리 5.4~5.7% 견적, 월 이자 약 315~333만원" },
-  { source: "타 교회 차입", amount: "2억", cond: "현 예배당 세입자 유치 시 차입 축소" },
+  { source: "타 교회 차입", amount: "2억", cond: "저리(低利) 장기 차입" },
 ];
 
 const PLAN_C_OPTIONS = [

@@ -440,7 +440,7 @@ export default function StoryPage() {
               { src: "교회 자본금", amt: "약 2억", note: "적립금·현 보증금 등" },
               { src: "성도 연보", amt: "약 1억", note: "완전 자발·익명·형편껏 (강제 없음)" },
               { src: "은행 대출", amt: "6~7억", note: "금리 5.4~5.7% 견적" },
-              { src: "타 교회 차입", amt: "약 2억", note: "현 예배당 세입자 구해지면 줄어듦" },
+              { src: "타 교회 차입", amt: "약 2억", note: "저리(低利)로 장기 차입" },
             ].map((f) => (
               <div key={f.src} className="flex items-baseline justify-between gap-3 rounded-xl border border-border/60 p-3">
                 <div>
